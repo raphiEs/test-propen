@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import propensi.pmosystem.model.UserModel;
 
 @Setter 
 @Getter
