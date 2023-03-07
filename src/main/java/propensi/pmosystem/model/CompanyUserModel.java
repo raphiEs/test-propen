@@ -1,4 +1,4 @@
-package propensi.pmosystemdev.model;
+package propensi.pmosystem.model;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
+import propensi.pmosystem.model.UserModel;
 
 @Setter
 @Getter

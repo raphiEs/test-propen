@@ -1,4 +1,4 @@
-package propensi.pmosystemdev.model;
+package propensi.pmosystem.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import propensi.pmosystem.model.UserModel;
 
 @Setter 
 @Getter
