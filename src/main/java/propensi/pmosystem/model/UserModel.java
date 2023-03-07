@@ -8,6 +8,8 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import propensi.pmosystem.model.RoleModel;
+
 @Setter
 @Getter
 @Entity
