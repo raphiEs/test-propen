@@ -1,4 +1,4 @@
-package propensi.pmosystemdev.model;
+package propensi.pmosystem.model;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
