@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
+import propensi.pmosystem.model.UserModel;
 
 @Setter
 @Getter
