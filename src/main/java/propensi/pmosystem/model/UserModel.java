@@ -17,7 +17,7 @@ import propensi.pmosystem.model.RoleModel;
 public class UserModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @Size(max = 256)
