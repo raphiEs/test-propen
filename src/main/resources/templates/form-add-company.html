@@ -15,21 +15,28 @@
         <br>
         <form th:action="@{/add-company}" th:object="${company}" method="POST">
           Nama Perusahaan: <br>
-          <input class="form-control" type="text" name="name"/>
+          <input class="form-control"
+                 type="text"
+                 name="name"/>
           <br><br>
 
           Lokasi Perusahaan: <br>
-          <input class="form-control" type="text" name="location"/>
+          <input class="form-control"
+                 type="text"
+                 name="location"/>
           <br><br>
 
           Bidang:<br>
-          <select class="form-control" name="businessId">
+          <select class="form-control"
+                  name="businessId">
             <option value="''">Pilih bidang perusahaan</option>
-            <option th:each="business : ${listBusiness}" th:text="${business.name}" th:value="${business.id}"></option>
+            <option th:each="business : ${listBusiness}"
+                    th:text="${business.name}"
+                    th:value="${business.id}"></option>
           </select>
           <br><br>
 
-          <a class="btn btn-primary" href="/mahasiswa">Kembali</a>
+          <a class="btn btn-primary" href="/">Kembali</a>
           <button style="float: right;" class="btn btn-primary" type="submit">Tambah</button>
 
         </form>
