@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-<<<<<<< HEAD
+
 import org.springframework.web.bind.annotation.*;
-=======
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
->>>>>>> 28f417d88403d469dad2b860ce5a93e6e3bf1f80
+
 import propensi.pmosystem.model.BusinessModel;
 import propensi.pmosystem.model.CompanyModel;
 import propensi.pmosystem.repository.BusinessDb;
@@ -41,10 +41,6 @@ public class CompanyController {
 
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
-<<<<<<< HEAD
-=======
-
->>>>>>> 28f417d88403d469dad2b860ce5a93e6e3bf1f80
         //log.info("Manajer memulai proses 'tambah perusahaan'");
         return "form-add-company";
     }
