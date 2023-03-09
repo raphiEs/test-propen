@@ -38,5 +38,10 @@ public class ProjectServiceImpl implements ProjectService{
     public List<ProjectModel> findAllByConsultant(Long consultant){
         return projectDb.findAllByConsultant(consultant);
     }
+    @Override
+    public ProjectModel updateProject(ProjectModel updatedProject){
+        projectDb.save(updatedProject);
+        return updatedProject;
+    }
 
 }

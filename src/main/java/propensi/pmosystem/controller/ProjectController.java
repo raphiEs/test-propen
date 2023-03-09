@@ -40,13 +40,13 @@ public class ProjectController {
         List<UserModel> clients = userService.getUserByRole(Integer.toUnsignedLong(4));
         model.addAttribute("project", project);
         model.addAttribute("clients", clients);
-        return "form-add-project";
+        return "project/form-add-project";
     }
     @PostMapping(value = "/add")
     private String addProjectSubmit(@ModelAttribute ProjectModel project, Model model){
         projectService.addProject(project);
         model.addAttribute("user", project);
-        return "redirect:/";
+        return "redirect:/project/viewall";
     }
     @GetMapping(value = "/viewall")
     private String listProject(Model model){
@@ -64,12 +64,25 @@ public class ProjectController {
             projects = projectService.findAllByConsultant(loginUser.getId());
         }
         model.addAttribute("projects", projects);
-        return "viewall-project";
+        return "project/viewall-project";
     }
     @GetMapping("/view/{id}")
-    public String detailProjectPage(@PathVariable Long id, Model model){
+    private String detailProjectPage(@PathVariable Long id, Model model){
         ProjectModel project = projectService.findById(id);
         model.addAttribute("project", project);
-        return "view-project";
+        return "project/view-project";
     }
+    @GetMapping("/update/{id}")
+    private String updateProjectForm(@PathVariable Long id, Model model){
+        ProjectModel oldProject = projectService.findById(id);
+        model.addAttribute("oldProject", oldProject);
+        return "project/form-update-project";
+    }
+    @PostMapping("update/{id}")
+    private String updateProjectSubmit(@PathVariable Long id, @ModelAttribute ProjectModel updatedProject,
+                                       Model model){
+        projectService.updateProject(updatedProject);
+        return "redirect:/project/view/" + id;
+    }
+
 }

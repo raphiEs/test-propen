@@ -11,4 +11,5 @@ public interface ProjectService {
     ProjectModel addProject(ProjectModel project);
     List<ProjectModel> findAllByClient(Long company);
     List<ProjectModel> findAllByConsultant(Long consultant);
+    ProjectModel updateProject(ProjectModel updatedProject);
 }
