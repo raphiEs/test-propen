@@ -6,10 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import propensi.pmosystem.model.CompanyUserModel;
 import propensi.pmosystem.model.ProjectModel;
 import propensi.pmosystem.model.UserModel;
@@ -68,5 +65,11 @@ public class ProjectController {
         }
         model.addAttribute("projects", projects);
         return "viewall-project";
+    }
+    @GetMapping("/view/{id}")
+    public String detailProjectPage(@PathVariable Long id, Model model){
+        ProjectModel project = projectService.findById(id);
+        model.addAttribute("project", project);
+        return "view-project";
     }
 }

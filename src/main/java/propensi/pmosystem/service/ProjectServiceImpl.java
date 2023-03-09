@@ -7,6 +7,7 @@ import propensi.pmosystem.model.ProjectModel;
 import propensi.pmosystem.repository.ProjectDb;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -18,6 +19,14 @@ public class ProjectServiceImpl implements ProjectService{
         return projectDb.findAll();
     }
     @Override
+    public ProjectModel findById(Long id){
+        Optional<ProjectModel> project = projectDb.findById(id);
+        if(project.isPresent())
+            return project.get();
+        else
+            return null;
+    }
+    @Override
     public ProjectModel addProject(ProjectModel project){
         return projectDb.save(project);
     }
@@ -25,6 +34,7 @@ public class ProjectServiceImpl implements ProjectService{
     public List<ProjectModel> findAllByClient(Long company){
         return projectDb.findAllByClient(company);
     }
+    @Override
     public List<ProjectModel> findAllByConsultant(Long consultant){
         return projectDb.findAllByConsultant(consultant);
     }
