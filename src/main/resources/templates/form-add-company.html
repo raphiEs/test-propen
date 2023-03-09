@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <title>Tambah Perusahaan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <!--<div th:insert="navbar :: navbar">  </div>-->
+</head>
+
+<body>
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <h2>Tambah Perusahaan</h2>
+        <br>
+        <form th:action="@{/add-company}" th:object="${company}" method="POST">
+          Nama Perusahaan: <br>
+          <input class="form-control" type="text" name="name"/>
+          <br><br>
+
+          Lokasi Perusahaan: <br>
+          <input class="form-control" type="text" name="location"/>
+          <br><br>
+
+          Bidang:<br>
+          <select class="form-control" name="businessId">
+            <option value="''">Pilih bidang perusahaan</option>
+            <option th:each="business : ${listBusiness}" th:text="${business.name}" th:value="${business.id}"></option>
+          </select>
+          <br><br>
+
+          <a class="btn btn-primary" href="/mahasiswa">Kembali</a>
+          <button style="float: right;" class="btn btn-primary" type="submit">Tambah</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
