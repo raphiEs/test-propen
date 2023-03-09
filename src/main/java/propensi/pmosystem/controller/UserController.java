@@ -5,6 +5,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,7 @@ import java.util.List;
 
 import propensi.pmosystem.service.UserService;
 import propensi.pmosystem.model.UserModel;
+import propensi.pmosystem.security.UserDetailsHelper;
 import propensi.pmosystem.security.UserDetailsServiceImpl;
 import propensi.pmosystem.model.RoleModel;
 import propensi.pmosystem.service.RoleService;
@@ -27,18 +31,16 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-    // @GetMapping("/")
-    // public String viewUserAccountForm(
-    //         @AuthenticationPrincipal UserDetailsServiceImpl userDetails,
-    //         Model model) {
-    //     String username = userDetails.getUsername();
-    //     UserModel user = userService.getUserByUsername(username);
-         
-    //     model.addAttribute("user", user);         
-    //     return "account";
-    // }
-   
+    @Autowired
+    private UserDetailsHelper user;
 
+    @GetMapping("/")
+    public String viewUserAccountForm(Model model, HttpServletRequest req) {
+        UserModel user2 = userService.getUserByUsername(user.getUsername(req));
+        model.addAttribute("user", user2);         
+        return "account";
+    }
+   
     @GetMapping(value = "/add")
     private String addUserFormPage(Model model){
         UserModel user = new UserModel();

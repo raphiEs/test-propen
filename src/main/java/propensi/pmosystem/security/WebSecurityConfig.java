@@ -37,14 +37,14 @@ public class WebSecurityConfig{
     @Bean
     public BCryptPasswordEncoder encoder() { return new BCryptPasswordEncoder(); }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication()
-                .passwordEncoder(encoder())
-                .withUser("admin")
-                .password(encoder().encode("admin"))
-                .roles("USER");
-    }
+    // @Autowired
+    // public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    //     auth.inMemoryAuthentication()
+    //             .passwordEncoder(encoder())
+    //             .withUser("user").password(encoder().encode("password")).roles("USER")
+    //             .and()
+    //             .withUser("admin").password(encoder().encode("admin")).roles("ADMIN");
+    // }
 
 
     @Autowired
