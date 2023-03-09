@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+	<head>
+		<title>User</title>
+	</head>
+
+	<body>
+		<div class="container">
+			<h2>Daftar Seluruh Users </h2>
+			<br />
+			<div class="card m-4 p-4">
+				<div class="card-body">
+					<div class="justify-content-center">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Username</th>
+									<th>Nama</th>
+									<th>Email</th>
+									<th>Role</th>
+									<th>Hapus User</th>
+								</tr>
+							</thead>
+							<tbody th:each="user, x : ${listUser}">
+								<tr>
+									<td th:text="${x.count}"></td>
+									<td th:text="${user.username}"></td>
+									<td th:text="${user.name}"></td>
+									<td th:text="${user.email}"></td>
+									<td th:text="${user.role.name}"></td>
+									<td>
+										<a
+											th:class="${'btn btn-danger'}"
+											th:href="@{/user/hapus/} + ${user.username}"
+											>Delete User</a
+										>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<br />
+				<!-- </div> -->
+			</div>
+
+			<a class="btn btn-primary" href="/">Home</a>
+		</div>
+	</body>
+</html>

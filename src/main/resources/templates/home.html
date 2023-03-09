@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"      
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">    
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,11 +9,28 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- <div th:if="${#httpServletRequest.remoteUser != null}">
+        <p th:text="${#httpServletRequest.remoteUser}">
+          sample_user
+        </p>
+    </div> -->
     <a th:href="@{/logout}">logout</a>
+    <a th:href="@{/user/}">lihat profil</a>
+    <a th:href="@{/user/add}">tambah user</a>
+    <a th:href="@{/user/viewall}">lihat user</a>
     <h1>Hello World!</h1>
+    <span sec:authentication="name">Username</span>
     <div class="d-flex justify-content-center">
-            Login as
-        </h2><br>
+        Authenticated username:
+        <div sec:authentication="name"></div>
+        <div sec:authorize="hasRole('ADMIN')">
+            This content is only shown to administrators.
+        </div>
+        
+        <div sec:authorize="hasRole('USER')">
+            This content is only shown to users.
+        </div>
+    </h2><br>
     </div>
 </body>
 </html>
