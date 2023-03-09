@@ -2,6 +2,8 @@ package propensi.pmosystem.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -14,11 +16,13 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "company")
 public class CompanyModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @Size(max = 256)
@@ -36,7 +40,7 @@ public class CompanyModel implements Serializable {
     private String logo;
 
     @Column(name = "created_by")
-    private long created_by;
+    private Long created_by;
 
     @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")

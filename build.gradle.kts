@@ -32,6 +32,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-databind")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework:spring-tx:6.0.4")
+	implementation("javax.transaction:jta:1.1")
 }
 
 tasks.withType<Test> {
