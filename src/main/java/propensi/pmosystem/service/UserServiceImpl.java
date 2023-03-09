@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
         UserModel user = userDb.findByUsername(username);
         return user;
     }
+    @Override
+    public List<UserModel> getUserByRole(Long role) {
+        List<UserModel> users = userDb.findAllByRole(role);
+        return users;
+    }
 
     @Override
     public void removeUser(UserModel user) {
