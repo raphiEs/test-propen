@@ -35,6 +35,8 @@ dependencies {
 	implementation("org.springframework:spring-tx:6.0.4")
 	implementation("javax.transaction:jta:1.1")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE")
+	implementation("org.springframework.boot:spring-boot-starter-security:3.0.4")
+
 }
 
 tasks.withType<Test> {
