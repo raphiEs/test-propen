@@ -53,10 +53,10 @@ public class CompanyController {
             company.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
         }
         companyService.addCompany(company);
+        String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
 
-        model.addAttribute("company", company);
-        //log.info("Manajer berhasil menambahkan perusahaan baru");
-        return "home";
+        model.addAttribute("message", message);
+        return "form-success";
     }
 
     @GetMapping("/company/update/{id}")
@@ -75,8 +75,10 @@ public class CompanyController {
     public String updateCompanySubmitPage(@ModelAttribute CompanyModel updatedCompany, @RequestParam String businessId, Model model){
         updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
         companyService.updateCompany(updatedCompany);
-        model.addAttribute("company", updatedCompany);
-        return "/home";
+        String message = "Perusahaan '" + updatedCompany.getName() + "' berhasil diperbarui";
+
+        model.addAttribute("message", message);
+        return "form-success";
     }
 
     @GetMapping("/company/view/all")
