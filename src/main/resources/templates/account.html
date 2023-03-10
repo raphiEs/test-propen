@@ -9,13 +9,18 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
     <title>Account</title>
 </head>
 <body>
-    <h1 th:text="${user.username}"></h1>
-    <h1 th:text="${user.name}"></h1>
-    <h1 th:text="${user.email}"></h1>
-    <h1 th:text="${user.contact}"></h1>
-    <h1 th:text="${user.role.name}"></h1>
+    <text>username </text><h1 th:text="${user.username}"></h1>
+    <text>nama </text><h1 th:text="${user.name}"></h1>
+    <text>email </text><h1 th:text="${user.email}"></h1>
+    <text>no hp </text><h1 th:text="${user.contact}"></h1>
+    <text>role </text><h1 th:text="${user.role.name}"></h1>
     <a class="btn btn-link" href="/">Home</a>
 
     </div>
 </body>
+
+
+
+
+
 </html>

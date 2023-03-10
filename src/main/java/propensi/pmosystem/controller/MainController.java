@@ -2,7 +2,10 @@ package propensi.pmosystem.controller;
 
 import java.security.Principal;
 import java.util.Collection;
+
+import propensi.pmosystem.model.UserModel;
 import propensi.pmosystem.security.UserDetailsHelper;
+import propensi.pmosystem.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,17 +24,13 @@ public class MainController {
 
     @Autowired
     private UserDetailsHelper user;
-
+	@Autowired
+    private UserService userService;
 	
     @RequestMapping("/")
 	public String main(Model model, HttpServletRequest req) {
-		// String name = request.getRemoteUser();
-		// Principal role = request.getUserPrincipal();
-		user.req = req;
-		String name = user.getUsername(req);
-		GrantedAuthority role = user.getRole(req);
-		model.addAttribute("name", name);
-		model.addAttribute("role", role);
+		UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        model.addAttribute("user", userx);  
 		return "home";
 	}
 

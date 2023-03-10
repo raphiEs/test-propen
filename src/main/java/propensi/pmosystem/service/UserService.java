@@ -10,4 +10,6 @@ public interface UserService {
     public List<UserModel> getUserList();
     UserModel getUserByUsername(String username);
     public void removeUser(UserModel user);
+    Boolean getMatchPassword(String passwordInput, String passwordDatabase);
+    void updateUser(UserModel myUser);
 }
