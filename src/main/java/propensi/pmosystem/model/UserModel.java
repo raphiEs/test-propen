@@ -45,7 +45,7 @@ public class UserModel implements Serializable {
     private String contact;
 
     @Column(name = "created_by")
-    private long created_by;
+    private Long created_by;
 
     @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")
