@@ -24,6 +24,5 @@ public class RoleModel implements Serializable{
     private String name;
 
     @OneToMany(mappedBy = "name", fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<UserModel> userRole;
 }

@@ -32,7 +32,11 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-databind")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE")
+	implementation("org.springframework:spring-tx:6.0.4")
+	implementation("javax.transaction:jta:1.1")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE")
+	implementation("org.springframework.boot:spring-boot-starter-security:3.0.4")
+
 }
 
 tasks.withType<Test> {

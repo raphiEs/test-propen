@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"      
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">    
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,27 +8,20 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
     <title>Document</title>
 </head>
 <body>
-    <!-- <div th:if="${#httpServletRequest.remoteUser != null}">
-        <p th:text="${#httpServletRequest.remoteUser}">
-          sample_user
-        </p>
-    </div> -->
+    <h2 th:text="'username ' + ${user.username} + ' role'+ ${user.role.name}"></h2>
+    <!-- <h2 th:text="' role'+ ${role}"></h2> -->
     <a th:href="@{/logout}">logout</a>
     <a th:href="@{/user/}">lihat profil</a>
+    <a th:href="@{/user/update-account}">update profil</a>
+    <a th:href="@{/user/update-password}">update password</a>
     <a th:href="@{/user/add}">tambah user</a>
     <a th:href="@{/user/viewall}">lihat user</a>
+    <a th:href="@{/user/update-account}">update profil</a>
+
+    <a th:href="@{/add-company}">tambah perusahaan</a>
+    
+    
     <h1>Hello World!</h1>
-    <span sec:authentication="name">Username</span>
-    <div class="d-flex justify-content-center">
-        Authenticated username:
-        <div sec:authentication="name"></div>
-        <div sec:authorize="hasRole('ADMIN')">
-            This content is only shown to administrators.
-        </div>
-        
-        <div sec:authorize="hasRole('USER')">
-            This content is only shown to users.
-        </div>
     </h2><br>
     </div>
 </body>

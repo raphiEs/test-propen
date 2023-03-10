@@ -11,4 +11,6 @@ public interface UserService {
     UserModel getUserByUsername(String username);
     public List<UserModel> getUserByRole(Long role);
     public void removeUser(UserModel user);
+    Boolean getMatchPassword(String passwordInput, String passwordDatabase);
+    void updateUser(UserModel myUser);
 }

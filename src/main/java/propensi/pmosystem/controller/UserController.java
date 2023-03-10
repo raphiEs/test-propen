@@ -5,6 +5,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +16,7 @@ import java.util.List;
 
 import propensi.pmosystem.service.UserService;
 import propensi.pmosystem.model.UserModel;
-import propensi.pmosystem.security.UserDetailsServiceImpl;
+import propensi.pmosystem.security.UserDetailsHelper;
 import propensi.pmosystem.model.RoleModel;
 import propensi.pmosystem.service.RoleService;
 
@@ -27,17 +30,65 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-    // @GetMapping("/")
-    // public String viewUserAccountForm(
-    //         @AuthenticationPrincipal UserDetailsServiceImpl userDetails,
-    //         Model model) {
-    //     String username = userDetails.getUsername();
-    //     UserModel user = userService.getUserByUsername(username);
-         
-    //     model.addAttribute("user", user);         
-    //     return "account";
-    // }
-   
+    @Autowired
+    private UserDetailsHelper user;
+
+    @GetMapping("/")
+    public String viewUserAccountForm(Model model, HttpServletRequest req) {
+        UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        model.addAttribute("user", userx);         
+        return "account";
+    }
+
+    @GetMapping(value = "/update-account")
+    public String updateAccountForm(Model model, HttpServletRequest req){
+        UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        model.addAttribute("user", userx);  
+        model.addAttribute("message", "");
+        return "form-update-account";
+    }
+    
+    @PostMapping(value = "/update-account")
+    public String updateAccount(Model model, @ModelAttribute UserModel useruser, HttpServletRequest req){
+        UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        userx.setEmail(useruser.getEmail());
+        userx.setContact(useruser.getContact());
+        userService.updateUser(userx);
+        model.addAttribute("user", userx);  
+        model.addAttribute("message", "Data berhasil diubah!");
+        return "form-update-account";
+    }
+
+    @GetMapping(value = "/update-password")
+    public String updatePasswordForm(Model model, HttpServletRequest req){
+        UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        model.addAttribute("user", userx);  
+        model.addAttribute("message", "");
+        return "reset-password";
+    }
+
+    @PostMapping(value = "/update-password")
+    public String updatePassword(@ModelAttribute UserModel userModel, String username, String password, String newPassword, String konfirmasiPassword, Model model){
+        UserModel userx = userService.getUserByUsername(username);
+        model.addAttribute("user", userx);  
+        if (userService.getMatchPassword(password, userx.getPassword())){
+            // System.out.println("hai");
+            if (newPassword.equals(konfirmasiPassword)){
+                System.out.println("Password Konfirmasi Sama");
+                String newPasswordHash = userService.encrypt(newPassword);
+                userx.setPassword(newPasswordHash);
+                userService.updateUser(userx);
+                model.addAttribute("message", "password berhasil diubah");
+            }else {
+                // System.out.println("hai 2");
+                model.addAttribute("message", "password tidak sama");
+            }
+        }else {
+            // System.out.println("hai 3")
+            model.addAttribute("message", "password salah");
+        }
+        return "reset-password";
+    }
 
     @GetMapping(value = "/add")
     private String addUserFormPage(Model model){
@@ -62,7 +113,7 @@ public class UserController {
         return "viewall-user";
     }
 
-    @GetMapping(value = "/hapus/{username}")
+    @GetMapping(value = "/remove/{username}")
     public String deleteUserForm(@PathVariable String username, Model model) {
         UserModel user = userService.getUserByUsername(username);
         List<UserModel> listUser = userService.getUserList();
