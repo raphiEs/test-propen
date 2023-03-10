@@ -42,4 +42,16 @@ public class UserServiceImpl implements UserService {
     public void removeUser(UserModel user) {
         userDb.delete(user);
     }
+
+    @Override
+    public Boolean getMatchPassword(String passwordInput, String passwordDatabase){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        boolean isPasswordMatches = passwordEncoder.matches(passwordInput, passwordDatabase);
+        return isPasswordMatches;
+    }
+    
+    @Override
+    public void updateUser(UserModel myUser){
+        userDb.save(myUser);
+    }
 }

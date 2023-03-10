@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+	<head>
+		<title>Add user</title>
+	</head>
+
+	<body>
+		<h2 th:text="${message}"></h2>
+
+		<div class="container">
+			<div class="card m-4 p-4">
+				<div class="card-body">
+					<div class="justify-content-center">
+						<h2>Ubah detail</h2>
+						<br />
+						<form th:action="@{/user/update-account}" th:object="${useruser}" method="POST">
+							<label>Username</label>
+							<input type="text" name="username" class="form-control" 
+							th:value="${user.username}"
+							disabled
+							required/>
+
+							<label>Name</label>
+							<input type="text" name="name" class="form-control" 
+							th:value="${user.name}"
+							disabled required />
+
+							<label>Email</label>
+							<input type="text" name="email" class="form-control" 
+							th:value="${user.email}"/>
+
+									
+							<label>Nomor HP</label>
+							<input type="text" name="contact" 
+							th:value="${user.contact}"
+							class="form-control" />
+
+							<label>Role</label>
+							<input type="text" name="role" 
+							th:value="${user.role.name}"
+							class="form-control" disabled />
+							
+							<br />
+							<br />
+
+							<button class="btn btn-primary" type="submit">Submit</button>
+							<a class="btn btn-link" href="/">Home</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
