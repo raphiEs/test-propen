@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <head>
+        <title>iRIS</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <!--<div th:insert="navbar :: navbar">  </div>-->
+    </head>
+
+<body>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2 style="display:inline-block;">Daftar Perusahaan</h2>
+                <a style="float: right;" class="btn btn-primary" href="/company/add">Tambah Perusahaan</a>
+
+                <br>
+                <table class="table" id="testdt">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nama Perusahaan</th>
+                        <th scope="col">Lokasi Perusahaan</th>
+                        <th scope="col">Bidang</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="company : ${listCompany}">
+                        <td th:text="${company.name}"></td>
+                        <td th:text="${company.location}"></td>
+                        <td th:text="${company.business.name}"></td>
+                        <td>
+                            <div class="col">
+                                <a class="btn btn-primary" th:href="@{/company/view/} + ${company.id}">Detail</a>
+                                <a class="btn btn-primary" th:href="@{/company/update/} + ${company.id}">Edit</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <a class="btn btn-primary" href="/">Kembali</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
