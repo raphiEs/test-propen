@@ -19,6 +19,7 @@ bin/
 
 ### Sensitive Data ###
 src/main/resources/application.properties
+src/main/java/propensi/pmosystem/security/WebSecurityConfig.java
 
 ### IntelliJ IDEA ###
 .idea
