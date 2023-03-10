@@ -37,22 +37,23 @@ public class WebSecurityConfig{
     @Bean
     public BCryptPasswordEncoder encoder() { return new BCryptPasswordEncoder(); }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication()
-                .passwordEncoder(encoder())
-                .withUser("admin")
-                .password(encoder().encode("admin"))
-                .roles("USER");
-    }
+    //di comment kalau sudah bikin akun, kalau blm di-uncomment
+    // @Autowired
+    // public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    //     auth.inMemoryAuthentication()
+    //             .passwordEncoder(encoder())
+    //             .withUser("user").password(encoder().encode("password")).roles("USER")
+    //             .and()
+    //             .withUser("admin").password(encoder().encode("admin")).roles("ADMIN");
+    // }
 
-
+    // 2 method di bawah dicomment kalau belum bikin akun
     @Autowired
     private UserDetailsService userDetailsService;
-
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
     }
+
 
 }

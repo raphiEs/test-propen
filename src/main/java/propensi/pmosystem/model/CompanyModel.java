@@ -51,7 +51,6 @@ public class CompanyModel implements Serializable {
     private BusinessModel business;
 
     @OneToMany(mappedBy = "name", fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<CompanyModel> projectCompany;
 }
 
