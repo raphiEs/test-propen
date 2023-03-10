@@ -8,13 +8,19 @@
     <title>Document</title>
 </head>
 <body>
-    <h2 th:text="'username ' + ${name} + ' role'+ ${role}"></h2>
+    <h2 th:text="'username ' + ${user.username} + ' role'+ ${user.role.name}"></h2>
     <!-- <h2 th:text="' role'+ ${role}"></h2> -->
     <a th:href="@{/logout}">logout</a>
     <a th:href="@{/user/}">lihat profil</a>
+    <a th:href="@{/user/update-account}">update profil</a>
+    <a th:href="@{/user/update-password}">update password</a>
     <a th:href="@{/user/add}">tambah user</a>
     <a th:href="@{/user/viewall}">lihat user</a>
+    <a th:href="@{/user/update-account}">update profil</a>
+
     <a th:href="@{/add-company}">tambah perusahaan</a>
+    
+    
     <h1>Hello World!</h1>
     </h2><br>
     </div>
