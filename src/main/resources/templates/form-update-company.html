@@ -13,7 +13,7 @@
             <div class="justify-content-center">
                 <h2>Update Perusahaan</h2>
                 <br>
-                <form th:action="@{/update-company}" th:object="${company}" method="POST">
+                <form th:action="@{/company/update}" th:object="${company}" method="POST">
                     <input type="hidden" name="id" th:value="${company.id}">
                     <input type="hidden" name="created_at" th:value="${company.created_at}">
 
