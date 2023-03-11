@@ -34,7 +34,7 @@ public class CompanyController {
     @Autowired
     private BusinessDb businessDb;
 
-    @GetMapping("/add-company")
+    @GetMapping("/company/add")
     private String addCompanyFormPage(Model model) {
         CompanyModel company = new CompanyModel();
         List<BusinessModel> listBusiness = businessService.getListBusiness();
@@ -45,7 +45,7 @@ public class CompanyController {
         return "form-add-company";
     }
 
-    @PostMapping("/add-company")
+    @PostMapping("/company/add")
     private String addCompanySubmit(@ModelAttribute CompanyModel company, @RequestParam String businessId, Model model) {
         company.setCreated_at(LocalDateTime.now());
         //company.setCreated_by(null);
@@ -53,13 +53,13 @@ public class CompanyController {
             company.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
         }
         companyService.addCompany(company);
+        String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
 
-        model.addAttribute("company", company);
-        //log.info("Manajer berhasil menambahkan perusahaan baru");
-        return "home";
+        model.addAttribute("message", message);
+        return "form-success";
     }
 
-    @GetMapping("/update-company/{id}")
+    @GetMapping("/company/update/{id}")
     public String updateCompanyFormPage(@PathVariable Long id,  Model model){
         CompanyModel company = companyService.getCompanyById(id);
         List<BusinessModel> listBusiness = businessService.getListBusiness();
@@ -71,12 +71,22 @@ public class CompanyController {
         return "form-update-company";
     }
 
-    @PostMapping("/update-company")
+    @PostMapping("/company/update")
     public String updateCompanySubmitPage(@ModelAttribute CompanyModel updatedCompany, @RequestParam String businessId, Model model){
         updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
         companyService.updateCompany(updatedCompany);
-        model.addAttribute("company", updatedCompany);
-        return "/home";
+        String message = "Perusahaan '" + updatedCompany.getName() + "' berhasil diperbarui";
+
+        model.addAttribute("message", message);
+        return "form-success";
     }
 
+    @GetMapping("/company/view/all")
+    public String viewAllCompany(Model model){
+        List<CompanyModel> listCompany = companyService.getListCompany();
+
+        model.addAttribute("listCompany", listCompany);
+
+        return "view-all-company";
+    }
 }
