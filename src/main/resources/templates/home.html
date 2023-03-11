@@ -34,18 +34,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>PMO || Dashboard</title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
 </head>
 
 <body>
 <div class="dashboard-main-wrapper">
     <div class="dashboard-header">
-        <nav th:replace="fragments/fragment :: navbar"></nav>
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
     </div>
 
     <div class="nav-left-sidebar sidebar-dark">
         <div class="menu-list">
-            <nav th:replace="fragments/fragment :: sidebar"></nav>
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
         </div>
     </div>
 
@@ -61,7 +61,7 @@
 </div>
 
 <footer>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </footer>
 </body>
 </html>

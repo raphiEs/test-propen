@@ -1960,7 +1960,7 @@ Splash Container / Wrapper
 
 .splash-container {
     width: 100%;
-    max-width: 375px;
+    max-width: 800px;
     padding: 15px;
     margin: auto;
 }
@@ -2873,8 +2873,8 @@ Pageheader
 
 .btn-dark {
     color: #fff;
-    background-color: #2e2f39;
-    border-color: #2e2f39;
+    background-color: #E0712F;
+    border-color: #E0712F;
 }
 
 .btn-dark:hover {
