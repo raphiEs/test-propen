@@ -26,24 +26,116 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-header">
-                        <h2 class="pageheader-title">Manajemen User</h2>
+                        <h2 class="pageheader-title">Create Project</h2>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Manajemen User</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">List Projects</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/user/add}" class="breadcrumb-link">Create Project</a></li>
                                 </ol>
                             </nav>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="page-section" id="overview">
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Create Project</h5>
+                        <div class="card-body">
+                            <form th:action="@{/project/add}" th:object="${newProject}" method="POST">
+                                <div th:if="${accessedFrom == 'listProject'}">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Nama Klien</label>
+                                        <select name="company" class="form-control" id="input-select" required>
+                                            <option selected value="">--Pilih Klien--</option>
+                                            <option
+                                                    th:each="client: ${clients}"
+                                                    th:value="${client.id}"
+                                                    th:text="${client.name}"
+                                            >
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div th:unless="${accessedFrom == 'listProject'}">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Nama Klien</label>
+                                        <input type="text" name="company" class="form-control" th:value="${company.name}" disabled/>
+                                    </div>
+                                </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label class="col-form-label">Status Project</label>-->
+<!--                                    <select name="status" class="form-control" id="input-select" required>-->
+<!--                                        <option selected value="">&#45;&#45;Pilih Role&#45;&#45;</option>-->
+<!--                                        <option-->
+<!--                                                th:each="role: ${listRole}"-->
+<!--                                                th:value="${role.id}"-->
+<!--                                                th:text="${role.name}"-->
+<!--                                        >-->
+<!--                                        </option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+                                <div class="form-group">
+                                    <label class="col-form-label">Status Project</label>
+                                    <input type="text" name="status" class="form-control" required/>
+                                </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label class="col-form-label">Username</label>-->
+<!--                                    <input type="text" name="username" class="form-control" required/>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label class="col-form-label">Role</label>-->
+<!--                                    <select name="role" class="form-control" id="input-select" required>-->
+<!--                                        <option selected value="">&#45;&#45;Pilih Role&#45;&#45;</option>-->
+<!--                                        <option-->
+<!--                                                th:each="role: ${listRole}"-->
+<!--                                                th:value="${role.id}"-->
+<!--                                                th:text="${role.name}"-->
+<!--                                        >-->
+<!--                                        </option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label class="col-form-label">Email</label>-->
+<!--                                    <input type="text" name="email" class="form-control" />-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label class="col-form-label">No HP</label>-->
+<!--                                    <input type="text" name="contact" class="form-control" />-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label class="col-form-label">Password</label>-->
+<!--                                    <input-->
+<!--                                            type="password"-->
+<!--                                            name="password"-->
+<!--                                            class="form-control"-->
+<!--                                            required-->
+<!--                                    />-->
+<!--                                </div>-->
+                                <div class="float-right">
+                                    <button class="btn btn-space btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-space btn-secondary">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end basic form  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end input groups -->
+            <!-- ============================================================== -->
         </div>
+        <footer>
+            <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+        </footer>
     </div>
 </div>
-</div>
-
-<footer>
-    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
-</footer>
 </body>
 </html>

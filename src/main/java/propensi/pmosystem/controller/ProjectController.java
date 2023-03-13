@@ -43,9 +43,10 @@ public class ProjectController {
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
-        model.addAttribute("project", project);
+        model.addAttribute("newProject", project);
         model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
+        model.addAttribute("accessedFrom", "listProject");
         return "project/form-add-project";
     }
     @PostMapping(value = "/add")
