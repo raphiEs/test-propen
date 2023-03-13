@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -54,6 +56,10 @@ public class CompanyModel implements Serializable {
     private BusinessModel business;
 
     @OneToMany(mappedBy = "name", fetch = FetchType.LAZY)
-    private List<CompanyModel> projectCompany;
+    private List<ProjectModel> projectCompany;
+
+    /*public void initializeListProject(){
+        this.projectCompany = new ArrayList<>();
+    }*/
 }
 

@@ -18,8 +18,10 @@ import propensi.pmosystem.model.ProjectModel;
 import propensi.pmosystem.repository.BusinessDb;
 import propensi.pmosystem.service.BusinessService;
 import propensi.pmosystem.service.CompanyService;
+import propensi.pmosystem.service.ProjectService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,8 +34,10 @@ public class CompanyController {
     @Qualifier("businessServiceImpl")
     @Autowired
     private BusinessService businessService;
+
+    @Qualifier("projectServiceImpl")
     @Autowired
-    private BusinessDb businessDb;
+    private ProjectService projectService;
 
     @GetMapping("/company/add")
     private String addCompanyFormPage(Model model) {
@@ -47,7 +51,10 @@ public class CompanyController {
     }
 
     @PostMapping("/company/add")
-    private String addCompanySubmit(@ModelAttribute CompanyModel company, @RequestParam String businessId, Model model) {
+    private String addCompanySubmit(@ModelAttribute CompanyModel company,
+                                    @RequestParam String businessId,
+                                    Model model) {
+
         company.setCreated_at(LocalDateTime.now());
         //company.setCreated_by(null);
         if (businessId != ""){
@@ -61,7 +68,8 @@ public class CompanyController {
     }
 
     @GetMapping("/company/update/{id}")
-    public String updateCompanyFormPage(@PathVariable Long id,  Model model){
+    public String updateCompanyFormPage(@PathVariable Long id,
+                                        Model model){
         CompanyModel company = companyService.getCompanyById(id);
         List<BusinessModel> listBusiness = businessService.getListBusiness();
         BusinessModel companyBusiness = company.getBusiness();
@@ -73,7 +81,9 @@ public class CompanyController {
     }
 
     @PostMapping("/company/update")
-    public String updateCompanySubmitPage(@ModelAttribute CompanyModel updatedCompany, @RequestParam String businessId, Model model){
+    public String updateCompanySubmitPage(@ModelAttribute CompanyModel updatedCompany,
+                                          @RequestParam String businessId,
+                                          Model model){
         updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
         companyService.updateCompany(updatedCompany);
         String message = "Klien dengan nama '" + updatedCompany.getName() + "' berhasil diperbarui";
@@ -87,19 +97,53 @@ public class CompanyController {
         List<CompanyModel> listCompany = companyService.getListCompany();
 
         model.addAttribute("listCompany", listCompany);
-
         return "view-all-company";
     }
 
     @GetMapping("/company/view/{id}")
-    public String viewDetailCompany(@PathVariable Long id, Model model){
-        List<CompanyModel> listCompany = companyService.getListCompany();
-        List<ProjectModel> listProject = null;
+    public String viewDetailCompany(@PathVariable Long id,
+                                    Model model){
         CompanyModel company = companyService.getCompanyById(id);
+        List<ProjectModel> listProject = company.getProjectCompany();
+        //String message = listProject.get(0).getName();
 
-        model.addAttribute("listProject", listProject);
+        //model.addAttribute("message", message);
         model.addAttribute("company", company);
-
+        model.addAttribute("listProject", listProject);
         return "view-detail-company";
+    }
+
+    @GetMapping("/company/project/add/{id}")
+    public String addCompanyProjectForm(@PathVariable Long id,
+                                        Model model){
+        CompanyModel company = companyService.getCompanyById(id);
+        List<ProjectModel> listProject = projectService.findAll();
+
+        model.addAttribute("company", company);
+        model.addAttribute("listProject", listProject);
+        return "form-add-company-project";
+    }
+
+    @PostMapping("/company/project/add")
+    public String addCompanyProjectFormSubmitPage(@ModelAttribute CompanyModel company,
+                                                  @RequestParam(value = "kodeProyeks") String[] kodeProyeks,
+                                                  @RequestParam String businessId,
+                                                  Model model){
+            //Mengisi list proyek milik klien
+            //String message = "";
+            List<ProjectModel> tempListProjectCompany = new ArrayList<>();
+            for (int i = 0 ; i<kodeProyeks.length ; i++){
+                ProjectModel tempProject = projectService.findById(Long.parseLong(kodeProyeks[i]));
+                tempProject.setCompany(company);
+                tempListProjectCompany.add(tempProject);
+
+            }
+            company.setProjectCompany(tempListProjectCompany);
+            company.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
+            companyService.updateCompany(company);
+
+            String message = "Proyek berhasil ditambahkan pada klien '"+ company.getName() +"'";
+            model.addAttribute("message", message);
+            return "form-success";
     }
 }
