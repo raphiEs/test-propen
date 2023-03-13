@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <title>PWCDEV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!--<div th:insert="navbar :: navbar">  </div>-->
+</head>
+
+<body>
+<div class="card m-4 p-4">
+    <div class="card-body">
+        <div class="justify-content-center">
+            <h2>Detail Klien</h2>
+            <br>
+            <img src="https://images.pexels.com/photos/351262/pexels-photo-351262.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                 alt="company logo"
+                 style="width:150px;height:150px;">
+            <p th:text="'Nama Klien         : ' + ${company.name}"></p>
+            <p th:text="'Lokasi             : ' + ${company.location}"></p>
+            <p th:text="'Tanggal Dibuat     : ' + ${company.created_at}"></p>
+            <p th:text="'Informasi Klien    : ' + ${company.client_information}"></p>
+            <p th:text="'Bidang             : ' + ${company.business.name}"></p>
+            <br>
+
+            <h2>Tambah Proyek</h2>
+            <br>
+
+            <form th:action="@{/company/project/add}"
+                  th:object="${company}" method="POST">
+                <input type="hidden"
+                       name="id"
+                       th:value="${company.id}">
+                <input type="hidden"
+                       name="name"
+                       th:value="${company.name}">
+                <input type="hidden"
+                       name="location"
+                       th:value="${company.location}">
+                <input type="hidden"
+                       name="client_information"
+                       th:value="${company.client_information}">
+                <input type="hidden"
+                       name="businessId"
+                       th:value="${company.business.id}">
+
+                <input type="hidden"
+                       name="created_at"
+                       th:value="${company.created_at}">
+
+                List Proyek: <br>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Nama Proyek</th>
+                        <th scope="col">Tanggal Mulai</th>
+                        <th scope="col">Tanggal Berakhir</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="proyek : ${listProject}">
+                        <td>
+                            <input  class="form-check-input"
+                                    type="checkbox"
+                                    name="kodeProyeks"
+                                    th:value="${proyek.id}"/>
+                        </td>
+                        <td th:text="${proyek.name}"></td>
+                        <td th:text="${proyek.start_date}"></td>
+                        <td th:text="${proyek.end_date}">
+                        <td th:text="${proyek.status}">
+                    </tr>
+                    </tbody>
+                </table>
+                <br><br>
+
+                <a class="btn btn-primary"
+                   href="/">Kembali</a>
+                <button style="float: right;"
+                        class="btn btn-primary"
+                        type="submit">Add</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>

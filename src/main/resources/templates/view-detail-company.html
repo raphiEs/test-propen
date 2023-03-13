@@ -22,10 +22,10 @@
                 <p th:text="'Tanggal Dibuat     : ' + ${company.created_at}"></p>
                 <p th:text="'Informasi Klien    : ' + ${company.client_information}"></p>
                 <p th:text="'Bidang             : ' + ${company.business.name}"></p>
-                <br>
                 <a class="btn btn-primary"
                    th:href="@{/company/update/} + ${company.id}">Edit</a>
             </div>
+            <br>
             <div class="justify-content-center">
                 <h2 style="display:inline-block;">Daftar Proyek Klien</h2>
                 <a style="float: right;"
@@ -43,11 +43,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="project : ${listProject}">
-                        <td th:text="${project.name}"></td>
-                        <td th:text="${project.start_date}"></td>
-                        <td th:text="${project.end_date}"></td>
-                        <td th:text="${project.status}"></td>
+                    <tr th:each="proyek : ${listProject}">
+                        <td th:text="${proyek.name}"></td>
+                        <td th:text="${proyek.start_date}"></td>
+                        <td th:text="${proyek.end_date}">
+                        <td th:text="${proyek.status}">
                         <td>
                             <div class="col">
                                 <a class="btn btn-primary"
@@ -60,7 +60,7 @@
                     </tbody>
                 </table>
             </div>
-
+            <br>
             <a class="btn btn-primary" href="/">Kembali</a>
         </div>
     </div>
