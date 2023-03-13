@@ -1,59 +1,169 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://thymeleaf.org">-->
+<!--	<head>-->
+<!--		<title>Add user</title>-->
+<!--	</head>-->
+
+<!--	<body>-->
+<!--		<div class="container">-->
+<!--			<div class="card m-4 p-4">-->
+<!--				<div class="card-body">-->
+<!--					<div class="justify-content-center">-->
+<!--						<h2>Tambah User Baru</h2>-->
+<!--						<br />-->
+<!--						<form th:action="@{/user/add}" th:object="${user}" method="POST">-->
+<!--							<label>Username</label>-->
+<!--							<input type="text" name="username" class="form-control" required/>-->
+<!--							-->
+<!--							<label>Password</label>-->
+<!--							<input-->
+<!--								type="password"-->
+<!--								name="password"-->
+<!--								class="form-control"-->
+<!--								required-->
+<!--							/>-->
+
+<!--							<label>Name</label>-->
+<!--							<input type="text" name="name" class="form-control" required />-->
+
+<!--							<label>Email</label>-->
+<!--							<input type="text" name="email" class="form-control" />-->
+
+<!--							-->
+<!--								&lt;!&ndash; pattern="^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$" &ndash;&gt;-->
+<!--							-->
+<!--							<label>Nomor HP</label>-->
+<!--							<input type="text" name="contact" class="form-control" />-->
+
+<!--							<label>Role</label>-->
+<!--							<select name="role" class="form-select" required>-->
+<!--								<option selected value="">&#45;&#45;Pilih Role&#45;&#45;</option>-->
+<!--								<option-->
+<!--									th:each="role: ${listRole}"-->
+<!--									th:value="${role.id}"-->
+<!--									th:text="${role.name}"-->
+<!--								>-->
+<!--								</option>-->
+<!--							</select>-->
+<!--							<br />-->
+<!--							<br />-->
+
+<!--							<button class="btn btn-primary" type="submit">Submit</button>-->
+<!--							<a class="btn btn-link" href="/">Home</a>-->
+<!--						</form>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
-	<head>
-		<title>Add user</title>
-	</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
 
-	<body>
-		<div class="container">
-			<div class="card m-4 p-4">
-				<div class="card-body">
-					<div class="justify-content-center">
-						<h2>Tambah User Baru</h2>
-						<br />
-						<form th:action="@{/user/add}" th:object="${user}" method="POST">
-							<label>Username</label>
-							<input type="text" name="username" class="form-control" required/>
-							
-							<label>Password</label>
-							<input
-								type="password"
-								name="password"
-								class="form-control"
-								required
-							/>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>PMO || Dashboard</title>
+	<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+</head>
 
-							<label>Name</label>
-							<input type="text" name="name" class="form-control" required />
+<body>
+<div class="dashboard-main-wrapper">
+	<div class="dashboard-header">
+		<nav th:replace="~{fragments/fragment :: navbar}"></nav>
+	</div>
 
-							<label>Email</label>
-							<input type="text" name="email" class="form-control" />
+	<div class="nav-left-sidebar sidebar-dark">
+		<div class="menu-list">
+			<nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+		</div>
+	</div>
 
-							
-								<!-- pattern="^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$" -->
-							
-							<label>Nomor HP</label>
-							<input type="text" name="contact" class="form-control" />
-
-							<label>Role</label>
-							<select name="role" class="form-select" required>
-								<option selected value="">--Pilih Role--</option>
-								<option
-									th:each="role: ${listRole}"
-									th:value="${role.id}"
-									th:text="${role.name}"
-								>
-								</option>
-							</select>
-							<br />
-							<br />
-
-							<button class="btn btn-primary" type="submit">Submit</button>
-							<a class="btn btn-link" href="/">Home</a>
-						</form>
+	<div class="dashboard-wrapper">
+		<div class="container-fluid dashboard-content">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<div class="page-header">
+						<h2 class="pageheader-title">Create User</h2>
+						<div class="page-breadcrumb">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a th:href="@{/user/viewall}" class="breadcrumb-link">Manajemen User</a></li>
+									<li class="breadcrumb-item"><a th:href="@{/user/add}" class="breadcrumb-link">Create User</a></li>
+								</ol>
+							</nav>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="page-section" id="overview">
+			</div>
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<div class="card">
+						<h5 class="card-header">Create User</h5>
+						<div class="card-body">
+							<form th:action="@{/user/add}" th:object="${newUser}" method="POST">
+								<div class="form-group">
+									<label class="col-form-label">Nama User</label>
+									<input type="text" name="name" class="form-control" required/>
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">Username</label>
+									<input type="text" name="username" class="form-control" required/>
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">Role</label>
+									<select name="role" class="form-control" id="input-select" required>
+										<option selected value="">--Pilih Role--</option>
+										<option
+												th:each="role: ${listRole}"
+												th:value="${role.id}"
+												th:text="${role.name}"
+										>
+										</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">Email</label>
+									<input type="text" name="email" class="form-control" />
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">No HP</label>
+									<input type="text" name="contact" class="form-control" />
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">Password</label>
+									<input
+											type="password"
+											name="password"
+											class="form-control"
+											required
+									/>
+								</div>
+								<div class="float-right">
+									<button class="btn btn-space btn-primary" type="submit">Submit</button>
+									<button class="btn btn-space btn-secondary">Cancel</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- end basic form  -->
+			<!-- ============================================================== -->
+
+			<!-- ============================================================== -->
+			<!-- end input groups -->
+			<!-- ============================================================== -->
 		</div>
-	</body>
+		<footer>
+			<object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+		</footer>
+	</div>
+</div>
+</body>
 </html>
