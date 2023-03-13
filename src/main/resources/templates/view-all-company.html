@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <head>
-        <title>iRIS</title>
+        <title>PWCDEV</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
         <!--<div th:insert="navbar :: navbar">  </div>-->
     </head>
@@ -24,6 +24,7 @@
                         <th scope="col"></th>
                         <th scope="col">Nama Perusahaan</th>
                         <th scope="col">Lokasi Perusahaan</th>
+                        <th scope="col">Informasi Klien</th>
                         <th scope="col">Bidang</th>
                         <th scope="col"></th>
                     </tr>
@@ -36,6 +37,7 @@
                                     style="width:100px;height:100px;"></td>
                         <td th:text="${company.name}"></td>
                         <td th:text="${company.location}"></td>
+                        <td th:text="${company.client_information}"></td>
                         <td th:text="${company.business.name}"></td>
                         <td>
                             <div class="col">

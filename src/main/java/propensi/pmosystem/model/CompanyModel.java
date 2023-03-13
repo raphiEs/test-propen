@@ -34,10 +34,13 @@ public class CompanyModel implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
-
     @Size(max = 1000)
     @Column(name = "logo")
     private String logo;
+
+    @Size(max = 1000)
+    @Column(name = "client_information")
+    private String client_information;
 
     @Column(name = "created_by")
     private Long created_by;
