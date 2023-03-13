@@ -1,27 +1,68 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Document</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h2 th:text="'username ' + ${user.username} + ' role'+ ${user.role.name}"></h2>-->
+<!--    &lt;!&ndash; <h2 th:text="' role'+ ${role}"></h2> &ndash;&gt;-->
+<!--    <a th:href="@{/logout}">logout</a>-->
+<!--    <a th:href="@{/user/}">lihat profil</a>-->
+<!--    <a th:href="@{/user/update-account}">update profil</a>-->
+<!--    <a th:href="@{/user/update-password}">update password</a>-->
+<!--    <a th:href="@{/user/add}">tambah user</a>-->
+<!--    <a th:href="@{/user/viewall}">lihat user</a>-->
+<!--    <a th:href="@{/company/view/all}">lihat daftar perusahaan</a>-->
+<!--    <a th:href="@{/user/update-account}">update profil</a>-->
+<!--    <a th:href="@{/company/add}">tambah perusahaan</a>-->
+
+<!--    <h1>Hello World!</h1>-->
+<!--    </h2><br>-->
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h2 th:text="'username ' + ${user.username} + ' role'+ ${user.role.name}"></h2>
-    <!-- <h2 th:text="' role'+ ${role}"></h2> -->
-    <a th:href="@{/logout}">logout</a>
-    <a th:href="@{/user/}">lihat profil</a>
-    <a th:href="@{/user/update-account}">update profil</a>
-    <a th:href="@{/user/update-password}">update password</a>
-    <a th:href="@{/user/add}">tambah user</a>
-    <a th:href="@{/user/viewall}">lihat user</a>
-    <a th:href="@{/company/view/all}">lihat daftar perusahaan</a>
-    <a th:href="@{/user/update-account}">update profil</a>
-    <a th:href="@{/company/add}">tambah perusahaan</a>
 
-    <h1>Hello World!</h1>
-    </h2><br>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PMO || Dashboard</title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div class="dashboard-header">
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
     </div>
+
+    <div class="nav-left-sidebar sidebar-dark">
+        <div class="menu-list">
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+        </div>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <h3 class="text-center">Kontennya disini ya teman-teman</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+</footer>
 </body>
 </html>
+
