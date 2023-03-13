@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface UserDb extends JpaRepository<UserModel, Long> {
     UserModel findByUsername(String username);
-    @Query("SELECT c FROM UserModel c WHERE c.role = :role")
+    @Query("SELECT c FROM UserModel c WHERE c.role.id = :role")
     List<UserModel> findAllByRole(@Param("role") Long role);
 }

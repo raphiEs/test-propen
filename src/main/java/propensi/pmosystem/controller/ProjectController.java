@@ -1,9 +1,9 @@
 package propensi.pmosystem.controller;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,15 +37,26 @@ public class ProjectController {
     @GetMapping(value = "/add")
     private String addProjectFormPage(Model model){
         ProjectModel project = new ProjectModel();
-        List<UserModel> clients = userService.getUserByRole(Integer.toUnsignedLong(4));
+        Integer role = 4;
+        List<UserModel> clients = userService.getUserByRole(role.longValue());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = (User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
         model.addAttribute("project", project);
         model.addAttribute("clients", clients);
+        model.addAttribute("loginUser", loginUser_);
         return "project/form-add-project";
     }
     @PostMapping(value = "/add")
     private String addProjectSubmit(@ModelAttribute ProjectModel project, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
         projectService.addProject(project);
         model.addAttribute("user", project);
+        model.addAttribute("loginUser_", loginUser);
         return "redirect:/project/viewall";
     }
     @GetMapping(value = "/viewall")
@@ -64,24 +75,40 @@ public class ProjectController {
             projects = projectService.findAllByConsultant(loginUser.getId());
         }
         model.addAttribute("projects", projects);
+        model.addAttribute("loginUser", loginUser);
         return "project/viewall-project";
     }
     @GetMapping("/view/{id}")
     private String detailProjectPage(@PathVariable Long id, Model model){
         ProjectModel project = projectService.findById(id);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
         model.addAttribute("project", project);
+        model.addAttribute("loginUser", loginUser_);
         return "project/view-project";
     }
     @GetMapping("/update/{id}")
     private String updateProjectForm(@PathVariable Long id, Model model){
         ProjectModel oldProject = projectService.findById(id);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
         model.addAttribute("oldProject", oldProject);
+        model.addAttribute("loginUser", loginUser_);
         return "project/form-update-project";
     }
     @PostMapping("update/{id}")
     private String updateProjectSubmit(@PathVariable Long id, @ModelAttribute ProjectModel updatedProject,
                                        Model model){
         projectService.updateProject(updatedProject);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+        model.addAttribute("loginUser", loginUser_);
         return "redirect:/project/view/" + id;
     }
 
