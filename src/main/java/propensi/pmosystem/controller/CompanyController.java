@@ -54,6 +54,7 @@ public class CompanyController {
     private String addCompanySubmit(@ModelAttribute CompanyModel company,
                                     @RequestParam String businessId,
                                     Model model) {
+
         company.setCreated_at(LocalDateTime.now());
         //company.setCreated_by(null);
         if (businessId != ""){
