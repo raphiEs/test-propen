@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import propensi.pmosystem.model.BusinessModel;
 import propensi.pmosystem.model.CompanyModel;
+import propensi.pmosystem.model.ProjectModel;
 import propensi.pmosystem.repository.BusinessDb;
 import propensi.pmosystem.service.BusinessService;
 import propensi.pmosystem.service.CompanyService;
@@ -75,7 +76,7 @@ public class CompanyController {
     public String updateCompanySubmitPage(@ModelAttribute CompanyModel updatedCompany, @RequestParam String businessId, Model model){
         updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
         companyService.updateCompany(updatedCompany);
-        String message = "Perusahaan '" + updatedCompany.getName() + "' berhasil diperbarui";
+        String message = "Klien dengan nama '" + updatedCompany.getName() + "' berhasil diperbarui";
 
         model.addAttribute("message", message);
         return "form-success";
@@ -88,5 +89,17 @@ public class CompanyController {
         model.addAttribute("listCompany", listCompany);
 
         return "view-all-company";
+    }
+
+    @GetMapping("/company/view/{id}")
+    public String viewDetailCompany(@PathVariable Long id, Model model){
+        List<CompanyModel> listCompany = companyService.getListCompany();
+        List<ProjectModel> listProject = null;
+        CompanyModel company = companyService.getCompanyById(id);
+
+        model.addAttribute("listProject", listProject);
+        model.addAttribute("company", company);
+
+        return "view-detail-company";
     }
 }
