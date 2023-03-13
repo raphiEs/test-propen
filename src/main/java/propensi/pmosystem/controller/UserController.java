@@ -1,7 +1,10 @@
 package propensi.pmosystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,10 +95,15 @@ public class UserController {
 
     @GetMapping(value = "/add")
     private String addUserFormPage(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = (User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
         UserModel user = new UserModel();
         List<RoleModel> listRole = roleService.findAll();
         model.addAttribute("user", user);
         model.addAttribute("listRole",listRole);
+        model.addAttribute("loginUser",loginUser_);
         return "form-add-user";
     }
 
@@ -107,9 +115,11 @@ public class UserController {
     }
 
     @GetMapping(value = "/viewall")
-    public String listUser(Model model){
+    public String listUser(Model model, HttpServletRequest req){
         List<UserModel> listUser = userService.getUserList();
         model.addAttribute("listUser", listUser);
+        UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        model.addAttribute("loginUser", userx);
         return "viewall-user";
     }
 
