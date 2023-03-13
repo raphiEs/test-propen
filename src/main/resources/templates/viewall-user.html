@@ -112,15 +112,18 @@
 										<th class="text-center">Aksi</th>
 									</tr>
 									</thead>
-									<tbody th:each="user, x : ${listUser}">
+<!--									<div th:if="listUser.length != null">-->
+<!--										-->
+<!--									</div>-->
+									<tbody th:each="a, x : ${listUser}">
 									<tr>
 										<td th:text="${x.count}"></td>
-										<td th:text="${user.username}"></td>
-										<td th:text="${user.name}"></td>
-										<td th:text="${user.email}"></td>
-										<td th:text="${user.role.name}"></td>
+										<td th:text="${a.username}"></td>
+										<td th:text="${a.name}"></td>
+										<td th:text="${a.email}"></td>
+										<td th:text="${a.role.name}"></td>
 										<td class="text-center">
-											<a th:class="${'btn btn-danger'}" th:href="@{/user/hapus/} + ${user.username}">Delete User</a>
+											<a th:class="${'btn btn-danger'}" th:href="@{/user/remove/} + ${a.username}">Delete User</a>
 										</td>
 									</tr>
 									</tbody>

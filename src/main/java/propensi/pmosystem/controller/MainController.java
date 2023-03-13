@@ -30,7 +30,7 @@ public class MainController {
     @RequestMapping("/")
 	public String main(Model model, HttpServletRequest req) {
 		UserModel userx = userService.getUserByUsername(user.getUsername(req));
-        model.addAttribute("user", userx);  
+        model.addAttribute("loginUser", userx);
 		return "home";
 	}
 
