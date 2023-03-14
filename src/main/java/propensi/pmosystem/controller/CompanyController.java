@@ -2,6 +2,9 @@ package propensi.pmosystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -15,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import propensi.pmosystem.model.BusinessModel;
 import propensi.pmosystem.model.CompanyModel;
 import propensi.pmosystem.model.ProjectModel;
+import propensi.pmosystem.model.UserModel;
 import propensi.pmosystem.repository.BusinessDb;
 import propensi.pmosystem.service.BusinessService;
 import propensi.pmosystem.service.CompanyService;
 import propensi.pmosystem.service.ProjectService;
+import propensi.pmosystem.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,11 +44,23 @@ public class CompanyController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/company/add")
     private String addCompanyFormPage(Model model) {
+        Integer role = 1;
+        List<UserModel> clients = userService.getUserByRole(role.longValue());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = (User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
         CompanyModel company = new CompanyModel();
         List<BusinessModel> listBusiness = businessService.getListBusiness();
 
+        model.addAttribute("clients", clients);
+        model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
         //log.info("Manajer memulai proses 'tambah perusahaan'");
@@ -60,9 +77,16 @@ public class CompanyController {
         if (businessId != ""){
             company.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
         }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
         companyService.addCompany(company);
         String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
 
+        model.addAttribute("loginUser", loginUser_);
         model.addAttribute("message", message);
         return "form-success";
     }
