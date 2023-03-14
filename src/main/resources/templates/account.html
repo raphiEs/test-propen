@@ -1,26 +1,152 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Account</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <text>username </text><h1 th:text="${user.username}"></h1>-->
+<!--    <text>nama </text><h1 th:text="${user.name}"></h1>-->
+<!--    <text>email </text><h1 th:text="${user.email}"></h1>-->
+<!--    <text>no hp </text><h1 th:text="${user.contact}"></h1>-->
+<!--    <text>role </text><h1 th:text="${user.role.name}"></h1>-->
+<!--    <a class="btn btn-link" href="/">Home</a>-->
+
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"      
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">    
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PMO || Dashboard</title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
 </head>
+
 <body>
-    <text>username </text><h1 th:text="${user.username}"></h1>
-    <text>nama </text><h1 th:text="${user.name}"></h1>
-    <text>email </text><h1 th:text="${user.email}"></h1>
-    <text>no hp </text><h1 th:text="${user.contact}"></h1>
-    <text>role </text><h1 th:text="${user.role.name}"></h1>
-    <a class="btn btn-link" href="/">Home</a>
-
+<div class="dashboard-main-wrapper">
+    <div class="dashboard-header">
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
     </div>
+
+    <div class="nav-left-sidebar sidebar-dark">
+        <div class="menu-list">
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+        </div>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Profil</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/user/}" class="breadcrumb-link">Profil</a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- profile -->
+                <!-- ============================================================== -->
+                <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
+                    <!-- ============================================================== -->
+                    <!-- card profile -->
+                    <!-- ============================================================== -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h4 class="font-24 mb-3" th:text="${user.name}"></h4>
+                            </div>
+                            <div class="user-avatar text-center d-block">
+                                <img src="../images/avatar-1.png" alt="User Avatar" class="rounded-circle user-avatar-xxl">
+                            </div>
+                            <div class="text-center">
+                                <h2 class="font-24 mb-0" th:text="${user.username}"></h2>
+                                <p class="font-18 mb-0" style="font-size: smaller" th:text="${user.role.name}"></p>
+                            </div>
+                        </div>
+                        <div class="card-body border-top">
+                            <h3 class="font-16">Contact Information</h3>
+                            <div class="">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2"><i class="fas fa-fw fa-envelope mr-2"></i><span th:text="${user.email}"></span></li>
+                                    <li class="mb-"><i class="fas fa-fw fa-phone mr-2"></i><span th:text="${user.contact}"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body border-top">
+                            <a class="mb-0"><i class="fas fa-fw fa-lock mr-2"></i><a href="update-password" style="color: dodgerblue">Ubah Password</a></a>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end card profile -->
+                    <!-- ============================================================== -->
+                </div>
+                <!-- ============================================================== -->
+                <!-- end profile -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- campaign data -->
+                <!-- ============================================================== -->
+                <div class="col-xl-9 col-lg-9 col-md-7 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Edit User</h5>
+                        <div class="card-body">
+<!--                            <form th:action="@{/user/update-account}" th:object="${useruser}" method="POST">-->
+                                <form th:object="${useruser}">
+                                <div class="form-group">
+                                    <label class="col-form-label">Nama User</label>
+                                    <input type="text" name="name" class="form-control" th:value="${user.name}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Username</label>
+                                    <input type="text" name="username" class="form-control" th:value="${user.username}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Role</label>
+                                    <input type="text" name="role" class="form-control" th:value="${user.role.name}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Email</label>
+                                    <input type="text" name="email" class="form-control" th:value="${user.email}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">No HP</label>
+                                    <input type="text" name="contact" class="form-control" th:value="${user.contact}" disabled/>
+                                </div>
+                                <div class="float-right">
+                                    <a class="btn btn-space btn-primary" th:href="@{/user/update-account}">Edit</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end campaign data -->
+                <!-- ============================================================== -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+</footer>
 </body>
-
-
-
-
-
 </html>
