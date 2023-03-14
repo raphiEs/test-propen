@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PMO || Dashboard</title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+    <script>
+        function cancelForm() {
+            // Mengambil elemen-elemen input pada form
+            var inputElements = document.getElementsByTagName("input");
+
+            // Menghapus nilai pada masing-masing elemen input
+            for (var i = 0; i < inputElements.length; i++) {
+                inputElements[i].value = "";
+            }
+
+            // Kembali ke halaman sebelumnya
+            history.back();
+        }
+    </script>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div class="dashboard-header">
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+    </div>
+
+    <div class="nav-left-sidebar sidebar-dark">
+        <div class="menu-list">
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+        </div>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Create Klien</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/company/view/all}" class="breadcrumb-link">Klien</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/company/add}" class="breadcrumb-link">Create Klien</a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-section" id="overview">
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Create Klien</h5>
+                        <div class="card-body">
+                            <form th:action="@{/company/add}"
+                                  th:object="${company}"
+                                  method="POST">
+                                <div class="form-group">
+                                    <label class="col-form-label">Nama Klien</label>
+                                    <input type="text" name="name" class="form-control" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Lokasi</label>
+                                    <input type="text" name="location" class="form-control" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Informasi Klien</label>
+                                    <input type="text" name="client_information" class="form-control" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Bidang</label>
+                                    <select name="businessId" class="form-control" id="input-select" required>
+                                        <option selected value="">--Pilih Bidang--</option>
+                                        <option th:each="business : ${listBusiness}"
+                                                th:text="${business.name}"
+                                                th:value="${business.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="float-right">
+                                    <button class="btn btn-space btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-space btn-secondary" id="cancel-btn" onclick="cancelForm()" >Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end basic form  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end input groups -->
+            <!-- ============================================================== -->
+        </div>
+        <footer>
+            <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+        </footer>
+    </div>
+</div>
+</body>
+</html>

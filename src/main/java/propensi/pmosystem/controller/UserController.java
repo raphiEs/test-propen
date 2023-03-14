@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import java.util.List;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.pmosystem.service.UserService;
 import propensi.pmosystem.model.UserModel;
 import propensi.pmosystem.security.UserDetailsHelper;
@@ -39,41 +40,67 @@ public class UserController {
     @GetMapping("/")
     public String viewUserAccountForm(Model model, HttpServletRequest req) {
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
-        model.addAttribute("user", userx);         
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
         return "account";
     }
 
     @GetMapping(value = "/update-account")
     public String updateAccountForm(Model model, HttpServletRequest req){
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
-        model.addAttribute("user", userx);  
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("message", "");
         return "form-update-account";
     }
     
     @PostMapping(value = "/update-account")
-    public String updateAccount(Model model, @ModelAttribute UserModel useruser, HttpServletRequest req){
+    public String updateAccount(Model model, @ModelAttribute UserModel useruser, HttpServletRequest req, RedirectAttributes redirectAttrs){
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
         userx.setEmail(useruser.getEmail());
         userx.setContact(useruser.getContact());
         userService.updateUser(userx);
-        model.addAttribute("user", userx);  
-        model.addAttribute("message", "Data berhasil diubah!");
-        return "form-update-account";
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
+        redirectAttrs.addFlashAttribute("success",
+                String.format("Data berhasil diubah!!"));
+        return "redirect:/user/";
     }
 
     @GetMapping(value = "/update-password")
     public String updatePasswordForm(Model model, HttpServletRequest req){
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("user", userx);  
         model.addAttribute("message", "");
         return "reset-password";
     }
 
     @PostMapping(value = "/update-password")
-    public String updatePassword(@ModelAttribute UserModel userModel, String username, String password, String newPassword, String konfirmasiPassword, Model model){
+    public String updatePassword(@ModelAttribute UserModel userModel, String username, String password, String newPassword, String konfirmasiPassword, Model model, RedirectAttributes redirectAttrs){
         UserModel userx = userService.getUserByUsername(username);
-        model.addAttribute("user", userx);  
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String uname = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(uname);
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
         if (userService.getMatchPassword(password, userx.getPassword())){
             // System.out.println("hai");
             if (newPassword.equals(konfirmasiPassword)){
@@ -81,16 +108,19 @@ public class UserController {
                 String newPasswordHash = userService.encrypt(newPassword);
                 userx.setPassword(newPasswordHash);
                 userService.updateUser(userx);
-                model.addAttribute("message", "password berhasil diubah");
+                redirectAttrs.addFlashAttribute("success",
+                        String.format("Password berhasil diubah!"));
             }else {
                 // System.out.println("hai 2");
-                model.addAttribute("message", "password tidak sama");
+                redirectAttrs.addFlashAttribute("error",
+                        String.format("Password tidak sama. Konfirmasi dengan password yang sama!"));
             }
         }else {
             // System.out.println("hai 3")
-            model.addAttribute("message", "password salah");
+            redirectAttrs.addFlashAttribute("error",
+                    String.format("Password lama salah!"));
         }
-        return "reset-password";
+        return "redirect:/user/update-password";
     }
 
     @GetMapping(value = "/add")
@@ -108,10 +138,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/add")
-    private String addUserSubmit(@ModelAttribute UserModel user, Model model){
+    private String addUserSubmit(@ModelAttribute UserModel user, Model model, RedirectAttributes redirectAttrs){
         userService.addUser(user);
         model.addAttribute("user", user);
-        return "redirect:/";
+        redirectAttrs.addFlashAttribute("success",
+                String.format("User "+ "`%s`" +" berhasil ditambahkan", user.getUsername()));
+        return "redirect:/user/viewall";
     }
 
     @GetMapping(value = "/viewall")
@@ -124,11 +156,13 @@ public class UserController {
     }
 
     @GetMapping(value = "/remove/{username}")
-    public String deleteUserForm(@PathVariable String username, Model model) {
+    public String deleteUserForm(@PathVariable String username, Model model, RedirectAttributes redirectAttrs) {
         UserModel user = userService.getUserByUsername(username);
         List<UserModel> listUser = userService.getUserList();
         userService.removeUser(user);
         model.addAttribute("listUser", listUser);
+        redirectAttrs.addFlashAttribute("success",
+                String.format("User "+ "`%s`" +" berhasil dihapus", username));
         return "redirect:/user/viewall";
     }
     

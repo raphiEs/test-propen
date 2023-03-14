@@ -47,7 +47,7 @@ public class CompanyController {
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
         //log.info("Manajer memulai proses 'tambah perusahaan'");
-        return "form-add-company";
+        return "klien/form-add-klien";
     }
 
     @PostMapping("/company/add")
