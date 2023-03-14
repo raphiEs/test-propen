@@ -39,14 +39,24 @@ public class UserController {
     @GetMapping("/")
     public String viewUserAccountForm(Model model, HttpServletRequest req) {
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
-        model.addAttribute("user", userx);         
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
         return "account";
     }
 
     @GetMapping(value = "/update-account")
     public String updateAccountForm(Model model, HttpServletRequest req){
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
-        model.addAttribute("user", userx);  
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("message", "");
         return "form-update-account";
     }
@@ -54,17 +64,27 @@ public class UserController {
     @PostMapping(value = "/update-account")
     public String updateAccount(Model model, @ModelAttribute UserModel useruser, HttpServletRequest req){
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
         userx.setEmail(useruser.getEmail());
         userx.setContact(useruser.getContact());
         userService.updateUser(userx);
-        model.addAttribute("user", userx);  
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("message", "Data berhasil diubah!");
-        return "form-update-account";
+        return "account";
     }
 
     @GetMapping(value = "/update-password")
     public String updatePasswordForm(Model model, HttpServletRequest req){
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(username);
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("user", userx);  
         model.addAttribute("message", "");
         return "reset-password";
@@ -73,7 +93,12 @@ public class UserController {
     @PostMapping(value = "/update-password")
     public String updatePassword(@ModelAttribute UserModel userModel, String username, String password, String newPassword, String konfirmasiPassword, Model model){
         UserModel userx = userService.getUserByUsername(username);
-        model.addAttribute("user", userx);  
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String uname = user.getUsername();
+        UserModel loginUser = userService.getUserByUsername(uname);
+        model.addAttribute("user", userx);
+        model.addAttribute("loginUser", loginUser);
         if (userService.getMatchPassword(password, userx.getPassword())){
             // System.out.println("hai");
             if (newPassword.equals(konfirmasiPassword)){
