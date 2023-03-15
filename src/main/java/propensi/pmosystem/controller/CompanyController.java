@@ -117,7 +117,7 @@ public class CompanyController {
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
         model.addAttribute("companyBusiness", companyBusiness);
-        return "form-update-company";
+        return "klien/form-update-klien";
     }
 
     @PostMapping("/company/update")
