@@ -44,6 +44,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="proyek : ${listProject}">
+                        <td th:text="${proyek.id}"></td>
                         <td th:text="${proyek.name}"></td>
                         <td th:text="${proyek.start_date}"></td>
                         <td th:text="${proyek.end_date}">
@@ -51,9 +52,9 @@
                         <td>
                             <div class="col">
                                 <a class="btn btn-primary"
-                                   th:href="@{/project/update/} + ${project.id}">Edit</a>
+                                   th:href="@{/project/update/} + ${proyek.id}">Edit</a>
                                 <a class="btn btn-primary"
-                                   th:href="@{/project/delete/} + ${project.id}">Delete</a>
+                                   th:href="@{/project/delete/} + ${proyek.id}">Delete</a>
                             </div>
                         </td>
                     </tr>
