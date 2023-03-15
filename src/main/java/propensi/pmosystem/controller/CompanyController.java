@@ -59,6 +59,7 @@ public class CompanyController {
 
         //Create new empty company
         CompanyModel company = new CompanyModel();
+        company.initializeListProject();
         List<BusinessModel> listBusiness = businessService.getListBusiness();
 
         model.addAttribute("clients", clients);
@@ -214,18 +215,21 @@ public class CompanyController {
             String username = loginUser.getUsername();
             UserModel loginUser_ = userService.getUserByUsername(username);
 
+            //Test
+            CompanyModel updatedCompany = companyService.getCompanyById(company.getId());
+
             //Mengisi list proyek milik klien
             //String message = "";
             List<ProjectModel> tempListProjectCompany = new ArrayList<>();
             for (int i = 0 ; i<kodeProyeks.length ; i++){
                 ProjectModel tempProject = projectService.findById(Long.parseLong(kodeProyeks[i]));
-                tempProject.setCompany(company);
+                tempProject.setCompany(updatedCompany);
                 tempListProjectCompany.add(tempProject);
 
             }
-            company.setProjectCompany(tempListProjectCompany);
-            company.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
-            companyService.updateCompany(company);
+            updatedCompany.setProjectCompany(tempListProjectCompany);
+            updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
+            companyService.updateCompany(updatedCompany);
 
             String message = "Proyek berhasil ditambahkan pada klien '"+ company.getName() +"'";
             model.addAttribute("loginUser", loginUser_);
