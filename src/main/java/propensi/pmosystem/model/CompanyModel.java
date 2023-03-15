@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -53,7 +55,17 @@ public class CompanyModel implements Serializable {
     @JoinColumn
     private BusinessModel business;
 
-    @OneToMany(mappedBy = "name", fetch = FetchType.LAZY)
-    private List<CompanyModel> projectCompany;
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ProjectModel> projectCompany;
+
+    public void initializeListProject(){
+        this.projectCompany = new ArrayList<>();
+    }
+
+    public void addProject(List<ProjectModel> listProject){
+        for (int i = 0 ; i<listProject.size() ; i++){
+            this.projectCompany.add(listProject.get(i));
+        }
+    }
 }
 

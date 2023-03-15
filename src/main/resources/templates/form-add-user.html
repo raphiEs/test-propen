@@ -1,63 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://thymeleaf.org">-->
-<!--	<head>-->
-<!--		<title>Add user</title>-->
-<!--	</head>-->
-
-<!--	<body>-->
-<!--		<div class="container">-->
-<!--			<div class="card m-4 p-4">-->
-<!--				<div class="card-body">-->
-<!--					<div class="justify-content-center">-->
-<!--						<h2>Tambah User Baru</h2>-->
-<!--						<br />-->
-<!--						<form th:action="@{/user/add}" th:object="${user}" method="POST">-->
-<!--							<label>Username</label>-->
-<!--							<input type="text" name="username" class="form-control" required/>-->
-<!--							-->
-<!--							<label>Password</label>-->
-<!--							<input-->
-<!--								type="password"-->
-<!--								name="password"-->
-<!--								class="form-control"-->
-<!--								required-->
-<!--							/>-->
-
-<!--							<label>Name</label>-->
-<!--							<input type="text" name="name" class="form-control" required />-->
-
-<!--							<label>Email</label>-->
-<!--							<input type="text" name="email" class="form-control" />-->
-
-<!--							-->
-<!--								&lt;!&ndash; pattern="^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$" &ndash;&gt;-->
-<!--							-->
-<!--							<label>Nomor HP</label>-->
-<!--							<input type="text" name="contact" class="form-control" />-->
-
-<!--							<label>Role</label>-->
-<!--							<select name="role" class="form-select" required>-->
-<!--								<option selected value="">&#45;&#45;Pilih Role&#45;&#45;</option>-->
-<!--								<option-->
-<!--									th:each="role: ${listRole}"-->
-<!--									th:value="${role.id}"-->
-<!--									th:text="${role.name}"-->
-<!--								>-->
-<!--								</option>-->
-<!--							</select>-->
-<!--							<br />-->
-<!--							<br />-->
-
-<!--							<button class="btn btn-primary" type="submit">Submit</button>-->
-<!--							<a class="btn btn-link" href="/">Home</a>-->
-<!--						</form>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <html lang="en">
@@ -145,7 +85,7 @@
 								</div>
 								<div class="float-right">
 									<button class="btn btn-space btn-primary" type="submit">Submit</button>
-									<button class="btn btn-space btn-secondary">Cancel</button>
+									<a class="btn btn-space btn-secondary" th:href="@{/user/viewall}">Cancel</a>
 								</div>
 							</form>
 						</div>

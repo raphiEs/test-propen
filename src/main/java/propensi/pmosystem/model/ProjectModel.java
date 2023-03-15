@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ProjectModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @Size(max = 256)
@@ -45,7 +45,7 @@ public class ProjectModel implements Serializable {
     private String external_drive;
 
     @Column(name = "created_by")
-    private long created_by;
+    private Long created_by;
 
     @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")
