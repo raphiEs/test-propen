@@ -155,7 +155,7 @@ public class CompanyController {
         model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("listCompany", listCompany);
-        return "view-all-company";
+        return "klien/view-all-klien";
     }
 
     @GetMapping("/company/view/{id}")
