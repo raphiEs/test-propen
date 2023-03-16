@@ -117,7 +117,7 @@ public class CompanyController {
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
         model.addAttribute("companyBusiness", companyBusiness);
-        return "form-update-company";
+        return "klien/form-update-klien";
     }
 
     @PostMapping("/company/update")
@@ -155,7 +155,7 @@ public class CompanyController {
         model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("listCompany", listCompany);
-        return "view-all-company";
+        return "klien/view-all-klien";
     }
 
     @GetMapping("/company/view/{id}")
@@ -201,39 +201,8 @@ public class CompanyController {
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listProject", listProject);
-        return "form-add-company-project";
+        model.addAttribute("accessedFrom", "detailKlien");
+        return "/project/form-add-project";
     }
-
-    @PostMapping("/company/project/add")
-    public String addCompanyProjectFormSubmitPage(@ModelAttribute CompanyModel company,
-                                                  @RequestParam(value = "kodeProyeks") String[] kodeProyeks,
-                                                  @RequestParam String businessId,
-                                                  Model model){
-            //Auth
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-            String username = loginUser.getUsername();
-            UserModel loginUser_ = userService.getUserByUsername(username);
-
-            //Test
-            CompanyModel updatedCompany = companyService.getCompanyById(company.getId());
-
-            //Mengisi list proyek milik klien
-            //String message = "";
-            List<ProjectModel> tempListProjectCompany = new ArrayList<>();
-            for (int i = 0 ; i<kodeProyeks.length ; i++){
-                ProjectModel tempProject = projectService.findById(Long.parseLong(kodeProyeks[i]));
-                tempProject.setCompany(updatedCompany);
-                tempListProjectCompany.add(tempProject);
-
-            }
-            updatedCompany.setProjectCompany(tempListProjectCompany);
-            updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
-            companyService.updateCompany(updatedCompany);
-
-            String message = "Proyek berhasil ditambahkan pada klien '"+ company.getName() +"'";
-            model.addAttribute("loginUser", loginUser_);
-            model.addAttribute("message", message);
-            return "form-success";
-    }
+    
 }
