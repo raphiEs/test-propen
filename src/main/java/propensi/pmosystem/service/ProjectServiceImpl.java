@@ -56,4 +56,13 @@ public class ProjectServiceImpl implements ProjectService{
         }
         return null;
     }
+    @Override
+    public boolean isNameUnique(String projectName, String companyName){
+        List<ProjectModel> projects = projectDb.findAll();
+        for (ProjectModel project : projects){
+            if (project.getName().equals(projectName) && project.getCompany().getName()==companyName)
+                return false;
+        }
+        return true;
+    }
 }
