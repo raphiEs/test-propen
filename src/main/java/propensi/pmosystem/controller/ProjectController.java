@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.pmosystem.model.CompanyModel;
 import propensi.pmosystem.model.CompanyUserModel;
 import propensi.pmosystem.model.ProjectModel;
@@ -54,7 +55,8 @@ public class ProjectController {
     private String addProjectSubmit(@ModelAttribute ProjectModel project, Model model,
                                     @RequestParam(value = "accessedFrom", required = false) String accessedFrom,
                                     @RequestParam(value = "companyName", required = false) String companyName,
-                                    @RequestParam(value = "companyId", required = false) String companyId
+                                    @RequestParam(value = "companyId", required = false) String companyId,
+                                    RedirectAttributes redirectAttributes
     ){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = (User) auth.getPrincipal();
@@ -67,6 +69,16 @@ public class ProjectController {
             CompanyModel comp = projectService.checkCompanyId(companyName);
             project.setCompany(comp);
             comp.getProjectCompany().add(project);
+        }
+        String companyName1 = "";
+        if (accessedFrom.equals("listProject"))
+            companyName1 = project.getCompany().getName();
+        else companyName1 = companyName;
+        if (!projectService.isNameUnique(project.getName(), companyName1)){
+            redirectAttributes.addFlashAttribute("error", String.format("Project dengan nama "+project.getName()+" dan klien "+companyName1+" sudah terdaftar!"));
+            if (accessedFrom.equals("listProject"))
+                return "redirect:/project/add";
+            else return "redirect:/company/project/add/"+companyId;
         }
         projectService.addProject(project);
         model.addAttribute("project", project);

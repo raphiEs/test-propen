@@ -14,4 +14,5 @@ public interface ProjectService {
     List<ProjectModel> findAllByConsultant(Long consultant);
     ProjectModel updateProject(ProjectModel updatedProject);
     CompanyModel checkCompanyId(String companyName);
+    boolean isNameUnique(String projectName, String companyName);
 }
