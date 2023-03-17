@@ -179,7 +179,7 @@ public class CompanyController {
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listProject", listProject);
-        return "view-detail-company";
+        return "klien/view-detail-klien";
     }
 
     @GetMapping("/company/project/add/{id}")
