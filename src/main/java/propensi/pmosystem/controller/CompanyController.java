@@ -62,10 +62,9 @@ public class CompanyController {
         company.initializeListProject();
         List<BusinessModel> listBusiness = businessService.getListBusiness();
 
-        model.addAttribute("clients", clients);
-        model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
+        model.addAttribute("loginUser", loginUser_);
         //log.info("Manajer memulai proses 'tambah perusahaan'");
         return "klien/form-add-klien";
     }
@@ -154,6 +153,7 @@ public class CompanyController {
 
         model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
+
         model.addAttribute("listCompany", listCompany);
         return "klien/view-all-klien";
     }
@@ -179,7 +179,7 @@ public class CompanyController {
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listProject", listProject);
-        return "view-detail-company";
+        return "klien/view-detail-klien";
     }
 
     @GetMapping("/company/project/add/{id}")
