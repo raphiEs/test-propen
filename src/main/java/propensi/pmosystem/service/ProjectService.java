@@ -1,5 +1,6 @@
 package propensi.pmosystem.service;
 
+import propensi.pmosystem.model.CompanyModel;
 import propensi.pmosystem.model.ProjectModel;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface ProjectService {
     List<ProjectModel> findAllByClient(Long company);
     List<ProjectModel> findAllByConsultant(Long consultant);
     ProjectModel updateProject(ProjectModel updatedProject);
+    CompanyModel checkCompanyId(String companyName);
 }
