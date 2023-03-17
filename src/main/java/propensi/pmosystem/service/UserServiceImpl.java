@@ -19,6 +19,11 @@ public class UserServiceImpl implements UserService {
     public UserModel addUser(UserModel user) {
         String pass = encrypt(user.getPassword());
         user.setPassword(pass);
+        for (UserModel u: userDb.findAll()){
+            if (u.getUsername().equals(user.getUsername())){
+                return null;
+            }
+        }
         return userDb.save(user);
     }
 
