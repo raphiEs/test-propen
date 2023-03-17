@@ -139,11 +139,24 @@ public class UserController {
 
     @PostMapping(value = "/add")
     private String addUserSubmit(@ModelAttribute UserModel user, Model model, RedirectAttributes redirectAttrs){
+<<<<<<< HEAD
         userService.addUser(user);
         model.addAttribute("user", user);
         redirectAttrs.addFlashAttribute("success",
                 String.format("User "+ "`%s`" +" berhasil ditambahkan", user.getUsername()));
         return "redirect:/user/viewall";
+=======
+        UserModel userAdd = userService.addUser(user);
+        if (userAdd == null){
+            redirectAttrs.addFlashAttribute("error", String.format("Username yang Anda masukkan sudah digunakan"));
+            return "redirect:/user/add";
+        }
+        else {
+            model.addAttribute("user", user);
+            redirectAttrs.addFlashAttribute("success", String.format("User "+ "`%s`" +" berhasil ditambahkan", user.getUsername()));
+            return "redirect:/user/viewall";
+        }
+>>>>>>> 0e17ee2 (pbi 30: menambahkan handling username duplikat pada add user)
     }
 
     @GetMapping(value = "/viewall")
