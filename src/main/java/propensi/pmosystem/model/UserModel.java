@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,5 +56,8 @@ public class UserModel implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private RoleModel role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CompanyUserModel> companyUser;
 }
 

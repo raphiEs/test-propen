@@ -58,6 +58,9 @@ public class CompanyModel implements Serializable {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectModel> projectCompany;
 
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CompanyUserModel> companyUser;
+
     public void initializeListProject(){
         this.projectCompany = new ArrayList<>();
     }
