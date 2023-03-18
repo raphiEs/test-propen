@@ -203,7 +203,7 @@ public class CompanyController {
 
     @GetMapping("/company/project/add/{id}")
     public String addCompanyProjectForm(@PathVariable Long id,
-                                        Model model){
+                                        Model model) {
         //Auth
         Integer role = 1;
         List<UserModel> clients = userService.getUserByRole(role.longValue());
@@ -223,5 +223,4 @@ public class CompanyController {
         model.addAttribute("accessedFrom", "detailKlien");
         return "/project/form-add-project";
     }
-    
 }
