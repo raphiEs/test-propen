@@ -20,6 +20,11 @@ public class ProjectUserServiceImpl implements ProjectUserService{
     }
 
     @Override
+    public List<ProjectUserModel> findAll() {
+        return projectUserDb.findAll();
+    }
+
+    @Override
     public ProjectUserModel addProjectUser(ProjectUserModel projectUser) {
         return projectUserDb.save(projectUser);
     }

@@ -99,7 +99,11 @@ public class ProjectController {
         UserModel loginUser = userService.getUserByUsername(username);
         CompanyUserModel companyUser = companyUserService.findByUser(loginUser);
         List<ProjectUserModel> projectUsers = new ArrayList<>();
-        if (loginUser.getRole().getId() == 1 || loginUser.getRole().getId() == 2)
+//        if (loginUser.getRole().getId() == 1 || loginUser.getRole().getId() == 2)
+//            projectUsers = projectUserService.findAllByUser(loginUser.getId());
+        if (loginUser.getRole().getId() == 1 )
+            projectUsers = projectUserService.findAll();
+        else if (loginUser.getRole().getId() == 2)
             projectUsers = projectUserService.findAllByUser(loginUser.getId());
         else if (loginUser.getRole().getId()==4)
             projectUsers = projectUserService.findAllByUser(loginUser.getId());
