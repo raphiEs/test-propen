@@ -13,6 +13,6 @@ public interface ProjectService {
     List<ProjectModel> findAllByClient(Long company);
     List<ProjectModel> findAllByConsultant(Long consultant);
     ProjectModel updateProject(ProjectModel updatedProject);
-    CompanyModel checkCompanyId(String companyName);
+    CompanyModel checkCompanyId(Long companyId);
     boolean isNameUnique(String projectName, String companyName);
 }

@@ -48,21 +48,17 @@ public class ProjectServiceImpl implements ProjectService{
         return updatedProject;
     }
     @Override
-    public CompanyModel checkCompanyId(String companyName){
-        List<CompanyModel> companies = companyDb.findAll();
-        for (CompanyModel company : companies){
-            if (companyName == company.getName())
-                return company;
-        }
-        return null;
+    public CompanyModel checkCompanyId(Long companyId){
+        return companyDb.findById(companyId).get();
     }
     @Override
     public boolean isNameUnique(String projectName, String companyName){
         List<ProjectModel> projects = projectDb.findAll();
         for (ProjectModel project : projects){
-            if (project.getName().equals(projectName) && project.getCompany().getName()==companyName)
+            if (project.getName().equals(projectName) && project.getCompany().getName().equals(companyName))
                 return false;
         }
         return true;
     }
+
 }

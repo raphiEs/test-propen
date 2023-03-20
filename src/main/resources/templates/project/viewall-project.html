@@ -25,7 +25,7 @@
         <div class="container-fluid dashboard-content">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="alert alert-warning alert-dismissible" role="alert" th:if="${success}">
+                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
                         <span th:text="${success}"></span>
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     </div>
@@ -49,22 +49,22 @@
                     <div class="card">
                         <h5 class="card-header d-flex justify-content-between align-items-center">
                             Daftar Proyek
-                            <a class="btn btn-sm btn-outline-primary" th:href="@{/project/add}" >+ Tambah</a>
+                            <a th:if="${roleLogin == 2}" class="btn btn-sm btn-outline-primary" th:href="@{/project/add}" >+ Tambah</a>
                         </h5>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <tr th:each="project : ${projects}">
+                                <tr th:each="projectUser : ${projectUsers}">
                                     <div class="card custom-card mr-2 mt-2 ml-2 mb-2"
                                          style="width: 15rem; display: inline-block">
                                             <div class="card-header d-flex">
-                                                <h4 class="mb-0" th:text="${project.name}"></h4>
+                                                <h4 class="mb-0" th:text="${projectUser.project.name}"></h4>
                                             </div>
                                             <div class="card-body">
                                                 <p class="card-text">
-                                                    Status: <span th:text="${project.status}"></span><br>
-                                                    Klien: <span th:text="${project.company.name}"></span>
+                                                    Status: <span th:text="${projectUser.project.status}"></span><br>
+                                                    Klien: <span th:text="${projectUser.project.company.name}"></span>
                                                 </p>
-                                                <a th:href="@{view/}+${project.id}" class="btn btn-sm btn-primary">Detail</a>
+                                                <a th:href="@{view/}+${projectUser.project.id}" class="btn btn-sm btn-primary">Detail</a>
                                                 <a href="#" class="btn btn-sm btn-primary">Feedback</a>
                                             </div>
                                     </div>
