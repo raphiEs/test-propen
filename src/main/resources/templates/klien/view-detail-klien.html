@@ -25,6 +25,10 @@
         <div class="container-fluid dashboard-content">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+                        <span th:text="${success}"></span>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
 <!--                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">-->
 <!--                        <span th:text="${success}"></span>-->
 <!--                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
