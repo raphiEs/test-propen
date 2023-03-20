@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.pmosystem.model.*;
 import propensi.pmosystem.repository.BusinessDb;
 import propensi.pmosystem.service.*;
@@ -70,7 +71,8 @@ public class CompanyController {
     @PostMapping("/company/add")
     private String addCompanySubmit(@ModelAttribute CompanyModel company,
                                     @RequestParam String businessId,
-                                    Model model) {
+                                    Model model,
+                                    RedirectAttributes redirectAttributes) {
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -96,11 +98,11 @@ public class CompanyController {
 
         //Add Company to db
         companyService.addCompany(company);
-        String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
-
+//        String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Klien '" + company.getName() + "' berhasil ditambahkan"));
         model.addAttribute("loginUser", loginUser_);
-        model.addAttribute("message", message);
-        return "form-success";
+        return "redirect:/company/view/all";
     }
 
     @GetMapping("/company/update/{id}")
@@ -130,7 +132,7 @@ public class CompanyController {
     @PostMapping("/company/update")
     public String updateCompanySubmitPage(@ModelAttribute CompanyModel updatedCompany,
                                           @RequestParam String businessId,
-                                          Model model){
+                                          Model model, RedirectAttributes redirectAttributes){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -138,12 +140,18 @@ public class CompanyController {
         UserModel loginUser_ = userService.getUserByUsername(username);
 
         updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
-        companyService.updateCompany(updatedCompany);
-        String message = "Klien dengan nama '" + updatedCompany.getName() + "' berhasil diperbarui";
+//        companyService.updateCompany(updatedCompany);
+//        String message = "Klien dengan nama '" + updatedCompany.getName() + "' berhasil diperbarui";
+//
+//        model.addAttribute("loginUser", loginUser_);
+//        model.addAttribute("message", message);
+//        return "form-success";
 
+        companyService.updateCompany(updatedCompany);
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Klien '" + updatedCompany.getName() + "' berhasil diubah"));
         model.addAttribute("loginUser", loginUser_);
-        model.addAttribute("message", message);
-        return "form-success";
+        return "redirect:/company/view/all";
     }
 
     @GetMapping("/company/view/all")
