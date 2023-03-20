@@ -17,7 +17,7 @@
 
     <div class="nav-left-sidebar sidebar-dark">
         <div class="menu-list">
-            <nav th:r eplace="~{fragments/fragment :: sidebar}"></nav>
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
         </div>
     </div>
 
@@ -102,7 +102,7 @@
                                 <div class="float-right">
                                     <button class="btn btn-space btn-primary" type="submit">Submit</button>
                                     <!--                                    Masih perlu lengkapin akses darimana-->
-                                    <a class="btn btn-space btn-secondary" th:href="@{/project/viewall}">Cancel</a>
+                                    <a class="btn btn-space btn-secondary" th:href="@{/project/view/}+${oldProject.id}">Cancel</a>
                                 </div>
                             </form>
                         </div>
