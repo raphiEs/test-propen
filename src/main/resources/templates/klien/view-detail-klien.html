@@ -54,30 +54,36 @@
                         <div class="card2-content">
                             <h2 class="card2-title" th:text="${company.name}"></h2>
                             <div class="card2-info">
-                                <p th:text="'Lokasi             : ' + ${company.location}"></p>
-                                <p th:text="'Tanggal Dibuat     : ' + ${company.created_at}"></p>
-                                <p th:text="'Informasi Klien    : ' + ${company.client_information}"></p>
-                                <p th:text="'Bidang             : ' + ${company.business.name}"></p>
-                                <p th:text="'Jumlah             : ' + ${listProject.size()}"></p>
+                                <table style="width:100%; color: #1b1e21">
+                                    <tr>
+                                        <td>Lokasi</td>
+                                        <td>: <span th:text="${company.location}"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: top;">Tanggal Dibuat</td>
+                                        <td>: <span th:text="${company.created_at}"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: top;">Informasi Klien</td>
+                                        <td>: <span th:text="${company.client_information}"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bidang</td>
+                                        <td>: <span th:text="${company.business.name}"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jumlah</td>
+                                        <td>: <span th:text="${listProject.size()}"></span></td>
+                                    </tr>
+                                </table>
                             </div>
                             <a class="edit-btn" style="margin-right: 15px;" th:href="@{/company/update/} + ${company.id}">Edit</a>
                         </div>
                     </div>
-<!--                    <div class="card">-->
-<!--                        <img src="https://images.pexels.com/photos/351262/pexels-photo-351262.jpeg?auto=compress&cs=tinysrgb&w=286&h=180&dpr=1" alt="Gambar" class="card2-image">-->
-<!--                        <div class="card2-details">-->
-<!--                            <h2 class="card2-title">Nama Klien</h2>-->
-<!--                            <p class="card2-field"><strong>Lokasi:</strong> Jakarta</p>-->
-<!--                            <p class="card2-field"><strong>Date Created:</strong> 25 Februari 2023</p>-->
-<!--                            <p class="card2-field"><strong>Client Information:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
-<!--                            <p class="card2-field"><strong>Bidang:</strong> Teknologi Informasi</p>-->
-<!--                            <p class="card2-field"><strong>Jumlah Proyek:</strong> 5</p>-->
-<!--                            <button class="card2-button">Edit</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <div class="card">
                         <h5 class="card-header d-flex justify-content-between align-items-center">
                             Daftar Proyek Klien
+                            <a class="btn btn-sm btn-outline-primary" th:href="@{/company/project/add/} + ${company.id}">+ Tambah</a>
                         </h5>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -95,16 +101,15 @@
                                     <!--									<div th:if="listUser.length != null">-->
                                     <!--										-->
                                     <!--									</div>-->
-                                    <tbody th:each="proyek : ${listProject}">
+                                    <tbody th:each="proyek, iterationStatus : ${listProject}">
                                     <tr>
-                                        <td th:text="${proyek.id}"></td>
+                                        <td th:text="${iterationStatus.count}"></td>
                                         <td th:text="${proyek.name}"></td>
                                         <td th:text="${proyek.start_date}"></td>
                                         <td th:text="${proyek.end_date}"></td>
                                         <td th:text="${proyek.status}"></td>
                                         <td class="text-center">
-                                            <a th:class="${'btn btn-primary'}" th:href="@{/project/update/} + ${proyek.id}">Edit</a>
-                                            <a th:class="${'btn btn-danger'}" th:href="@{/project/delete/} + ${proyek.id}">Delete</a>
+                                            <a th:class="${'btn btn-primary'}" th:href="@{/project/view/} + ${proyek.id}">Detail</a>
                                         </td>
                                     </tr>
                                     </tbody>
