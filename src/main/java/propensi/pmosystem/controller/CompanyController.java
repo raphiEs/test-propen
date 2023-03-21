@@ -98,9 +98,13 @@ public class CompanyController {
 
         //Add Company to db
         companyService.addCompany(company);
-//        String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
+        //String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
+
+        //Success pop-up message
         redirectAttributes.addFlashAttribute("success",
                 String.format("Klien '" + company.getName() + "' berhasil ditambahkan"));
+
+        
         model.addAttribute("loginUser", loginUser_);
         return "redirect:/company/view/all";
     }

@@ -82,7 +82,12 @@ public class ProjectController {
             comp.getProjectCompany().add(project);
         }
         projectService.addProject(project);
-        projectUserService.addProjectUser(new ProjectUserModel(1,loginUser_.getRole().getId(), LocalDateTime.now(), project, loginUser_));
+        ProjectUserModel projectUserModel = new ProjectUserModel();
+        projectUserModel.setProject(project);
+        projectUserModel.setUser(loginUser_);
+        projectUserModel.setCreated_at(LocalDateTime.now());
+        projectUserModel.setCreated_by(loginUser_.getId());
+        projectUserService.addProjectUser(projectUserModel);
         model.addAttribute("project", project);
         model.addAttribute("loginUser", loginUser_);
         redirectAttributes.addFlashAttribute("success", String.format("Project dengan nama "+project.getName()+ " berhasil disimpan!"));
