@@ -1,6 +1,8 @@
 package propensi.pmosystem.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -11,6 +13,8 @@ import propensi.pmosystem.model.UserModel;
 @Setter
 @Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "project_user")
 public class ProjectUserModel implements Serializable {
     @Id
@@ -28,7 +32,7 @@ public class ProjectUserModel implements Serializable {
     @JoinColumn
     private ProjectModel project;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn
     private UserModel user;
 }

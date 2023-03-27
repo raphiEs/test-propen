@@ -25,13 +25,26 @@
         <div class="container-fluid dashboard-content">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="alert alert-warning alert-dismissible" role="alert" th:if="${error}">
+                        <span th:text="${error}"></span>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
                     <div class="page-header">
-                        <h2 class="pageheader-title">Create Project</h2>
-                        <div class="page-breadcrumb">
+                        <h2 class="pageheader-title">Create Proyek</h2>
+                        <div class="page-breadcrumb" th:if="${accessedFrom == 'detailKlien'}">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">List Projects</a></li>
-                                    <li class="breadcrumb-item"><a th:href="@{/user/add}" class="breadcrumb-link">Create Project</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/client/viewall}" class="breadcrumb-link">Klien</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/client/view/{id}}" class="breadcrumb-link">Detail Klien</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/company/project/add/{id}}" class="breadcrumb-link">Create Proyek</a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="page-breadcrumb" th:unless="${accessedFrom == 'detailKlien'}">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">Proyek</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/project/add}" class="breadcrumb-link">Create Proyek</a></li>
                                 </ol>
                             </nav>
                         </div>
@@ -46,9 +59,9 @@
                         <h5 class="card-header">Create Project</h5>
                         <div class="card-body">
                             <form th:action="@{/project/add}" th:object="${newProject}" method="POST">
-                                <div th:if="${accessedFrom == 'listProject'}">
+                                <div th:unless="${accessedFrom == 'detailKlien'}">
                                     <div class="form-group">
-                                        <label class="col-form-label">Nama Klien</label>
+                                        <label class="col-form-label">Nama Klien<span style="color:red;">*</span></label>
                                         <select name="company" class="form-control" id="input-select" required>
                                             <option selected value="">--Pilih Klien--</option>
                                             <option
@@ -58,66 +71,53 @@
                                             >
                                             </option>
                                         </select>
+                                        <input type="text" name="accessedFrom" value="listProject" hidden/>
+                                        <input type="text" name="companyName" value="name" hidden/>
+                                        <input type="text" name="companyId" value="3" hidden>
                                     </div>
                                 </div>
-                                <div th:unless="${accessedFrom == 'listProject'}">
+                                <div th:if="${accessedFrom == 'detailKlien'}">
                                     <div class="form-group">
-                                        <label class="col-form-label">Nama Klien</label>
-                                        <input type="text" name="company" class="form-control" th:value="${company.name}" disabled/>
+                                        <label class="col-form-label">Nama Klien <span style="color:red;">*</span></label>
+                                        <input type="text" name="companyName" class="form-control" th:value="${company.name}" disabled/>
+                                        <input type="text" name="companyName" class="form-control" th:value="${company.name}" hidden/>
+                                        <input type="text" name="companyId" class="form-control" th:value="${company.id}" hidden/>
+                                        <input type="text" name="accessedFrom" value="detailKlien" hidden/>
                                     </div>
                                 </div>
-<!--                                <div class="form-group">-->
-<!--                                    <label class="col-form-label">Status Project</label>-->
-<!--                                    <select name="status" class="form-control" id="input-select" required>-->
-<!--                                        <option selected value="">&#45;&#45;Pilih Role&#45;&#45;</option>-->
-<!--                                        <option-->
-<!--                                                th:each="role: ${listRole}"-->
-<!--                                                th:value="${role.id}"-->
-<!--                                                th:text="${role.name}"-->
-<!--                                        >-->
-<!--                                        </option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
                                 <div class="form-group">
-                                    <label class="col-form-label">Status Project</label>
-                                    <input type="text" name="status" class="form-control" required/>
+                                    <label class="col-form-label">Nama Proyek <span style="color:red;">*</span></label>
+                                    <input type="text" name="name" class="form-control" required/>
                                 </div>
-<!--                                <div class="form-group">-->
-<!--                                    <label class="col-form-label">Username</label>-->
-<!--                                    <input type="text" name="username" class="form-control" required/>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="col-form-label">Role</label>-->
-<!--                                    <select name="role" class="form-control" id="input-select" required>-->
-<!--                                        <option selected value="">&#45;&#45;Pilih Role&#45;&#45;</option>-->
-<!--                                        <option-->
-<!--                                                th:each="role: ${listRole}"-->
-<!--                                                th:value="${role.id}"-->
-<!--                                                th:text="${role.name}"-->
-<!--                                        >-->
-<!--                                        </option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="col-form-label">Email</label>-->
-<!--                                    <input type="text" name="email" class="form-control" />-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="col-form-label">No HP</label>-->
-<!--                                    <input type="text" name="contact" class="form-control" />-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="col-form-label">Password</label>-->
-<!--                                    <input-->
-<!--                                            type="password"-->
-<!--                                            name="password"-->
-<!--                                            class="form-control"-->
-<!--                                            required-->
-<!--                                    />-->
-<!--                                </div>-->
+                                <div class="form-group">
+                                    <label class="col-form-label">Status Proyek <span style="color:red;">*</span></label>
+                                    <select name="status" class="form-control" id="input-select" required>
+                                        <option selected value="">--Pilih Status--</option>
+                                        <option th:value="'Belum Dimulai'">Belum Dimulai</option>
+                                        <option th:value="'Sedang Berjalan'">Sedang Berjalan</option>
+                                        <option th:value="'Sudah Selesai'">Sudah Selesai</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Started At <span style="color:red;">*</span></label>
+                                    <input type="datetime-local" name="start_date" class="form-control" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Ended At </label>
+                                    <input type="datetime-local" name="end_date" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Internal Drive</label>
+                                    <input type="text" name="internal_drive" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">External Drive</label>
+                                    <input type="text" name="external_drive" class="form-control"/>
+                                </div>
                                 <div class="float-right">
                                     <button class="btn btn-space btn-primary" type="submit">Submit</button>
-                                    <button class="btn btn-space btn-secondary">Cancel</button>
+<!--                                    Masih perlu lengkapin akses darimana-->
+                                    <a class="btn btn-space btn-secondary" th:href="@{/project/viewall}">Cancel</a>
                                 </div>
                             </form>
                         </div>

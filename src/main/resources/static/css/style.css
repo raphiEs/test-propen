@@ -291,6 +291,189 @@ button:focus {
     outline: 0;
 }
 
+/* ---- Card klien ----- */
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+.card1 {
+    flex: 1;
+    margin: 10px;
+    max-width: 286px;
+    height: 380px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.card1:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card1 img {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card1-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin: 10px 0;
+    padding-left: 10px;
+}
+
+.card1-description {
+    color: #333;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.btn-detail {
+    background-color: #E0712F;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 12px;
+    position: absolute; /* posisi absolut agar selalu berada di paling bawah card */
+    text-decoration: none;
+}
+
+.btn-detail:hover {
+    background-color: #fff;
+    outline: 2px solid #E0712F;
+    color: #E0712F;
+}
+
+/* ---- Card klien ----- */
+
+/* ---- Card Info Klien ---- */
+
+/*.card2 {*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    align-items: center;*/
+/*    justify-content: space-between;*/
+/*    width: 100%;*/
+/*    max-width: 600px;*/
+/*    margin-bottom: 20px;*/
+/*    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);*/
+/*    border-radius: 5px;*/
+/*}*/
+
+/*.card2-image {*/
+/*    width: 286px;*/
+/*    height: 180px;*/
+/*    object-fit: cover;*/
+/*    border-radius: 5px 0 0 5px;*/
+/*}*/
+
+/*.card2-details {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    padding: 20px;*/
+/*    width: 100%;*/
+/*}*/
+
+/*.card2-title {*/
+/*    font-size: 20px;*/
+/*    font-weight: bold;*/
+/*    color: #000;*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+/*.card2-field {*/
+/*    font-size: 16px;*/
+/*    color: #999;*/
+/*    margin-bottom: 5px;*/
+/*}*/
+
+/*.card2-button {*/
+/*    background-color: transparent;*/
+/*    color: #E0712F;*/
+/*    border: 2px solid #E0712F;*/
+/*    border-radius: 5px;*/
+/*    padding: 5px 10px;*/
+/*    font-size: 16px;*/
+/*    font-weight: bold;*/
+/*    cursor: pointer;*/
+/*    transition: all 0.3s ease;*/
+/*    margin-top: auto;*/
+/*    margin-right: auto;*/
+/*}*/
+
+/*.card2-button:hover {*/
+/*    background-color: #E0712F;*/
+/*    color: #fff;*/
+/*    outline: none;*/
+/*}*/
+
+.card2 {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+}
+
+.card2-img {
+    width: 286px;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.card2-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px 0 0 10px;
+}
+
+.card2-content {
+    padding: 20px;
+}
+
+.card2-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card2-info {
+    margin-bottom: 10px;
+}
+
+.edit-btn {
+    border: 1px solid #E0712F;
+    background-color: transparent;
+    color: #E0712F;
+    border-radius: 30px;
+    padding: 5px 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.edit-btn:hover {
+    background-color: #E0712F;
+    color: #fff;
+}
+
+
+/* ---- Card Info Klien ---- */
+
 select.form-control {
     color: #71748d;
     -webkit-appearance: none;

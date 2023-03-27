@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>All Klien</title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div class="dashboard-header">
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+    </div>
+
+    <div class="nav-left-sidebar sidebar-dark">
+        <div class="menu-list">
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+        </div>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+                        <span th:text="${success}"></span>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Klien</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/company/view/all}" class="breadcrumb-link"><b>Klien</b></a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic table  -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header d-flex justify-content-between align-items-center">
+                            Daftar Klien
+                            <a class="btn btn-sm btn-outline-primary" th:href="@{/company/add}" >+ Tambah</a>
+                        </h5>
+                        <div class="card-body">
+                            <div class="card-container responsive">
+                                <tr th:each="company : ${listCompany}">
+<!--                                    <div class="card-container">-->
+                                        <div class="card1">
+                                            <img src="https://images.pexels.com/photos/351262/pexels-photo-351262.jpeg?auto=compress&cs=tinysrgb&w=286&h=180&dpr=1" alt="Foto" width="286" height="180">
+                                            <h2 class="card1-title" th:text="${company.name}"></h2>
+                                            <p class="card1-description" th:text="${company.client_information}"></p>
+                                            <a class="btn-detail" th:href="@{/company/view/} + ${company.id}" style="margin-left: 10px;">Detail</a>
+                                        </div>
+<!--                                    </div>-->
+                                </tr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic table  -->
+                <!-- ============================================================== -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+</footer>
+</body>
+</html>

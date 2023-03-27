@@ -1,10 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <head>
+        <title>PWCDEV</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <!--<div th:insert="navbar :: navbar">  </div>-->
+    </head>
 
+<body>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2>Detail Klien</h2>
+                <br>
+                <img src="https://images.pexels.com/photos/351262/pexels-photo-351262.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                     alt="company logo"
+                     style="width:150px;height:150px;">
+                <p th:text="'Nama Klien         : ' + ${company.name}"></p>
+                <p th:text="'Lokasi             : ' + ${company.location}"></p>
+                <p th:text="'Tanggal Dibuat     : ' + ${company.created_at}"></p>
+                <p th:text="'Informasi Klien    : ' + ${company.client_information}"></p>
+                <p th:text="'Bidang             : ' + ${company.business.name}"></p>
+                <a class="btn btn-primary"
+                   th:href="@{/company/update/} + ${company.id}">Edit</a>
+            </div>
+            <br>
+            <div class="justify-content-center">
+                <h2 style="display:inline-block;">Daftar Proyek Klien</h2>
+                <a style="float: right;"
+                   class="btn btn-primary"
+                   th:href="@{/company/project/add/} + ${company.id}">Tambah Proyek</a>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama Proyek</th>
+                        <th scope="col">Start Time</th>
+                        <th scope="col">Expected Done Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="proyek : ${listProject}">
+                        <td th:text="${proyek.id}"></td>
+                        <td th:text="${proyek.name}"></td>
+                        <td th:text="${proyek.start_date}"></td>
+                        <td th:text="${proyek.end_date}">
+                        <td th:text="${proyek.status}">
+                        <td>
+                            <div class="col">
+                                <a class="btn btn-primary"
+                                   th:href="@{/project/update/} + ${proyek.id}">Edit</a>
+                                <a class="btn btn-primary"
+                                   th:href="@{/project/delete/} + ${proyek.id}">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <a class="btn btn-primary" href="/">Kembali</a>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

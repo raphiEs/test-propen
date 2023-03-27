@@ -26,24 +26,101 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-header">
-                        <h2 class="pageheader-title">Manajemen User</h2>
+                        <h2 class="pageheader-title">Update Proyek</h2>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Manajemen User</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">Proyek</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/project/view/{id}}" class="breadcrumb-link">Detail Proyek</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/project/update/{id}}" class="breadcrumb-link">Update Proyek</a></li>
                                 </ol>
                             </nav>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="page-section" id="overview">
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Update Proyek</h5>
+                        <div class="card-body">
+                            <form th:action="@{/project/update/}+${oldProject.id}" th:object="${oldProject}" method="POST">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Nama Klien<span style="color:red;">*</span></label>
+                                        <select name="company" class="form-control" id="input-select" required>
+                                            <option selected th:value="${oldProject.company.id}" th:text="${oldProject.company.name}"></option>
+                                            <option
+                                                    th:each="client: ${clients}"
+                                                    th:value="${client.id}"
+                                                    th:text="${client.name}"
+                                            >
+                                            </option>
+                                        </select>
+                                    </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Nama Proyek <span style="color:red;">*</span></label>
+                                    <input type="text" name="name" class="form-control" th:value="${oldProject.name}" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Status Proyek <span style="color:red;">*</span></label>
+                                    <select name="status" class="form-control" id="input-select" required>
+                                        <option selected th:value="${oldProject.status}" th:text="${oldProject.status}"></option>
+                                        <div th:switch="${oldProject.status}">
+                                            <p th:case="'Belum Dimulai'">
+                                                <option th:value="'Sedang Berjalan'">Sedang Berjalan</option>
+                                                <option th:value="'Sudah Selesai'">Sudah Selesai</option>
+                                            </p>
+                                            <p th:case="'Sedang Berjalan'">
+                                                <option th:value="'Belum Dimulai'">Belum Dimulai</option>
+                                                <option th:value="'Sudah Selesai'">Sudah Selesai</option>
+                                            </p>
+                                            <p th:case="'Sudah Selesai'">
+                                                <option th:value="'Belum Dimulai'">Belum Dimulai</option>
+                                                <option th:value="'Sedang Berjalan'">Sedang Berjalan</option>
+                                            </p>
+                                        </div>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Started At <span style="color:red;">*</span></label>
+                                    <input type="datetime-local" name="start_date" class="form-control" th:value="${oldProject.start_date}" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Ended At </label>
+                                    <input type="datetime-local" name="end_date" th:value="${oldProject.end_date}" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Internal Drive</label>
+                                    <input type="text" name="internal_drive" th:value="${oldProject.internal_drive}" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">External Drive</label>
+                                    <input type="text" name="external_drive" th:value="${oldProject.external_drive}" class="form-control"/>
+                                </div>
+                                <div class="float-right">
+                                    <button class="btn btn-space btn-primary" type="submit">Submit</button>
+                                    <!--                                    Masih perlu lengkapin akses darimana-->
+                                    <a class="btn btn-space btn-secondary" th:href="@{/project/view/}+${oldProject.id}">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end basic form  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end input groups -->
+            <!-- ============================================================== -->
         </div>
+        <footer>
+            <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+        </footer>
     </div>
 </div>
-</div>
-
-<footer>
-    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
-</footer>
 </body>
 </html>
