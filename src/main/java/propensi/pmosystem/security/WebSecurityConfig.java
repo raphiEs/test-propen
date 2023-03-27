@@ -20,17 +20,17 @@ public class WebSecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests()
-            .requestMatchers("/css/**").permitAll()
-            .requestMatchers("/js/**").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/login").permitAll()
-            .and()
-            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/login").permitAll()
-            ;
+                .authorizeHttpRequests()
+                .requestMatchers("/css/**").permitAll()
+                .requestMatchers("/js/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .and()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login").permitAll()
+        ;
         return http.build();
     }
 
@@ -46,6 +46,14 @@ public class WebSecurityConfig{
     //              .and()
     //              .withUser("admin").password(encoder().encode("admin")).roles("ADMIN");
     //  }
+    /*@Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+        auth.inMemoryAuthentication()
+                .passwordEncoder(encoder())
+                .withUser("user").password(encoder().encode("password")).roles("USER")
+                .and()
+                .withUser("admin").password(encoder().encode("admin")).roles("ADMIN");
+    }*/
 
     // 2 method di bawah dicomment kalau belum bikin akun
     @Autowired

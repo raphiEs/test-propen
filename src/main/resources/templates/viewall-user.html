@@ -1,55 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://thymeleaf.org">-->
-<!--	<head>-->
-<!--		<title>User</title>-->
-<!--	</head>-->
-
-<!--	<body>-->
-<!--		<div class="container">-->
-<!--			<h2>Daftar Seluruh Users </h2>-->
-<!--			<br />-->
-<!--			<div class="card m-4 p-4">-->
-<!--				<div class="card-body">-->
-<!--					<div class="justify-content-center">-->
-<!--						<table class="table">-->
-<!--							<thead>-->
-<!--								<tr>-->
-<!--									<th>No</th>-->
-<!--									<th>Username</th>-->
-<!--									<th>Nama</th>-->
-<!--									<th>Email</th>-->
-<!--									<th>Role</th>-->
-<!--									<th>Hapus User</th>-->
-<!--								</tr>-->
-<!--							</thead>-->
-<!--							<tbody th:each="user, x : ${listUser}">-->
-<!--								<tr>-->
-<!--									<td th:text="${x.count}"></td>-->
-<!--									<td th:text="${user.username}"></td>-->
-<!--									<td th:text="${user.name}"></td>-->
-<!--									<td th:text="${user.email}"></td>-->
-<!--									<td th:text="${user.role.name}"></td>-->
-<!--									<td>-->
-<!--										<a-->
-<!--											th:class="${'btn btn-danger'}"-->
-<!--											th:href="@{/user/hapus/} + ${user.username}"-->
-<!--											>Delete User</a-->
-<!--										>-->
-<!--									</td>-->
-<!--								</tr>-->
-<!--							</tbody>-->
-<!--						</table>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--				<br />-->
-<!--				&lt;!&ndash; </div> &ndash;&gt;-->
-<!--			</div>-->
-
-<!--			<a class="btn btn-primary" href="/">Home</a>-->
-<!--		</div>-->
-<!--	</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <html lang="en">
@@ -77,6 +25,10 @@
 		<div class="container-fluid dashboard-content">
 			<div class="row">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+						<span th:text="${success}"></span>
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					</div>
 					<div class="page-header">
 						<h2 class="pageheader-title">Manajemen User</h2>
 						<div class="page-breadcrumb">
