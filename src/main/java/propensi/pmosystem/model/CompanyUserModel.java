@@ -24,11 +24,11 @@ public class CompanyUserModel implements Serializable {
     @Column(name = "created_at")
     private LocalDateTime created_at;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private CompanyModel company;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private UserModel user;
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import propensi.pmosystem.model.ProjectModel;
 import propensi.pmosystem.model.ProjectUserModel;
+import propensi.pmosystem.model.UserModel;
 import propensi.pmosystem.repository.ProjectUserDb;
 
 import java.util.List;
@@ -28,4 +29,18 @@ public class ProjectUserServiceImpl implements ProjectUserService{
     public ProjectUserModel addProjectUser(ProjectUserModel projectUser) {
         return projectUserDb.save(projectUser);
     }
+
+    @Override
+    public List<ProjectUserModel> findAllById(Long id){ return projectUserDb.findAllByProjectId(id); }
+
+    @Override
+    public void removeKonsultan(Long id, UserModel user){
+        List<ProjectUserModel> list = projectUserDb.findAllByProjectId(id);
+        for(ProjectUserModel x: list){
+            if (x.getUser().equals(user)){
+                projectUserDb.delete(x);
+            }
+        }
+    }
+
 }
