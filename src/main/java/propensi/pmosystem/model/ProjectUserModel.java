@@ -32,7 +32,7 @@ public class ProjectUserModel implements Serializable {
     @JoinColumn
     private ProjectModel project;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private UserModel user;
 }
