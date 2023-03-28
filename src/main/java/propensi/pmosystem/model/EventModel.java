@@ -63,4 +63,7 @@ public class EventModel implements Serializable {
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AttendanceModel> eventAttendance;
+
+    //@OneToMany(mappedBy = "name", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private List<UserModel> listConsultant;
 }
