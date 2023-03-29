@@ -1,6 +1,7 @@
 package propensi.pmosystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -15,6 +16,7 @@ import propensi.pmosystem.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,8 @@ public class ProjectController {
     private ProjectService projectService;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private TimelineService timelineService;
     @Autowired
     private CompanyService companyService;
 
@@ -226,5 +229,105 @@ public class ProjectController {
         projectUserService.addProjectUser(projectUserModel);
         redirectAttrs.addFlashAttribute("success", String.format("Konsultan dengan username "+ "`%s`" +" berhasil ditambahkan", username));
         return new ModelAndView("redirect:/project/consultant/{id}");
+    }
+    @GetMapping(value = "/timeline/{id}")
+    private String timelineProjek(@PathVariable Long id,Model model) {
+        ProjectModel project = projectService.findById(id);
+        List<TimelineModel> timelinelist = timelineService.findAllByProjectId(id);
+        model.addAttribute("timelinelist", timelinelist);
+        model.addAttribute("project", project);
+        return "project/timeline-project";
+    }
+
+    @GetMapping(value = "/timeline/milestone/{id}")
+    private String milestoneProjek(@PathVariable Long id,Model model) {
+        ProjectModel project = projectService.findById(id);
+        model.addAttribute("project", project);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        UserModel loginUser_ = userService.getUserByUsername(loginUser.getUsername());
+        List<TimelineModel> timelinelist = timelineService.findAllByProjectId(id);
+        model.addAttribute("timelinelist", timelinelist);
+        return "project/form-add-milestone";
+    }
+
+    @PostMapping(value = "/timeline/milestone/add/{id}")
+    private ModelAndView milestoneProjekSubmit(@PathVariable Long id,
+                                               @RequestParam(value = "milestone_name", required = true) String milestone_name,
+                                               @RequestParam(value = "start_date", required = true) LocalDateTime start_date,
+                                               @RequestParam(value = "end_date", required = false) LocalDateTime end_date,
+                                               @RequestParam(value = "status", required = true) String status,
+                                               @RequestParam(value = "weight", required = true) Integer weight,
+                                               RedirectAttributes redirectAttrs,
+                                               Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        UserModel loginUser_ = userService.getUserByUsername(loginUser.getUsername());
+        ProjectModel project = projectService.findById(id);
+        TimelineModel timelineModel = new TimelineModel();
+
+        Integer currweight = weight + timelineService.cekCurrWeight(project.getId());
+        if(currweight > 100){
+            redirectAttrs.addFlashAttribute("failed", String.format("Gagal Menambahkan. Pastikan total weight tidak melebihi 100. Total weight tersisa:"+ "`%d`" +"!", 100 - currweight) );
+            return new ModelAndView("redirect:/project/timeline/milestone/" + project.getId().toString());
+        }
+        timelineModel.setProject(project);
+        timelineModel.setMilestone_name(milestone_name);
+        timelineModel.setStatus(status);
+        timelineModel.setWeight(weight);
+        timelineModel.setStartDate(start_date);
+        timelineModel.setEndDate(end_date);
+        timelineModel.setCreated_at(LocalDateTime.now());
+        timelineModel.setCreated_by(loginUser_.getId());
+        timelineService.addTimeline(timelineModel);
+        redirectAttrs.addFlashAttribute("success", String.format("Berhasil menambahkan milestone dengan nama "+ "`%s`" +"!", milestone_name));
+        return new ModelAndView("redirect:/project/timeline/milestone/{id}");
+    }
+
+    @PostMapping("/timeline/milestone/update/{id}")
+    private ModelAndView updateMilestoneSubmit(RedirectAttributes redirectAttrs, @PathVariable Long id, @ModelAttribute TimelineModel updateMilestone,
+                                       Model model) {
+        TimelineModel tl = timelineService.findById(id);
+        ProjectModel project = tl.getProject();
+        Integer currweight = updateMilestone.getWeight() + timelineService.cekCurrWeight(project.getId()) - tl.getWeight();
+        if(currweight > 100){
+            redirectAttrs.addFlashAttribute("failed", String.format("Gagal Menambahkan. Pastikan total weight tidak melebihi 100. Total weight tersisa:"+ "`%d`" +"!", 100 - timelineService.cekCurrWeight(project.getId())));
+            return new ModelAndView("redirect:/project/timeline/milestone/" + project.getId().toString());
+        }
+        LocalDateTime created_at = tl.getCreated_at();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+        model.addAttribute("loginUser", loginUser_);
+        updateMilestone.setProject(project);
+        updateMilestone.setCreated_at(created_at);
+        updateMilestone.setCreated_by(loginUser_.getId());
+        timelineService.updateTimeline(updateMilestone);
+        redirectAttrs.addFlashAttribute("success", String.format("Berhasil mengupdate milestone dengan nama "+ "`%s`" +"!", tl.getMilestone_name()));
+        return new ModelAndView("redirect:/project/timeline/milestone/" + project.getId().toString());
+    }
+    @GetMapping("/timeline/milestone/remove/{id}")
+    private ModelAndView removeMilestoneSubmit(RedirectAttributes redirectAttrs, @PathVariable Long id, @ModelAttribute TimelineModel updateMilestone,
+                                               Model model) {
+        TimelineModel tl = timelineService.findById(id);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+        model.addAttribute("loginUser", loginUser_);
+        timelineService.deleteTimeline(tl);
+        redirectAttrs.addFlashAttribute("success", String.format("Berhasil menghapus milestone dengan nama "+ "`%s`" +"!", tl.getMilestone_name()));
+        return new ModelAndView("redirect:/project/timeline/milestone/" + tl.getProject().getId().toString());
+    }
+
+    @GetMapping("/timeline/milestone/done/{id}")
+    private ModelAndView doneMilestoneSubmit(RedirectAttributes redirectAttrs, @PathVariable Long id,
+                                               Model model) {
+        TimelineModel tl = timelineService.findById(id);
+        tl.setStatus("1");
+        timelineService.updateTimeline(tl);
+        redirectAttrs.addFlashAttribute("success", String.format("Milestone dengan nama "+ "`%s`" +"telah ditandai selesai!", tl.getMilestone_name()));
+        return new ModelAndView("redirect:/project/timeline/" + tl.getProject().getId().toString());
     }
 }
