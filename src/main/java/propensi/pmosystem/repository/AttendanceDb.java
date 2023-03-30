@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface AttendanceDb extends JpaRepository<AttendanceModel, String> {
     List<AttendanceModel> findAll();
     List<AttendanceModel> findAllByEvent(Long idEvent);
-    Optional<AttendanceModel> findById(String id);
+    Optional<AttendanceModel> findById(Long id);
 }

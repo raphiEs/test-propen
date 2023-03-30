@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 @Table(name = "attendance")
 public class AttendanceModel implements Serializable {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
