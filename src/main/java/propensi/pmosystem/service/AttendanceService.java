@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AttendanceService {
-    AttendanceModel findById(String idAttendance);
+    AttendanceModel findById(Long idAttendance);
     List<AttendanceModel> findAll();
     List<AttendanceModel> findAllByEvent(Long idEvent);
 
