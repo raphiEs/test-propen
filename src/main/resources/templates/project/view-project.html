@@ -52,7 +52,7 @@
                             <span th:text="${project.name}"></span>
                             <a class="btn btn-sm btn-outline-primary" th:href="@{/project/timeline/}+${project.id}" >Timeline Proyek</a>
                             <div th:if="${roleLogin == 2}" class="float-right">
-                                <a class="btn btn-sm btn-outline-primary" th:href="@{/project/consultant/}+${project.id}" >Tambah Konsultan</a>
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{/project/consultant/}+${project.id}" >Konsultan</a>
                                 <a class="btn btn-sm btn-outline-primary" th:href="@{/project/update/}+${project.id}" >Edit</a>
                             </div>
                         </h5>
