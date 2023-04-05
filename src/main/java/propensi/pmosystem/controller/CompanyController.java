@@ -3,6 +3,7 @@ package propensi.pmosystem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.Banner;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -89,6 +90,9 @@ public class CompanyController {
             company.setBusiness(null);
         }
 
+        //Add Company to db
+        companyService.addCompany(company);
+
         //Add CompanyUser to db
         CompanyUserModel companyUser = new CompanyUserModel();
         companyUser.setCompany(company);
@@ -96,10 +100,6 @@ public class CompanyController {
         companyUser.setCreated_at(LocalDateTime.now());
         companyUser.setCreated_by(loginUser_.getId());
         companyUserService.addCompanyUser(companyUser);
-
-        //Add Company to db
-        companyService.addCompany(company);
-        //String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
 
         //Success pop-up message
         redirectAttributes.addFlashAttribute("success",
@@ -236,6 +236,7 @@ public class CompanyController {
         model.addAttribute("accessedFrom", "detailKlien");
         return "/project/form-add-project";
     }
+
     @GetMapping("/company/business/add")
     public String addCompanyBusinessForm(Model model){
         BusinessModel business = new BusinessModel();

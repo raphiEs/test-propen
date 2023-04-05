@@ -134,6 +134,11 @@ public class ProjectController {
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
+
+        //Get project events
+        List<EventModel> listEvent = project.getProjectEvent();
+
+        model.addAttribute("listEvent", listEvent);
         model.addAttribute("project", project);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("roleLogin", loginUser_.getRole().getId());
