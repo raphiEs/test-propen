@@ -13,6 +13,7 @@ import propensi.pmosystem.model.*;
 import propensi.pmosystem.service.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -39,6 +40,9 @@ public class EventController {
     private EventService eventService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProjectUserService projectUserService;
 
     @GetMapping("project/view/{id}/event/add")
     private String addEventFormPage(@PathVariable Long id,
@@ -77,7 +81,19 @@ public class EventController {
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
-
+        /*
+        //Project visibility auth
+        List<ProjectUserModel> projectUsers = new ArrayList<>();
+        if (loginUser_.getRole().getId() == 1)
+            projectUsers = projectUserService.findAll();
+        else if (loginUser_.getRole().getId() == 2)
+            projectUsers = projectUserService.findAllByUser(loginUser_.getId());
+        else if (loginUser_.getRole().getId() == 4)
+            projectUsers = projectUserService.findAllByUser(loginUser_.getId());
+        else if (loginUser_.getRole().getId() == 3) {
+            projectUsers = projectUserService.findAllByUser(loginUser_.getId());
+        }
+        */
         //Set event attrs
         event.setProject(projectService.findById(Long.parseLong(idProyek)));
         event.setCreated_at(LocalDateTime.now());
@@ -87,19 +103,18 @@ public class EventController {
         event.setSummary("-");
         event.setDetailedSummary("-");
 
-        System.out.println("Has set attribute but has yet to save to db");
+        // Add event to project
+        ProjectModel project = projectService.findById(Long.parseLong(idProyek));
+        project.getProjectEvent().add(event);
 
         //Add Event to db
         eventService.addEvent(event);
         System.out.println("Saved to db");
 
-        //Success pop-up message
-        //redirectAttributes.addFlashAttribute("success",
-        //      String.format("Klien '" + company.getName() + "' berhasil ditambahkan"));
-
-
+        //model.addAttribute("roleLogin", loginUser_.getRole().getId());
+        //model.addAttribute("projectUsers", projectUsers);
         model.addAttribute("loginUser", loginUser_);
-        return "redirect:/company/view/all";
+        return "home";
     }
 
     @GetMapping("/event/view/{id}")
