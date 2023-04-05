@@ -112,6 +112,7 @@
                                         <td th:text="${event.startDate}"></td>
                                         <td class="text-center">
                                             <a th:class="${'btn btn-primary'}" th:href="@{/event/view/} + ${event.id}">Detail</a>
+                                            <a th:class="${'btn btn-primary'}" th:href="@{/event/remove/} + ${event.id}">Delete</a>
                                         </td>
                                     </tr>
                                     </tbody>

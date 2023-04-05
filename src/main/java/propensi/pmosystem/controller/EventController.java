@@ -230,4 +230,27 @@ public class EventController {
         model.addAttribute("loginUser", loginUser_);
         return "event/view-event";
     }
+
+    @GetMapping(value = "/event/remove/{id}")
+    public String deleteUserForm(@PathVariable Long id,
+                                 Model model) {
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
+        //Get event to delete
+        EventModel event = eventService.getEventById(id);
+        eventService.deleteEvent(event);
+
+        //Get new list
+        ProjectModel project = event.getProject();
+        List<EventModel> listEvent = project.getProjectEvent();
+
+        model.addAttribute("loginUser", loginUser_);
+        model.addAttribute("listEvent", listEvent);
+
+        return "redirect:/project/view/" + project.getId().toString();
+    }
 }
