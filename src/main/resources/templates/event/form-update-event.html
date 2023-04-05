@@ -22,9 +22,6 @@
                            name="projectId"
                            th:value="${project.id}">
                     <input type="hidden"
-                           name="endDate"
-                           th:value="${event.endDate}">
-                    <input type="hidden"
                            name="momName"
                            th:value="${event.momName}">
                     <input type="hidden"
@@ -33,6 +30,12 @@
                     <input type="hidden"
                            name="momLastUpdate"
                            th:value="${event.momLastUpdate}">
+                    <input type="hidden"
+                           name="created_at"
+                           th:value="${event.created_at}">
+                    <input type="hidden"
+                           name="created_by"
+                           th:value="${event.created_by}">
 
                     Nama Proyek: <br>
                     <input class="form-control"
@@ -48,11 +51,18 @@
                            th:value="${event.name}" />
                     <br><br>
 
-                    Tanggal Event: <br>
+                    Tanggal Mulai Event: <br>
                     <input class="form-control"
                            type="datetime-local"
                            name="startDate"
                            th:value="${event.startDate}"/>
+                    <br><br>
+
+                    Tanggal Berakhir Event: <br>
+                    <input class="form-control"
+                           type="datetime-local"
+                           name="endDate"
+                           th:value="${event.endDate}"/>
                     <br><br>
 
                     Summary: <br>

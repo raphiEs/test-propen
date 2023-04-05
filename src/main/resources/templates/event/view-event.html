@@ -30,7 +30,7 @@
         <p th:text="'Nama MoM         : ' + ${event.momName}"></p>
         <p th:text="'Link MoM         : ' + ${event.momUrl}"></p>
         <a class="btn btn-primary"
-           th:href="@{/event/mom/update/} + ${event.project.id}">Edit</a>
+           th:href="@{/event/mom/update/} + ${event.id}">Edit</a>
       </div>
       <br>
       <a class="btn btn-primary" href="/">Kembali</a>

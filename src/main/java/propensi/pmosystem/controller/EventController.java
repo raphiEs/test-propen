@@ -182,14 +182,19 @@ public class EventController {
         //Get event to update
         EventModel event = eventService.getEventById(id);
 
+        //Get project of event
+        ProjectModel project = projectService.findById(event.getProject().getId());
+
         //model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
+        model.addAttribute("project", project);
         model.addAttribute("event", event);
         return "event/form-update-mom-event";
     }
 
     @PostMapping("/event/mom/update")
     public String updateMoMSubmitPage(@ModelAttribute EventModel updatedEvent,
+                                      @RequestParam String projectId,
                                       Model model){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -197,9 +202,16 @@ public class EventController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
+        //Set attrs
+        ProjectModel assignedProject = projectService.findById(Long.parseLong(projectId));
+        updatedEvent.setProject(assignedProject);
+        updatedEvent.setMomLastUpdate(LocalDateTime.now());
+
         //Update event
         eventService.updateEvent(updatedEvent);
 
+        model.addAttribute("project", assignedProject);
+        model.addAttribute("event", updatedEvent);
         model.addAttribute("loginUser", loginUser_);
         return "event/view-event";
     }
