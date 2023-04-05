@@ -90,6 +90,9 @@ public class CompanyController {
             company.setBusiness(null);
         }
 
+        //Add Company to db
+        companyService.addCompany(company);
+
         //Add CompanyUser to db
         CompanyUserModel companyUser = new CompanyUserModel();
         companyUser.setCompany(company);
@@ -97,10 +100,6 @@ public class CompanyController {
         companyUser.setCreated_at(LocalDateTime.now());
         companyUser.setCreated_by(loginUser_.getId());
         companyUserService.addCompanyUser(companyUser);
-
-        //Add Company to db
-        companyService.addCompany(company);
-        //String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
 
         //Success pop-up message
         redirectAttributes.addFlashAttribute("success",
