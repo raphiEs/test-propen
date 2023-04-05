@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,5 +56,8 @@ public class ProjectModel implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private CompanyModel company;
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<EventModel> projectEvent;
 }
 
