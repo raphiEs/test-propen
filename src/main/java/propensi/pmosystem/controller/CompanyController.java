@@ -2,6 +2,8 @@ package propensi.pmosystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.Banner;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -234,5 +236,40 @@ public class CompanyController {
         model.addAttribute("listProject", listProject);
         model.addAttribute("accessedFrom", "detailKlien");
         return "/project/form-add-project";
+    }
+
+    @GetMapping("/company/business/add")
+    public String addCompanyBusinessForm(Model model){
+        BusinessModel business = new BusinessModel();
+
+        model.addAttribute("business", business);
+        return "";
+    }
+    @PostMapping("/company/business/add")
+    public String addCompanyBusinessSubmit(@ModelAttribute BusinessModel business, RedirectAttributes redirectAttributes,
+                                           @RequestParam(value = "accessedFrom") String accessedFrom,
+                                           @PathVariable Long idCompany){
+
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
+        //Save business to DB
+        businessService.addBusiness(business);
+
+        //Success pop-up message
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Bidang '" + business.getName() + "' berhasil ditambahkan"));
+
+        //Returned page based on accessed page
+        if (accessedFrom == "listCompany")
+            return "redirect:/company/view/all";
+        else if (accessedFrom == "addCompany")
+            return "redirect:/company/add";
+        else {
+            return "redirect:/company/update/" + idCompany;
+        }
     }
 }

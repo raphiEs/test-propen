@@ -16,7 +16,7 @@ public class AttendanceServiceImpl implements AttendanceService{
     AttendanceDb attendanceDb;
 
     @Override
-    public AttendanceModel findById(String idAttendance) {
+    public AttendanceModel findById(Long idAttendance) {
         Optional<AttendanceModel> attendance = attendanceDb.findById(idAttendance);
         if (attendance.isPresent())
             return attendance.get();
