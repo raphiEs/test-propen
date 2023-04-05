@@ -47,6 +47,10 @@ public class EventModel implements Serializable {
     private String detailedSummary;
 
     @Size(max = 1000)
+    @Column(name = "mom_name")
+    private String momName;
+
+    @Size(max = 1000)
     @Column(name = "mom_url")
     private String momUrl;
 
