@@ -20,6 +20,8 @@
         <p th:text="'Tanggal Event      : ' + ${event.startDate}"></p>
         <p th:text="'Summary            : ' + ${event.summary}"></p>
         <p th:text="'Detailed Summary   : ' + ${event.detailedSummary}"></p>
+        <a class="btn btn-primary"
+           th:href="@{/event/update/} + ${event.id}">Edit</a>
       </div>
       <br>
       <div class="justify-content-center">

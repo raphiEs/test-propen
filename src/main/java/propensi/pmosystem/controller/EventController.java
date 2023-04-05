@@ -115,13 +115,58 @@ public class EventController {
         EventModel event = eventService.getEventById(id);
         //System.out.println("Event id: "+ event.getId());
 
-        //Get project by id
+        //Get project of event
         ProjectModel project = projectService.findById(event.getProject().getId());
 
         //model.addAttribute("message", message);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("project", project);
         model.addAttribute("event", event);
+        return "event/view-event";
+    }
+
+    @GetMapping("/event/update/{id}")
+    public String updateEventFormPage(@PathVariable Long id,
+                                    Model model){
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = (User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
+        //Get event to update
+        EventModel event = eventService.getEventById(id);
+
+        //Get project of event
+        ProjectModel project = projectService.findById(event.getProject().getId());
+
+        //model.addAttribute("clients", clients);
+        model.addAttribute("loginUser", loginUser_);
+        model.addAttribute("project", project);
+        model.addAttribute("event", event);
+        return "event/form-update-event";
+    }
+
+    @PostMapping("/event/update")
+    public String updateEventSubmitPage(@ModelAttribute EventModel updatedEvent,
+                                        @RequestParam String projectId,
+                                        Model model){
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
+        //Set attrs
+        ProjectModel assignedProject = projectService.findById(Long.parseLong(projectId));
+        updatedEvent.setProject(assignedProject);
+
+        //Update event
+        eventService.updateEvent(updatedEvent);
+
+        model.addAttribute("project", assignedProject);
+        model.addAttribute("event", updatedEvent);
+        model.addAttribute("loginUser", loginUser_);
         return "event/view-event";
     }
 
@@ -140,7 +185,7 @@ public class EventController {
         //model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("event", event);
-        return "event/form-add-mom-event";
+        return "event/form-update-mom-event";
     }
 
     @PostMapping("/event/mom/update")
