@@ -44,6 +44,9 @@ public class EventController {
     @Autowired
     private ProjectUserService projectUserService;
 
+    @Autowired
+    private AttendanceService attendanceService;
+
     @GetMapping("project/view/{id}/event/add")
     private String addEventFormPage(@PathVariable Long id,
                                     Model model) {
@@ -133,10 +136,14 @@ public class EventController {
         //Get project of event
         ProjectModel project = projectService.findById(event.getProject().getId());
 
+        //Get attendance list of event
+        List<AttendanceModel> listAttendance = attendanceService.findAllByEvent(id);
+
         //model.addAttribute("message", message);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("project", project);
         model.addAttribute("event", event);
+        model.addAttribute("attendance", listAttendance);
         return "event/view-event";
     }
 
