@@ -11,6 +11,10 @@
 <div class="container">
   <div class="card m-4 p-4">
     <div class="card-body">
+      <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+        <span th:text="${success}"></span>
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      </div>
       <div class="justify-content-center">
         <h2>Detail Event</h2>
         <br>

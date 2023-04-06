@@ -29,13 +29,17 @@
                         <a th:href="@{/project/consultant/}+${project.id}"><span><b>Warning : Proyek tidak memiliki Konsultan aktif.</b> </a> </span>
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     </div>
+                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+                        <span th:text="${success}"></span>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
                     <div class="page-header">
                         <h2 class="pageheader-title" th:text="'Detail Proyek'"></h2>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">Proyek</a></li>
-                                    <li class="breadcrumb-item"><a th:href="@{/project/view/{id}}" class="breadcrumb-link">Detail Proyek</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/project/view/} + ${id}" class="breadcrumb-link">Detail Proyek</a></li>
                                 </ol>
                             </nav>
                         </div>
@@ -112,7 +116,7 @@
                                         <td th:text="${event.startDate}"></td>
                                         <td class="text-center">
                                             <a th:class="${'btn btn-primary'}" th:href="@{/event/view/} + ${event.id}">Detail</a>
-                                            <a th:class="${'btn btn-primary'}" th:href="@{/event/remove/} + ${event.id}">Delete</a>
+                                            <a th:class="${'btn btn-danger'}" th:href="@{/event/remove/} + ${event.id}">Delete</a>
                                         </td>
                                     </tr>
                                     </tbody>
