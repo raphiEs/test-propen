@@ -116,8 +116,13 @@ public class EventController {
 
         //model.addAttribute("roleLogin", loginUser_.getRole().getId());
         //model.addAttribute("projectUsers", projectUsers);
+
+        //Success pop-up message
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Event '" + event.getName() + "' berhasil ditambahkan"));
+
         model.addAttribute("loginUser", loginUser_);
-        return "home";
+        return "redirect:/project/view/" + idProyek;
     }
 
     @GetMapping("/event/view/{id}")
@@ -172,7 +177,8 @@ public class EventController {
     @PostMapping("/event/update")
     public String updateEventSubmitPage(@ModelAttribute EventModel updatedEvent,
                                         @RequestParam String projectId,
-                                        Model model){
+                                        Model model,
+                                        RedirectAttributes redirectAttributes){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -185,6 +191,9 @@ public class EventController {
 
         //Update event
         eventService.updateEvent(updatedEvent);
+
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Event '" + updatedEvent.getName() + "' berhasil diubah"));
 
         model.addAttribute("project", assignedProject);
         model.addAttribute("event", updatedEvent);
@@ -240,7 +249,8 @@ public class EventController {
 
     @GetMapping(value = "/event/remove/{id}")
     public String deleteUserForm(@PathVariable Long id,
-                                 Model model) {
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -254,6 +264,9 @@ public class EventController {
         //Get new list
         ProjectModel project = event.getProject();
         List<EventModel> listEvent = project.getProjectEvent();
+
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Event '" + event.getName() + "' berhasil dihapus"));
 
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("listEvent", listEvent);
