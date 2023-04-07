@@ -75,10 +75,11 @@
                            required="false"/>
                 </div>-->
 
+                <input type="hidden"
+                       name="idProyek"
+                       th:value="${event.project.id}">
+
                 <div class="form-group">
-                  <input type="hidden"
-                         name="idProyek"
-                         th:value="${event.project.id}">
                   <label class="col-form-label">Nama Proyek <span style="color:red;">*</span></label>
                   <input type="text"
                          name="namaProyek"
