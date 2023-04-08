@@ -142,13 +142,13 @@ public class EventController {
         ProjectModel project = projectService.findById(event.getProject().getId());
 
         //Get attendance list of event
-        List<AttendanceModel> listAttendance = attendanceService.findAllByEvent(id);
+//        List<AttendanceModel> listAttendance = attendanceService.findAllByEvent(id);
 
         //model.addAttribute("message", message);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("project", project);
         model.addAttribute("event", event);
-        model.addAttribute("attendance", listAttendance);
+//        model.addAttribute("attendance", listAttendance);
         return "event/view-event";
     }
 
@@ -198,7 +198,7 @@ public class EventController {
         model.addAttribute("project", assignedProject);
         model.addAttribute("event", updatedEvent);
         model.addAttribute("loginUser", loginUser_);
-        return "event/view-event";
+        return "redirect:/event/view/" + updatedEvent.getId().toString();
     }
 
     @GetMapping("/event/mom/update/{id}")
@@ -226,7 +226,8 @@ public class EventController {
     @PostMapping("/event/mom/update")
     public String updateMoMSubmitPage(@ModelAttribute EventModel updatedEvent,
                                       @RequestParam String projectId,
-                                      Model model){
+                                      Model model,
+                                      RedirectAttributes redirectAttributes){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -241,10 +242,13 @@ public class EventController {
         //Update event
         eventService.updateEvent(updatedEvent);
 
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Event '" + updatedEvent.getName() + "' berhasil diubah"));
+
         model.addAttribute("project", assignedProject);
         model.addAttribute("event", updatedEvent);
         model.addAttribute("loginUser", loginUser_);
-        return "event/view-event";
+        return "redirect:/event/view/" + updatedEvent.getId().toString();
     }
 
     @GetMapping(value = "/event/remove/{id}")
