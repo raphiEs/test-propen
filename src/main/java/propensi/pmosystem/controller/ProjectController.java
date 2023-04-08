@@ -238,10 +238,15 @@ public class ProjectController {
     }
     @GetMapping(value = "/timeline/{id}")
     private String timelineProjek(@PathVariable Long id,Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = (User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
         ProjectModel project = projectService.findById(id);
         List<TimelineModel> timelinelist = timelineService.findAllByProjectId(id);
         model.addAttribute("timelinelist", timelinelist);
         model.addAttribute("project", project);
+        model.addAttribute("loginUser",loginUser_);
         return "project/timeline-project";
     }
 
