@@ -259,6 +259,8 @@ public class ProjectController {
         UserModel loginUser_ = userService.getUserByUsername(loginUser.getUsername());
         List<TimelineModel> timelinelist = timelineService.findAllByProjectId(id);
         model.addAttribute("timelinelist", timelinelist);
+        model.addAttribute("loginUser",loginUser_);
+        model.addAttribute("jumlahMilestone", timelinelist.size()+1);
         return "project/form-add-milestone";
     }
 
@@ -292,7 +294,7 @@ public class ProjectController {
         timelineModel.setCreated_by(loginUser_.getId());
         timelineService.addTimeline(timelineModel);
         redirectAttrs.addFlashAttribute("success", String.format("Berhasil menambahkan milestone dengan nama "+ "`%s`" +"!", milestone_name));
-        return new ModelAndView("redirect:/project/timeline/milestone/{id}");
+        return new ModelAndView("redirect:/project/timeline/{id}");
     }
 
     @PostMapping("/timeline/milestone/update/{id}")
@@ -302,7 +304,7 @@ public class ProjectController {
         ProjectModel project = tl.getProject();
         Integer currweight = updateMilestone.getWeight() + timelineService.cekCurrWeight(project.getId()) - tl.getWeight();
         if(currweight > 100){
-            redirectAttrs.addFlashAttribute("failed", String.format("Gagal Menambahkan. Pastikan total weight tidak melebihi 100. Total weight tersisa:"+ "`%d`" +"!", 100 - timelineService.cekCurrWeight(project.getId())));
+            redirectAttrs.addFlashAttribute("error", String.format("Gagal Menambahkan. Pastikan total weight tidak melebihi 100. Total weight tersisa:"+ "`%d`" +"!", 100 - timelineService.cekCurrWeight(project.getId())));
             return new ModelAndView("redirect:/project/timeline/milestone/" + project.getId().toString());
         }
         LocalDateTime created_at = tl.getCreated_at();
@@ -339,6 +341,6 @@ public class ProjectController {
         tl.setStatus("1");
         timelineService.updateTimeline(tl);
         redirectAttrs.addFlashAttribute("success", String.format("Milestone dengan nama "+ "`%s`" +"telah ditandai selesai!", tl.getMilestone_name()));
-        return new ModelAndView("redirect:/project/timeline/" + tl.getProject().getId().toString());
+        return new ModelAndView("redirect:/project/timeline/milestone/" + tl.getProject().getId().toString());
     }
 }
