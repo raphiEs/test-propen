@@ -293,6 +293,8 @@ button:focus {
 
 /* ---- Card klien ----- */
 
+/* Perangkat mobile */
+
 .card-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -338,23 +340,34 @@ button:focus {
     padding-right: 10px;
 }
 
-.btn-detail {
-    background-color: #E0712F;
-    color: #fff;
-    border: none;
-    border-radius: 30px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 12px;
-    position: absolute; /* posisi absolut agar selalu berada di paling bawah card */
-    text-decoration: none;
+@media screen and (max-width: 768px) {
+    .card-container {
+        grid-template-columns: repeat(1, 1fr); /* Ubah grid menjadi satu kolom */
+    }
+
+    .card1 {
+        max-width: none; /* Hapus batasan lebar maksimum */
+        height: auto; /* Gunakan tinggi otomatis untuk mengikuti konten */
+    }
 }
 
-.btn-detail:hover {
-    background-color: #fff;
-    outline: 2px solid #E0712F;
-    color: #E0712F;
-}
+/*.btn-detail {*/
+/*    background-color: #E0712F;*/
+/*    color: #fff;*/
+/*    border: none;*/
+/*    border-radius: 30px;*/
+/*    padding: 10px 20px;*/
+/*    cursor: pointer;*/
+/*    font-size: 12px;*/
+/*    position: absolute; !* posisi absolut agar selalu berada di paling bawah card *!*/
+/*    text-decoration: none;*/
+/*}*/
+
+/*.btn-detail:hover {*/
+/*    background-color: #fff;*/
+/*    outline: 2px solid #E0712F;*/
+/*    color: #E0712F;*/
+/*}*/
 
 /* ---- Card klien ----- */
 

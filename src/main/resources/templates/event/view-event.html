@@ -95,13 +95,28 @@
             </h5>
             <div class="card-body">
               <table style="width:100%; color: #1b1e21">
-                <tr>
-                  <td style="width: 25%">Nama MoM</td>
-                  <td>: <span th:text="${event.momName}"></span></td>
-                </tr>
+<!--                <tr>-->
+<!--                  <td style="width: 25%">Nama MoM</td>-->
+<!--                  <td>: <span th:text="${event.momName}"></span></td>-->
+<!--                </tr>-->
                 <tr>
                   <td style="width: 25%">Link MoM</td>
-                  <td>: <span th:text="${event.momUrl}"></span></td>
+                  <td>:
+                    <a th:href="${event.momUrl}" th:text="${event.momUrl}" target="_blank" id="link"></a>
+                    <a onclick="copyToClipboard()" id="copyButton">
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAaUlEQVR4nO2USwrAIAwF53gVb11vUnuPFBduhEJ42tKPA+5ihrxA4EtEYAdMeMkjyGJzA1aPoBZfht0tiOJOStTBI+jZyeYRqJHZ2b8pqMyI/hxRaq7icEHL+wV59LFrCaKkNF+EyR/KAfSIpb/qKhqGAAAAAElFTkSuQmCC"></a>
+                    <script>
+                      function copyToClipboard() {
+                        const input = document.createElement('input');
+                        input.setAttribute('value', document.getElementById('link').href);
+                        document.body.appendChild(input);
+                        input.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(input);
+                        alert('Link berhasil disalin');
+                      }
+                    </script>
+                  </td>
                 </tr>
               </table>
             </div>
@@ -128,7 +143,7 @@
           <div class="card">
             <h5 class="card-header d-flex justify-content-between align-items-center">
               Participant
-              <a class="btn btn-sm btn-outline-primary" th:href="" >+ Tambah</a>
+<!--              <a class="btn btn-sm btn-outline-primary" th:href="" >+ Tambah</a>-->
             </h5>
             <div class="card-body">
               <div class="table-responsive">
