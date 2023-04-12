@@ -193,7 +193,7 @@ public class EventController {
         eventService.updateEvent(updatedEvent);
 
         redirectAttributes.addFlashAttribute("success",
-                String.format("Event '" + updatedEvent.getName() + "' berhasil diubah"));
+                String.format("Informasi event '" + updatedEvent.getName() + "' berhasil diubah"));
 
         model.addAttribute("project", assignedProject);
         model.addAttribute("event", updatedEvent);
@@ -243,7 +243,7 @@ public class EventController {
         eventService.updateEvent(updatedEvent);
 
         redirectAttributes.addFlashAttribute("success",
-                String.format("Event '" + updatedEvent.getName() + "' berhasil diubah"));
+                String.format("Link MoM event '" + updatedEvent.getName() + "' berhasil diubah"));
 
         model.addAttribute("project", assignedProject);
         model.addAttribute("event", updatedEvent);
