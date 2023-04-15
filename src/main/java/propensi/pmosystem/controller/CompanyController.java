@@ -156,7 +156,7 @@ public class CompanyController {
         redirectAttributes.addFlashAttribute("success",
                 String.format("Klien '" + updatedCompany.getName() + "' berhasil diubah"));
         model.addAttribute("loginUser", loginUser_);
-        return "redirect:/company/view/all";
+        return "redirect:/company/view/" + updatedCompany.getId().toString();
     }
 
     @GetMapping("/company/view/all")
