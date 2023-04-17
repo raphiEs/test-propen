@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Add Event</title>
+  <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+  <script>
+    function cancelForm() {
+      // Mengambil elemen-elemen input pada form
+      var inputElements = document.getElementsByTagName("input");
+
+      // Menghapus nilai pada masing-masing elemen input
+      for (var i = 0; i < inputElements.length; i++) {
+        inputElements[i].value = "";
+      }
+
+      // Kembali ke halaman sebelumnya
+      history.back();
+    }
+  </script>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+  <div class="dashboard-header">
+    <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+  </div>
+
+  <div class="nav-left-sidebar sidebar-dark">
+    <div class="menu-list">
+      <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+    </div>
+  </div>
+
+  <div class="dashboard-wrapper">
+    <div class="container-fluid dashboard-content">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+            <span th:text="${success}"></span>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          </div>
+          <div class="page-header">
+            <h2 class="pageheader-title">Create Event</h2>
+            <div class="page-breadcrumb">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">Proyek</a></li>
+                  <li class="breadcrumb-item"><a th:href="@{/project/view/} + ${id}" class="breadcrumb-link">Detail Proyek</a></li>
+                  <li class="breadcrumb-item"><a th:href="@{/project/view/{id}/event/add(id=${id})}" class="breadcrumb-link"><b>Create Event</b></a></li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-section" id="overview">
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="card">
+            <div class="card-body">
+              <form th:action="@{/event/add}"
+                    th:object="${event}"
+                    method="POST">
+                <!--<div class="form-group">
+                    <label class="col-form-label">Logo Klien</label>
+                    <input type="text"
+                           name="logo"
+                           class="form-control"
+                           placeholder="Masukkan URL gambar"
+                           required="false"/>
+                </div>-->
+
+                <input type="hidden"
+                       name="idProyek"
+                       th:value="${event.project.id}">
+
+                <div class="form-group">
+                  <label class="col-form-label">Nama Proyek <span style="color:red;">*</span></label>
+                  <input type="text"
+                         name="namaProyek"
+                         class="form-control"
+                         th:value="${namaProyek}"
+                         disabled>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Nama Event <span style="color:red;">*</span></label>
+                  <input type="text"
+                         name="name"
+                         class="form-control"
+                         required/>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Tanggal Event <span style="color:red;">*</span></label>
+                  <input type="datetime-local"
+                         name="startDate"
+                         class="form-control"
+                         required/>
+                </div>
+                <div class="float-right">
+                  <button class="btn btn-space btn-primary"
+                          type="submit">Submit</button>
+                  <button class="btn btn-space btn-secondary"
+                          id="cancel-btn"
+                          onclick="cancelForm()" >Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- end basic form  -->
+      <!-- ============================================================== -->
+
+      <!-- ============================================================== -->
+      <!-- end input groups -->
+      <!-- ============================================================== -->
+    </div>
+    <footer>
+      <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

@@ -15,10 +15,10 @@ import propensi.pmosystem.model.UserModel;
 public class CompanyUserModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "created_by")
-    private long created_by;
+    private Long created_by;
 
     @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")

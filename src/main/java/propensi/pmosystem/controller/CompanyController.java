@@ -2,6 +2,8 @@ package propensi.pmosystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.Banner;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -15,15 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import propensi.pmosystem.model.BusinessModel;
-import propensi.pmosystem.model.CompanyModel;
-import propensi.pmosystem.model.ProjectModel;
-import propensi.pmosystem.model.UserModel;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import propensi.pmosystem.model.*;
 import propensi.pmosystem.repository.BusinessDb;
-import propensi.pmosystem.service.BusinessService;
-import propensi.pmosystem.service.CompanyService;
-import propensi.pmosystem.service.ProjectService;
-import propensi.pmosystem.service.UserService;
+import propensi.pmosystem.service.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,6 +32,10 @@ public class CompanyController {
     @Qualifier("companyServiceImpl")
     @Autowired
     private CompanyService companyService;
+
+    @Qualifier("companyUserServiceImpl")
+    @Autowired
+    private CompanyUserService companyUserService;
 
     @Qualifier("businessServiceImpl")
     @Autowired
@@ -50,8 +51,8 @@ public class CompanyController {
     @GetMapping("/company/add")
     private String addCompanyFormPage(Model model) {
         //Auth
-        Integer role = 1;
-        List<UserModel> clients = userService.getUserByRole(role.longValue());
+        //Integer role = 1;
+        //List<UserModel> clients = userService.getUserByRole(role.longValue());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
@@ -62,10 +63,9 @@ public class CompanyController {
         company.initializeListProject();
         List<BusinessModel> listBusiness = businessService.getListBusiness();
 
-        model.addAttribute("clients", clients);
-        model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
+        model.addAttribute("loginUser", loginUser_);
         //log.info("Manajer memulai proses 'tambah perusahaan'");
         return "klien/form-add-klien";
     }
@@ -73,35 +73,49 @@ public class CompanyController {
     @PostMapping("/company/add")
     private String addCompanySubmit(@ModelAttribute CompanyModel company,
                                     @RequestParam String businessId,
-                                    Model model) {
-
-        //Set company attrs
-        company.setCreated_at(LocalDateTime.now());
-        //company.setCreated_by(null);
-        if (businessId != ""){
-            company.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
-        }
-
+                                    Model model,
+                                    RedirectAttributes redirectAttributes) {
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        companyService.addCompany(company);
-        String message = "Perusahaan '" + company.getName() + "' berhasil ditambahkan";
+        //Set company attrs
+        company.setCreated_at(LocalDateTime.now());
+        company.setCreated_by(loginUser_.getId());
+        if (businessId != ""){
+            company.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
+        } else {
+            company.setBusiness(null);
+        }
 
+        //Add Company to db
+        companyService.addCompany(company);
+
+        //Add CompanyUser to db
+        CompanyUserModel companyUser = new CompanyUserModel();
+        companyUser.setCompany(company);
+        companyUser.setUser(loginUser_);
+        companyUser.setCreated_at(LocalDateTime.now());
+        companyUser.setCreated_by(loginUser_.getId());
+        companyUserService.addCompanyUser(companyUser);
+
+        //Success pop-up message
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Klien '" + company.getName() + "' berhasil ditambahkan"));
+
+        
         model.addAttribute("loginUser", loginUser_);
-        model.addAttribute("message", message);
-        return "form-success";
+        return "redirect:/company/view/all";
     }
 
     @GetMapping("/company/update/{id}")
     public String updateCompanyFormPage(@PathVariable Long id,
                                         Model model){
         //Auth
-        Integer role = 1;
-        List<UserModel> clients = userService.getUserByRole(role.longValue());
+        //Integer role = 1;
+        //List<UserModel> clients = userService.getUserByRole(role.longValue());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
@@ -112,7 +126,7 @@ public class CompanyController {
         List<BusinessModel> listBusiness = businessService.getListBusiness();
         BusinessModel companyBusiness = company.getBusiness();
 
-        model.addAttribute("clients", clients);
+        //model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listBusiness", listBusiness);
@@ -123,7 +137,7 @@ public class CompanyController {
     @PostMapping("/company/update")
     public String updateCompanySubmitPage(@ModelAttribute CompanyModel updatedCompany,
                                           @RequestParam String businessId,
-                                          Model model){
+                                          Model model, RedirectAttributes redirectAttributes){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -131,31 +145,49 @@ public class CompanyController {
         UserModel loginUser_ = userService.getUserByUsername(username);
 
         updatedCompany.setBusiness(businessService.getBusinessById(Long.parseLong(businessId)));
-        companyService.updateCompany(updatedCompany);
-        String message = "Klien dengan nama '" + updatedCompany.getName() + "' berhasil diperbarui";
+//        companyService.updateCompany(updatedCompany);
+//        String message = "Klien dengan nama '" + updatedCompany.getName() + "' berhasil diperbarui";
+//
+//        model.addAttribute("loginUser", loginUser_);
+//        model.addAttribute("message", message);
+//        return "form-success";
 
+        companyService.updateCompany(updatedCompany);
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Klien '" + updatedCompany.getName() + "' berhasil diubah"));
         model.addAttribute("loginUser", loginUser_);
-        model.addAttribute("message", message);
-        return "form-success";
+        return "redirect:/company/view/" + updatedCompany.getId().toString();
     }
 
     @GetMapping("/company/view/all")
     public String viewAllCompany(Model model){
         //Auth
-        Integer role = 1;
-        List<UserModel> clients = userService.getUserByRole(role.longValue());
+        //Integer role = 1;
+        //List<UserModel> clients = userService.getUserByRole(role.longValue());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        //Get all company
-        List<CompanyModel> listCompany = companyService.getListCompany();
+        //Get company for admin (all company)
+        List<CompanyModel> listCompany = new ArrayList<>();
+        if (loginUser_.getRole().getId() == 1){
+            listCompany.addAll(companyService.getListCompany());
+        }
+        //Get company for manager
+        else if (loginUser_.getRole().getId() == 2){
+            List<CompanyUserModel> listCompanyUser = companyUserService.getCompanyUserByUserId(loginUser_.getId());
+            //Iterate company created by manager using table "company_user"
+            for (int i = 0; i<listCompanyUser.size(); i++){
+                CompanyModel tempCompany = companyService.getCompanyById(listCompanyUser.get(i).getCompany().getId());
+                listCompany.add(tempCompany);
+            }
+        }
 
-        model.addAttribute("clients", clients);
+        //model.addAttribute("clients", clients);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("listCompany", listCompany);
-        return "view-all-company";
+        return "klien/view-all-klien";
     }
 
     @GetMapping("/company/view/{id}")
@@ -179,12 +211,12 @@ public class CompanyController {
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("company", company);
         model.addAttribute("listProject", listProject);
-        return "view-detail-company";
+        return "klien/view-detail-klien";
     }
 
     @GetMapping("/company/project/add/{id}")
     public String addCompanyProjectForm(@PathVariable Long id,
-                                        Model model){
+                                        Model model) {
         //Auth
         Integer role = 1;
         List<UserModel> clients = userService.getUserByRole(role.longValue());
@@ -204,5 +236,39 @@ public class CompanyController {
         model.addAttribute("accessedFrom", "detailKlien");
         return "/project/form-add-project";
     }
-    
+
+    @GetMapping("/company/business/add")
+    public String addCompanyBusinessForm(Model model){
+        BusinessModel business = new BusinessModel();
+
+        model.addAttribute("business", business);
+        return "";
+    }
+    @PostMapping("/company/business/add")
+    public String addCompanyBusinessSubmit(@ModelAttribute BusinessModel business, RedirectAttributes redirectAttributes,
+                                           @RequestParam(value = "accessedFrom") String accessedFrom,
+                                           @PathVariable Long idCompany){
+
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
+        //Save business to DB
+        businessService.addBusiness(business);
+
+        //Success pop-up message
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Bidang '" + business.getName() + "' berhasil ditambahkan"));
+
+        //Returned page based on accessed page
+        if (accessedFrom == "listCompany")
+            return "redirect:/company/view/all";
+        else if (accessedFrom == "addCompany")
+            return "redirect:/company/add";
+        else {
+            return "redirect:/company/update/" + idCompany;
+        }
+    }
 }

@@ -61,7 +61,7 @@ public class UserController {
         model.addAttribute("message", "");
         return "form-update-account";
     }
-    
+
     @PostMapping(value = "/update-account")
     public String updateAccount(Model model, @ModelAttribute UserModel useruser, HttpServletRequest req, RedirectAttributes redirectAttrs){
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
@@ -87,7 +87,7 @@ public class UserController {
         String username = user.getUsername();
         UserModel loginUser = userService.getUserByUsername(username);
         model.addAttribute("loginUser", loginUser);
-        model.addAttribute("user", userx);  
+        model.addAttribute("user", userx);
         model.addAttribute("message", "");
         return "reset-password";
     }
@@ -139,11 +139,16 @@ public class UserController {
 
     @PostMapping(value = "/add")
     private String addUserSubmit(@ModelAttribute UserModel user, Model model, RedirectAttributes redirectAttrs){
-        userService.addUser(user);
-        model.addAttribute("user", user);
-        redirectAttrs.addFlashAttribute("success",
-                String.format("User "+ "`%s`" +" berhasil ditambahkan", user.getUsername()));
-        return "redirect:/user/viewall";
+        UserModel userAdd = userService.addUser(user);
+        if (userAdd == null){
+            redirectAttrs.addFlashAttribute("error", String.format("Username yang Anda masukkan sudah digunakan"));
+            return "redirect:/user/add";
+        }
+        else {
+            model.addAttribute("user", user);
+            redirectAttrs.addFlashAttribute("success", String.format("User "+ "`%s`" +" berhasil ditambahkan", user.getUsername()));
+            return "redirect:/user/viewall";
+        }
     }
 
     @GetMapping(value = "/viewall")
@@ -165,5 +170,5 @@ public class UserController {
                 String.format("User "+ "`%s`" +" berhasil dihapus", username));
         return "redirect:/user/viewall";
     }
-    
+
 }

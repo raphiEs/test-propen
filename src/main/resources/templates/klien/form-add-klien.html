@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>PMO || Dashboard</title>
+    <title>Add Klien</title>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
     <script>
         function cancelForm() {
@@ -39,13 +39,17 @@
         <div class="container-fluid dashboard-content">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+                        <span th:text="${success}"></span>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
                     <div class="page-header">
                         <h2 class="pageheader-title">Create Klien</h2>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a th:href="@{/company/view/all}" class="breadcrumb-link">Klien</a></li>
-                                    <li class="breadcrumb-item"><a th:href="@{/company/add}" class="breadcrumb-link">Create Klien</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/company/add}" class="breadcrumb-link"><b>Create Klien</b></a></li>
                                 </ol>
                             </nav>
                         </div>
@@ -57,26 +61,45 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card">
-                        <h5 class="card-header">Create Klien</h5>
                         <div class="card-body">
                             <form th:action="@{/company/add}"
                                   th:object="${company}"
                                   method="POST">
+                                <!--<div class="form-group">
+                                    <label class="col-form-label">Logo Klien</label>
+                                    <input type="text"
+                                           name="logo"
+                                           class="form-control"
+                                           placeholder="Masukkan URL gambar"
+                                           required="false"/>
+                                </div>-->
                                 <div class="form-group">
-                                    <label class="col-form-label">Nama Klien</label>
-                                    <input type="text" name="name" class="form-control" required/>
+                                    <label class="col-form-label">Nama Klien <span style="color:red;">*</span></label>
+                                    <input type="text"
+                                           name="name"
+                                           class="form-control"
+                                           required/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">Lokasi</label>
-                                    <input type="text" name="location" class="form-control" required/>
+                                    <label class="col-form-label">Lokasi <span style="color:red;">*</span></label>
+                                    <input type="text"
+                                           name="location"
+                                           class="form-control"
+                                           required/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">Informasi Klien</label>
-                                    <input type="text" name="client_information" class="form-control" required/>
+                                    <label class="col-form-label">Informasi Klien <span style="color:red;">*</span></label>
+                                    <input type="text"
+                                           name="client_information"
+                                           class="form-control"
+                                           required/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">Bidang</label>
-                                    <select name="businessId" class="form-control" id="input-select" required>
+                                    <label class="col-form-label">Bidang <span style="color:red;">*</span></label>
+                                    <select name="businessId"
+                                            class="form-control"
+                                            id="input-select"
+                                            required>
                                         <option selected value="">--Pilih Bidang--</option>
                                         <option th:each="business : ${listBusiness}"
                                                 th:text="${business.name}"
@@ -84,8 +107,11 @@
                                     </select>
                                 </div>
                                 <div class="float-right">
-                                    <button class="btn btn-space btn-primary" type="submit">Submit</button>
-                                    <button class="btn btn-space btn-secondary" id="cancel-btn" onclick="cancelForm()" >Cancel</button>
+                                    <button class="btn btn-space btn-primary"
+                                            type="submit">Submit</button>
+                                    <button class="btn btn-space btn-secondary"
+                                            id="cancel-btn"
+                                            onclick="cancelForm()" >Cancel</button>
                                 </div>
                             </form>
                         </div>

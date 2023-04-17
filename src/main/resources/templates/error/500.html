@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Error 505</title>
+	<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+</head>
+
+<body>
+	<div class="vh-100 d-flex justify-content-center align-items-center ">
+		<div class="col-md-5 p-5 shadow-sm border rounded-5 bg-white">
+			<h4 class="display-3">500 Error</h4>
+			<p>There is a problem with the resource you are looking for, and it cannot be displayed.</p>
+			<a href="javascript:history.back()" style="color: dodgerblue">Go Back</a>
+		</div>
+	</div>
+	<footer>
+		<object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+	</footer>
+</body>
+</html>
