@@ -277,4 +277,6 @@ public class EventController {
 
         return "redirect:/project/view/" + project.getId().toString();
     }
+
+
 }

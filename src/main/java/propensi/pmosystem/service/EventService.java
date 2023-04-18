@@ -14,6 +14,6 @@ public interface EventService {
     EventModel deleteEvent(EventModel event);
 
     List<EventModel> getListEvent();
-
+    List<EventModel> getListEventByProjectId(Long projectId);
     EventModel getEventById(Long id);
 }

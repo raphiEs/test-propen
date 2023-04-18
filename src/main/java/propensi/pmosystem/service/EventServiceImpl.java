@@ -48,4 +48,11 @@ public class EventServiceImpl implements EventService {
             return event.get();
         } else return null;
     }
+
+    @Override
+    public List<EventModel> getListEventByProjectId(Long projectId){
+        List<EventModel> events = eventDb.findByProjectId(projectId);
+        return events;
+    };
+
 }

@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface EventDb extends JpaRepository<EventModel, Long> {
     Optional<EventModel> findById(Long id);
-
+    List<EventModel>  findByProjectId(Long projectId);
     List<EventModel> findAll();
 }
