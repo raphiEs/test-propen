@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>PMO || Attendance</title>
+  <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+  <div class="dashboard-header">
+    <nav th:replace="~{fragments/fragment :: attendance-navbar}"></nav>
+  </div>
+
+  <!--  <div class="nav-left-sidebar sidebar-dark">-->
+  <!--    <div class="menu-list">-->
+  <!--      <nav th:replace="~{fragments/fragment :: sidebar}"></nav>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <!--  <div class="dashboard-wrapper">-->
+  <div class="container-fluid dashboard-content">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="alert alert-warning alert-dismissible" role="alert" th:if="${error}">
+          <span th:text="${error}"></span>
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        </div>
+        <div class="page-header">
+          <h1 class="pageheader-title">Terima kasih telah mengisi absensi Event<span th:text="${participant.event.name}"></span></h1>
+          <hr>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- ============================================================== -->
+      <!-- basic table  -->
+      <!-- ============================================================== -->
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+          <h5 class="card-header d-flex justify-content-between align-items-center" >
+            <span>Berikut adalah review absensi yang anda kirimkan</span>
+          </h5>
+          <div class="card-body">
+            <table style="width:100%; color: #1b1e21">
+              <tr>
+                <td style="width: 25%">Nama Partisipan</td>
+                <td>: <span th:text="${participant.name}"></span></td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td>: <span th:text="${participant.email}"></span></td>              </tr>
+              <tr>
+                <td>No Telepon</td>
+                <td>: <span th:text="${participant.cp}"></span></td>
+              </tr>
+              <tr>
+                <td>Fungsi/Bagian</td>
+                <td>: <span th:text="${participant.department}"></span></td>
+              </tr>
+              <tr>
+                <td>Jabatan</td>
+                <td>: <span th:text="${participant.role}"></span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <footer>
+      <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+    </footer>
+  </div>
+  <!--</div>-->
+</body>
+</html>
