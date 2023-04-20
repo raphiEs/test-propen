@@ -40,6 +40,7 @@ public class AttendanceController {
         ProjectModel project = projectService.findById(event.getProject().getId());
         model.addAttribute("event", event);
         model.addAttribute("project", project);
+        model.addAttribute("accessedFrom","guest");
         model.addAttribute("attendance", newAttendance);
 
         return "attendance/form-add";
@@ -47,7 +48,9 @@ public class AttendanceController {
 
     @PostMapping(value = "/{idEvent}")
     public String addAttendanceSubmit(Model model, @ModelAttribute AttendanceModel attendance,
-                                      @PathVariable Long idEvent, RedirectAttributes redirectAttributes){
+                                      @RequestParam(value = "accessedFrom", required = false) String accessedFrom,
+                                      @PathVariable Long idEvent,
+                                      RedirectAttributes redirectAttributes){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -65,24 +68,30 @@ public class AttendanceController {
 
         //Success pop-up message
         redirectAttributes.addFlashAttribute("success",
-                String.format("Partisipan '" + attendance.getName() + "' berhasil ditambahkan pada event "+ event));
-        System.out.println(attendance.getName());
+                String.format("Partisipan '" + attendance.getName() + "' berhasil ditambahkan pada event "+ event.getName()));
+        System.out.println(accessedFrom);
         model.addAttribute("participant",attendance);
-        return "attendance/review-absensi";
+
+        if (accessedFrom.equals("detailEvent"))
+            return "redirect:/event/view/" + event.getId();
+        else return "attendance/review-absensi";
     }
 
     @GetMapping(value = "/{idEvent}/delete/"+"{id}")
-    public ModelAndView deleteParticipant(Model model, @PathVariable Long id, @PathVariable Long idEvent,
+    public ModelAndView deleteParticipant(Model model,
+                                          @PathVariable Long id,
+                                          @PathVariable Long idEvent,
                                           RedirectAttributes redirectAttributes){
         //Deleting attendance from DB
         AttendanceModel participant = attendanceService.findById(id);
         EventModel event = eventService.getEventById(idEvent);
         event.getEventAttendance().remove(participant);
+        attendanceService.delete(participant);
 
         //Success pop-up message
         redirectAttributes.addFlashAttribute("success",
-                String.format("Partisipan '" + participant.getName() + "' berhasil dihapus dari event "+ event));
+                String.format("Partisipan '" + participant.getName() + "' berhasil dihapus dari event "+ event.getName()));
         model.addAttribute("participant", participant);
-        return new ModelAndView("redirect:/attendance/{idEvent}");
+        return new ModelAndView("redirect:/event/view/{idEvent}");
     }
 }

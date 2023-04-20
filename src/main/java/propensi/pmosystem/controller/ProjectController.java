@@ -66,9 +66,6 @@ public class ProjectController {
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
-        System.out.println(companyName);
-        System.out.println(companyId);
-        System.out.println(accessedFrom);
         String companyName1 = "";
         if (accessedFrom.equals("listProject"))
             companyName1 = project.getCompany().getName();

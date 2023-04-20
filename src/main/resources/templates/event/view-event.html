@@ -151,7 +151,7 @@
           <div class="card">
             <h5 class="card-header d-flex justify-content-between align-items-center">
               Participant
-<!--              <a class="btn btn-sm btn-outline-primary" th:href="" >+ Tambah</a>-->
+                <a class="btn btn-sm btn-outline-primary" th:href="@{attendance/}+${event.id}">+ Tambah</a>
             </h5>
             <div class="card-body">
               <div class="table-responsive">
@@ -164,18 +164,22 @@
                     <th>Email</th>
                     <th>Fungsi/Bagian</th>
                     <th>Jabatan</th>
+                    <th>Aksi</th>
                   </tr>
                   </thead>
-                  <tbody th:each="event, iterationStatus : ${listEvent}">
-                  <tr>
+<!--                  <tbody th:each="attendance, iterationStatus : ${listAttendance}">-->
+<!--                  <tr>-->
 <!--                    <td th:text="${iterationStatus.count}"></td>-->
-<!--                    <td th:text="${event.name}"></td>-->
-<!--                    <td th:text="'-'"></td>-->
-<!--                    <td th:text="${event.startDate}"></td>-->
-<!--                    <td th:text="'-'"></td>-->
-<!--                    <td th:text="${event.startDate}"></td>-->
-                  </tr>
-                  </tbody>
+<!--                    <td th:text="${attendance.name}"></td>-->
+<!--                    <td th:text="${attendance.cp}"></td>-->
+<!--                    <td th:text="${attendance.email}"></td>-->
+<!--                    <td th:text="${attendance.department}"></td>-->
+<!--                    <td th:text="${attendance.role}"></td>-->
+<!--                    <td class="text-center">-->
+<!--                      <a th:class="${'btn btn-danger'}" th:href="@{/attendance/} + ${event.id} + @{/delete/} + ${attendance.id}">Delete</a>-->
+<!--                    </td>-->
+<!--                  </tr>-->
+<!--                  </tbody>-->
                 </table>
               </div>
             </div>

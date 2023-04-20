@@ -40,38 +40,42 @@
         <!-- basic table  -->
         <!-- ============================================================== -->
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <div class="card">
-            <h5 class="card-header d-flex justify-content-between align-items-center" >
-              <span th:text="${project.name}"></span>
-            </h5>
-            <div class="card-body">
-              <table style="width:100%; color: #1b1e21">
-                <tr>
-                  <td style="width: 25%">Nama Klien</td>
-                  <td>: <span th:text="${project.company.name}"></span></td>
-                </tr>
-                <tr>
-                  <td>Consultants</td>
-                  <td>: To Be Developed</td>
-                </tr>
-                <tr>
-                  <td>Start Date</td>
-                  <td>: <span th:text="${project.start_date}"></span></td>
-                </tr>
-                <tr>
-                  <td>Expected Date</td>
-                  <td>: <span th:text="${project.end_date}"></span></td>
-                </tr>
-                <tr>
-                  <td>Status</td>
-                  <td>: <span th:text="${project.status}"></span></td>
-                </tr>
-                <tr>
-                  <td>Progress</td>
-                  <td>: To Be Developed</td>
-                </tr>
-              </table>
+          <form th:action="@{/attendance/}+${idEvent}" th:object="${newAttendance}" method="POST">
+          <div th:unless="${accessedFrom == 'detailEvent'}" class="card">
+            <div class="form-group">
+              <input type="text" name="accessedFrom" value="guest" hidden/>
             </div>
+              <h5 class="card-header d-flex justify-content-between align-items-center" >
+                <span th:text="${project.name}"></span>
+              </h5>
+                <div class="card-body">
+                  <table style="width:100%; color: #1b1e21">
+                    <tr>
+                      <td style="width: 25%">Nama Klien</td>
+                      <td>: <span th:text="${project.company.name}"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Consultants</td>
+                      <td>: To Be Developed</td>
+                    </tr>
+                    <tr>
+                      <td>Start Date</td>
+                      <td>: <span th:text="${project.start_date}"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Expected Date</td>
+                      <td>: <span th:text="${project.end_date}"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Status</td>
+                      <td>: <span th:text="${project.status}"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Progress</td>
+                      <td>: To Be Developed</td>
+                    </tr>
+                  </table>
+                </div>
           </div>
         </div>
         <!-- ============================================================== -->
@@ -83,7 +87,9 @@
                 <span>Mohon isi form absensi ini</span>
               </h5>
               <div class="card-body">
-                <form th:action="@{/attendance/}+${idEvent}" th:object="${newAttendance}" method="POST">
+                <div th:if="${accessedFrom == 'detailEvent'}" class="form-group">
+                    <input type="text" name="accessedFrom" value="detailEvent" hidden/>
+                  </div>
                   <div class="form-group">
                     <label class="col-form-label">Nama Partisipan <span style="color:red;">*</span></label>
                     <input type="text" name="name" class="form-control" required/>
@@ -105,6 +111,9 @@
                     <input type="text" name="role" class="form-control"/>
                   </div>
                   <div class="float-right">
+                    <span th:if="${accessedFrom == 'detailEvent'}" class="form-group">
+                      <a class="btn btn-space btn-secondary" th:href="@{/event/view/}+${event.id}">Cancel</a>
+                    </span>
                     <button class="btn btn-space btn-primary" type="submit">Submit</button>
                   </div>
                 </form>
