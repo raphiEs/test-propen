@@ -142,13 +142,13 @@ public class EventController {
         ProjectModel project = projectService.findById(event.getProject().getId());
 
         //Get attendance list of event
-//        List<AttendanceModel> listAttendance = attendanceService.findAllByEvent(id);
-
+        List<AttendanceModel> listAttendance = attendanceService.findEventAttendance(event);
+        System.out.println(listAttendance.size());
         //model.addAttribute("message", message);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("project", project);
         model.addAttribute("event", event);
-//        model.addAttribute("attendance", listAttendance);
+        model.addAttribute("attendance", listAttendance);
         return "event/view-event";
     }
 
@@ -276,5 +276,18 @@ public class EventController {
         model.addAttribute("listEvent", listEvent);
 
         return "redirect:/project/view/" + project.getId().toString();
+    }
+
+    @GetMapping(value = "event/view/attendance/{idEvent}")
+    public String addAttendanceFormPage(Model model, @PathVariable Long idEvent){
+        AttendanceModel newAttendance = new AttendanceModel();
+        EventModel event = eventService.getEventById(idEvent);
+        ProjectModel project = projectService.findById(event.getProject().getId());
+        model.addAttribute("event", event);
+        model.addAttribute("project", project);
+        model.addAttribute("accessedFrom","detailEvent");
+        model.addAttribute("attendance", newAttendance);
+
+        return "attendance/form-add";
     }
 }
