@@ -62,7 +62,8 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form th:action="@{/company/add}"
+                            <form id="addCompanyForm" name="addCompanyForm"
+                                  th:action="@{/company/add}"
                                   th:object="${company}"
                                   method="POST">
                                 <!--<div class="form-group">
@@ -107,13 +108,44 @@
                                                     th:value="${business.id}"></option>
                                         </select>
                                         <div class="input-group-append">
-                                            <a class="btn btn-sm btn-outline-primary" th:href="@{/}">+ Tambah</a>
+                                            <!-- Trigger the modal with a button -->
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#myModal">+ Tambah</button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="myModal" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Tambah Bidang</h5>
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+                                                        <!--diganti-->
+                                                        <form id="addBidangForm" name="addBidangForm"
+                                                              th:action="@{/company/add}"
+                                                              th:object="${company}"
+                                                              method="POST">
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label>Nama Bidang <span style="color: red">*</span></label>
+                                                                    <input type="text"
+                                                                           name="newBidang" class="form-control" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary" form="addBidangForm">Create</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="float-right">
                                     <button class="btn btn-space btn-primary"
-                                            type="submit">Submit</button>
+                                            type="submit" form="addCompanyForm">Submit</button>
                                     <button class="btn btn-space btn-secondary"
                                             id="cancel-btn"
                                             onclick="cancelForm()" >Cancel</button>
