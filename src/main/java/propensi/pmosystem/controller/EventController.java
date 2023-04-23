@@ -148,7 +148,7 @@ public class EventController {
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("project", project);
         model.addAttribute("event", event);
-        model.addAttribute("attendance", listAttendance);
+        model.addAttribute("listAttendance", listAttendance);
         return "event/view-event";
     }
 
