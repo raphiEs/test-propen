@@ -247,25 +247,29 @@ public class CompanyController {
     @PostMapping("/company/business/add")
     public String addCompanyBusinessSubmit(@ModelAttribute BusinessModel business, RedirectAttributes redirectAttributes,
                                            @RequestParam(value = "accessedFrom") String accessedFrom,
-                                           @PathVariable Long idCompany){
+                                           @RequestParam(value = "idCompany", required = false) Long idCompany){
 
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
-
-        //Save business to DB
-        businessService.addBusiness(business);
-
-        //Success pop-up message
-        redirectAttributes.addFlashAttribute("success",
-                String.format("Bidang '" + business.getName() + "' berhasil ditambahkan"));
+        if (businessService.checkBusinessName(business.getName())) {
+            //Save business to DB
+            businessService.addBusiness(business);
+            //Success pop-up message
+            redirectAttributes.addFlashAttribute("success",
+                    String.format("Bidang '" + business.getName() + "' berhasil ditambahkan"));
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error",
+                    String.format("Bidang '" + business.getName() + "' sudah tersedia"));
+        }
 
         //Returned page based on accessed page
-        if (accessedFrom == "listCompany")
+        if (accessedFrom.equals("listCompany"))
             return "redirect:/company/view/all";
-        else if (accessedFrom == "addCompany")
+        else if (accessedFrom.equals("addCompany"))
             return "redirect:/company/add";
         else {
             return "redirect:/company/update/" + idCompany;

@@ -15,4 +15,6 @@ public interface BusinessService {
     List<BusinessModel> getListBusiness();
 
     BusinessModel getBusinessById(Long id);
+
+    boolean checkBusinessName(String businessName);
 }
