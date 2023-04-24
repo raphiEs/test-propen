@@ -46,4 +46,14 @@ public class BusinessServiceImpl implements BusinessService{
             return business.get();
         } else return null;
     }
+
+    @Override
+    public boolean checkBusinessName(String businessName) {
+        for (BusinessModel businessModel: businessDb.findAll()){
+            if (businessModel.getName().equals(businessName)){
+                return false;
+            }
+        }
+        return true;
+    }
 }
