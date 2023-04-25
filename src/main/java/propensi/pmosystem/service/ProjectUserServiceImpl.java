@@ -43,4 +43,9 @@ public class ProjectUserServiceImpl implements ProjectUserService{
         }
     }
 
+    @Override
+    public List<ProjectUserModel> findAllByProject(Long idProject) {
+        return projectUserDb.findAllByProjectId(idProject);
+    }
+
 }
