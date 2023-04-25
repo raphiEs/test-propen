@@ -138,6 +138,9 @@ public class EventController {
         EventModel event = eventService.getEventById(id);
         //System.out.println("Event id: "+ event.getId());
 
+        Long creatorId = event.getCreated_by();
+        UserModel creator = userService.getUserById(creatorId);
+
         //Get project of event
         ProjectModel project = projectService.findById(event.getProject().getId());
 
@@ -149,6 +152,7 @@ public class EventController {
         model.addAttribute("project", project);
         model.addAttribute("event", event);
         model.addAttribute("listAttendance", listAttendance);
+        model.addAttribute("creator", creator);
         return "event/view-event";
     }
 
