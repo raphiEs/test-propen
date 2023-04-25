@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import propensi.pmosystem.model.AttendanceModel;
+import propensi.pmosystem.model.EventModel;
 import propensi.pmosystem.repository.AttendanceDb;
 
 import java.util.List;
@@ -29,12 +30,17 @@ public class AttendanceServiceImpl implements AttendanceService{
     }
 
     @Override
-    public List<AttendanceModel> findAllByEvent(Long idEvent) {
-        return attendanceDb.findAllByEvent(idEvent);
+    public List<AttendanceModel> findEventAttendance(EventModel event) {
+        return attendanceDb.findAllByEvent(event);
     }
 
     @Override
     public AttendanceModel addAttendance(AttendanceModel newAttendance) {
         return attendanceDb.save(newAttendance);
+    }
+
+    @Override
+    public void delete(AttendanceModel attendance) {
+        attendanceDb.delete(attendance);
     }
 }
