@@ -75,7 +75,25 @@
 										<td th:text="${a.email}"></td>
 										<td th:text="${a.role.name}"></td>
 										<td class="text-center">
-											<a th:class="${'btn btn-danger'}" th:href="@{/user/remove/} + ${a.username}">Delete User</a>
+											<button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#myModal" th:href="@{/user/remove/} + ${a.username}">Delete User</button>
+											<div class="modal fade" id="myModal" role="dialog">
+												<div class="modal-dialog modal-dialog-centered">
+													<!-- Modal content-->
+													<div class="modal-content">
+														<div class="modal-header">
+															<h5 class="modal-title">Delete User</h5>
+															<button type="button" class="close" data-dismiss="modal">&times;</button>
+														</div>
+														<div class="modal-body">
+															<p style="text-align: left">Apakah Anda yakin ingin menghapus user ini?</p>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+															<a href="" type="button" class="btn btn-danger" id="btnDelteYes">Delete User</a>
+														</div>
+													</div>
+												</div>
+											</div>
 										</td>
 									</tr>
 									</tbody>
@@ -94,6 +112,13 @@
 
 <footer>
 	<object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+	<script>
+		$('.btn-delete').on('click', function (e) {
+		e.preventDefault();
+		var href =$(this).attr('href');
+		$('#myModal #btnDelteYes').attr('href',href);
+		$('#myModal').modal();
+	});</script>
 </footer>
 </body>
 </html>
