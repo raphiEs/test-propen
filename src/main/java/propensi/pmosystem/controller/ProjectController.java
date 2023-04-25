@@ -404,6 +404,7 @@ public class ProjectController {
             document.add(new Paragraph("Event #" + count++,new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD)));
             document.add(new Paragraph("Name: " + event.getName()));
             document.add(new Paragraph("Start Date: " + event.getStartDate().toString().substring(0, 10)));
+            // document.add(new Paragraph("End Date: " + event.getEndDate().toString().substring(0, 10)));
             document.add(new Paragraph("Summary: " + event.getSummary()));
             document.add(new Paragraph("Detailed Summary: " + event.getDetailedSummary()));
             document.add(new Paragraph("\n"));
