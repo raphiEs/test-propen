@@ -224,7 +224,7 @@ public class ProjectController {
         listKonsultanfinal.removeAll(listUser);
         model.addAttribute("listKonsultan",listKonsultanfinal); // ini untuk tambah
         model.addAttribute("listUser", listUser); // ini list yang sudah ada
-        model.addAttribute("jumlahKonsultan", listKonsultan.size()+1);
+        model.addAttribute("jumlahKonsultan", listUser.size()+1);
         return "/project/form-view-add-consultant";
     }
 
