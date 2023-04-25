@@ -69,7 +69,11 @@
                                 </tr>
                                 <tr>
                                     <td>Consultants</td>
-                                    <td>: To Be Developed</td>
+                                    <td>
+                                        <ul>
+                                            <li th:each="consultant, iterationStatus : ${listConsultant}"></li>
+                                        </ul>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Start Date</td>

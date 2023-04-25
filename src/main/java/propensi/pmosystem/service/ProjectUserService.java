@@ -12,4 +12,5 @@ public interface ProjectUserService {
     List<ProjectUserModel> findAll();
     List<ProjectUserModel> findAllById(Long id);
     void removeKonsultan(Long id, UserModel user);
+    List<ProjectUserModel> findAllByProject(Long idProject);
 }

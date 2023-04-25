@@ -82,10 +82,16 @@ public class ProjectController {
                                     @RequestParam(value = "companyId", required = false) Long companyId,
                                     RedirectAttributes redirectAttributes
     ) {
+        // Get authenticated user
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
+
+        // Created by and created at attribute value
+        project.setCreated_by(loginUser_.getId());
+        project.setCreated_at(LocalDateTime.now());
+
         String companyName1 = "";
         if (accessedFrom.equals("listProject"))
             companyName1 = project.getCompany().getName();
@@ -159,6 +165,7 @@ public class ProjectController {
         model.addAttribute("project", project);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("roleLogin", loginUser_.getRole().getId());
+        model.addAttribute("listConsultant", projectUserService.findAllByProject(project.getId()));
         List<ProjectUserModel> listprojectusermodel = projectUserService.findAllById(id);
         if (listprojectusermodel.size() == 1 && loginUser_.getRole().getName().equals("Manajer")) {
             model.addAttribute("warning", true);
