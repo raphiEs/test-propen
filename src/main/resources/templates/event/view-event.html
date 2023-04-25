@@ -67,7 +67,7 @@
                 </tr>
                 <tr>
                   <td>Created by</td>
-<!--                  <td>: <span th:text="${user.username}"></span></td>-->
+                  <td>: <span th:text="${creator.name}"></span></td>
                 </tr>
                 <tr>
                   <td>Tanggal Event</td>
@@ -141,7 +141,29 @@
                   <td style="width: 25%">Copy this text for sharing event’s absensi:</td>
                 </tr>
                 <tr>
-                  <td style="width: 25%">https://absensi/idEvent</td>
+                  <td>
+                    <a th:href="@{/attendance/{eventId}(eventId=${event.id})}" th:text="@{|http://localhost:8081/attendance/${event.id}|}" target="_blank" id="link1"></a>
+                    <a onclick="copyToClipboard1()" id="copyButton1">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="20" width="20"><rect width="256" height="256" fill="none"></rect><polyline points="216 184 216 40 72 40" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"></polyline><rect x="40" y="72" width="144" height="144" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"></rect></svg></a>
+                    <span id="message1" style="display:none; margin-left:5px"><svg style="color: rgb(31, 177, 11);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16"> <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" fill="#1fb10b" style="width:30px; height:30px; margin-right:5px;"></path> </svg> Link berhasil disalin!</span>
+                    <script>
+                      function copyToClipboard1() {
+                        const input = document.createElement('input');
+                        input.setAttribute('value', document.getElementById('link1').href);
+                        document.body.appendChild(input);
+                        input.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(input);
+
+                        // Menampilkan pop-up notifikasi selama 5 detik
+                        const message = document.getElementById('message1');
+                        message.style.display = 'inline-block';
+                        setTimeout(() => {
+                          message.style.display = 'none';
+                        }, 5000);
+                      }
+                    </script>
+                  </td>
                 </tr>
               </table>
             </div>
