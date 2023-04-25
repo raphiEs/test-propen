@@ -59,7 +59,7 @@
                                             <img src="https://images.pexels.com/photos/351262/pexels-photo-351262.jpeg?auto=compress&cs=tinysrgb&w=286&h=180&dpr=1" alt="Foto" width="286" height="180">
                                             <h2 class="card1-title" th:text="${company.name}"></h2>
                                             <p class="card1-description" th:text="${company.client_information}"></p>
-                                            <a class="btn-detail" th:href="@{/company/view/} + ${company.id}" style="margin-left: 10px;">Detail</a>
+                                            <a th:class="${'btn btn-primary'}" th:href="@{/company/view/} + ${company.id}" style="margin-left: 10px;">Detail</a>
                                         </div>
 <!--                                    </div>-->
                                 </tr>

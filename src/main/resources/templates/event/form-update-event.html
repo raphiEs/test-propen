@@ -1,92 +1,139 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
 <head>
-    <title>PWCDEV</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <!--<div th:insert="navbar :: navbar">  </div>-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Update Event</title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+    <script>
+        function cancelForm() {
+            // Mengambil elemen-elemen input pada form
+            var inputElements = document.getElementsByTagName("input");
+
+            // Menghapus nilai pada masing-masing elemen input
+            for (var i = 0; i < inputElements.length; i++) {
+                inputElements[i].value = "";
+            }
+
+            // Kembali ke halaman sebelumnya
+            history.back();
+        }
+    </script>
 </head>
 
 <body>
-<div class="container">
-    <div class="card m-4 p-4">
-        <div class="card-body">
-            <div class="justify-content-center">
-                <h2>Update Event</h2>
-                <br>
-                <form th:action="@{/event/update}"
-                      th:object="${event}" method="POST">
-                    <input type="hidden"
-                           name="id"
-                           th:value="${event.id}">
-                    <input type="hidden"
-                           name="projectId"
-                           th:value="${project.id}">
-                    <input type="hidden"
-                           name="momName"
-                           th:value="${event.momName}">
-                    <input type="hidden"
-                           name="momUrl"
-                           th:value="${event.momUrl}">
-                    <input type="hidden"
-                           name="momLastUpdate"
-                           th:value="${event.momLastUpdate}">
-                    <input type="hidden"
-                           name="created_at"
-                           th:value="${event.created_at}">
-                    <input type="hidden"
-                           name="created_by"
-                           th:value="${event.created_by}">
+<div class="dashboard-main-wrapper">
+    <div class="dashboard-header">
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+    </div>
 
-                    Nama Proyek: <br>
-                    <input class="form-control"
-                           type="text"
-                           name="projectName"
-                           th:value="${project.name}" disabled/>
-                    <br><br>
-
-                    Nama Event: <br>
-                    <input class="form-control"
-                           type="text"
-                           name="name"
-                           th:value="${event.name}" />
-                    <br><br>
-
-                    Tanggal Mulai Event: <br>
-                    <input class="form-control"
-                           type="datetime-local"
-                           name="startDate"
-                           th:value="${event.startDate}"/>
-                    <br><br>
-
-                    Tanggal Berakhir Event: <br>
-                    <input class="form-control"
-                           type="datetime-local"
-                           name="endDate"
-                           th:value="${event.endDate}"/>
-                    <br><br>
-
-                    Summary: <br>
-                    <input class="form-control"
-                           type="text"
-                           name="summary"
-                           th:value="${event.summary}"/>
-                    <br><br>
-
-                    Detailed Summary: <br>
-                    <input class="form-control"
-                           type="text"
-                           name="detailedSummary"
-                           th:value="${event.detailedSummary}"/>
-                    <br><br>
-
-                    <a class="btn btn-primary" href="/">Cancel</a>
-                    <button style="float: right;"
-                            class="btn btn-primary"
-                            type="submit">Update</button>
-
-                </form>
-            </div>
+    <div class="nav-left-sidebar sidebar-dark">
+        <div class="menu-list">
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
         </div>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+                        <span th:text="${success}"></span>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Update Event</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">Proyek</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/project/view/} + ${project.id}" class="breadcrumb-link">Detail Proyek</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/event/view/} + ${id}" class="breadcrumb-link">Detail Event</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/event/update/} + ${id}" class="breadcrumb-link"><b>Update Event</b></a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-section" id="overview">
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:action="@{/event/update}"
+                                  th:object="${event}" method="POST">
+                                <input type="hidden"
+                                       name="id"
+                                       th:value="${event.id}">
+                                <input type="hidden"
+                                       name="projectId"
+                                       th:value="${project.id}">
+                                <input type="hidden"
+                                       name="momName"
+                                       th:value="${event.momName}">
+                                <input type="hidden"
+                                       name="momUrl"
+                                       th:value="${event.momUrl}">
+                                <input type="hidden"
+                                       name="momLastUpdate"
+                                       th:value="${event.momLastUpdate}">
+                                <input type="hidden"
+                                       name="created_at"
+                                       th:value="${event.created_at}">
+                                <input type="hidden"
+                                       name="created_by"
+                                       th:value="${event.created_by}">
+                                <div class="form-group">
+                                    <label class="col-form-label">Nama Proyek <span style="color:red;">*</span></label>
+                                    <input type="text" name="projectName" class="form-control" th:value="${project.name}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Nama Event <span style="color:red;">*</span></label>
+                                    <input type="text" name="name" class="form-control" th:value="${event.name}" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Tanggal Mulai Event <span style="color:red;">*</span></label>
+                                    <input type="datetime-local" name="startDate" class="form-control" th:value="${event.startDate}" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Tanggal Berakhir Event</label>
+                                    <input type="datetime-local" name="endDate" class="form-control" th:value="${event.endDate}" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Summary</label>
+                                    <input type="text" name="summary" class="form-control" th:value="${event.summary}" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Detailed Summary</label>
+                                    <input type="text" name="detailedSummary" class="form-control" th:value="${event.detailedSummary}" />
+                                </div>
+                                <div class="float-right">
+                                    <button class="btn btn-space btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-space btn-secondary" id="cancel-btn" onclick="cancelForm()" >Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end basic form  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end input groups -->
+            <!-- ============================================================== -->
+        </div>
+        <footer>
+            <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+        </footer>
     </div>
 </div>
 </body>
+</html>
+

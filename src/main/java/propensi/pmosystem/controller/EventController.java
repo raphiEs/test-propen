@@ -44,6 +44,9 @@ public class EventController {
     @Autowired
     private ProjectUserService projectUserService;
 
+    @Autowired
+    private AttendanceService attendanceService;
+
     @GetMapping("project/view/{id}/event/add")
     private String addEventFormPage(@PathVariable Long id,
                                     Model model) {
@@ -113,8 +116,13 @@ public class EventController {
 
         //model.addAttribute("roleLogin", loginUser_.getRole().getId());
         //model.addAttribute("projectUsers", projectUsers);
+
+        //Success pop-up message
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Event '" + event.getName() + "' berhasil ditambahkan"));
+
         model.addAttribute("loginUser", loginUser_);
-        return "home";
+        return "redirect:/project/view/" + idProyek;
     }
 
     @GetMapping("/event/view/{id}")
@@ -133,10 +141,14 @@ public class EventController {
         //Get project of event
         ProjectModel project = projectService.findById(event.getProject().getId());
 
+        //Get attendance list of event
+        List<AttendanceModel> listAttendance = attendanceService.findEventAttendance(event);
+        System.out.println(listAttendance.size());
         //model.addAttribute("message", message);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("project", project);
         model.addAttribute("event", event);
+        model.addAttribute("listAttendance", listAttendance);
         return "event/view-event";
     }
 
@@ -165,7 +177,8 @@ public class EventController {
     @PostMapping("/event/update")
     public String updateEventSubmitPage(@ModelAttribute EventModel updatedEvent,
                                         @RequestParam String projectId,
-                                        Model model){
+                                        Model model,
+                                        RedirectAttributes redirectAttributes){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -179,10 +192,13 @@ public class EventController {
         //Update event
         eventService.updateEvent(updatedEvent);
 
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Informasi event '" + updatedEvent.getName() + "' berhasil diubah"));
+
         model.addAttribute("project", assignedProject);
         model.addAttribute("event", updatedEvent);
         model.addAttribute("loginUser", loginUser_);
-        return "event/view-event";
+        return "redirect:/event/view/" + updatedEvent.getId().toString();
     }
 
     @GetMapping("/event/mom/update/{id}")
@@ -210,7 +226,8 @@ public class EventController {
     @PostMapping("/event/mom/update")
     public String updateMoMSubmitPage(@ModelAttribute EventModel updatedEvent,
                                       @RequestParam String projectId,
-                                      Model model){
+                                      Model model,
+                                      RedirectAttributes redirectAttributes){
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -225,15 +242,19 @@ public class EventController {
         //Update event
         eventService.updateEvent(updatedEvent);
 
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Link MoM event '" + updatedEvent.getName() + "' berhasil diubah"));
+
         model.addAttribute("project", assignedProject);
         model.addAttribute("event", updatedEvent);
         model.addAttribute("loginUser", loginUser_);
-        return "event/view-event";
+        return "redirect:/event/view/" + updatedEvent.getId().toString();
     }
 
     @GetMapping(value = "/event/remove/{id}")
     public String deleteUserForm(@PathVariable Long id,
-                                 Model model) {
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
         //Auth
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -248,9 +269,25 @@ public class EventController {
         ProjectModel project = event.getProject();
         List<EventModel> listEvent = project.getProjectEvent();
 
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Event '" + event.getName() + "' berhasil dihapus"));
+
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("listEvent", listEvent);
 
         return "redirect:/project/view/" + project.getId().toString();
+    }
+
+    @GetMapping(value = "event/view/attendance/{idEvent}")
+    public String addAttendanceFormPage(Model model, @PathVariable Long idEvent){
+        AttendanceModel newAttendance = new AttendanceModel();
+        EventModel event = eventService.getEventById(idEvent);
+        ProjectModel project = projectService.findById(event.getProject().getId());
+        model.addAttribute("event", event);
+        model.addAttribute("project", project);
+        model.addAttribute("accessedFrom","detailEvent");
+        model.addAttribute("attendance", newAttendance);
+
+        return "attendance/form-add";
     }
 }
