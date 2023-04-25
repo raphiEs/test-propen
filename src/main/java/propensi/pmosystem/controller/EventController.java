@@ -278,12 +278,6 @@ public class EventController {
         return "redirect:/project/view/" + project.getId().toString();
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-=======
->>>>>>> f14e324b9cd47d9ef96b7b4d2a5c00a14daec2d5
     @GetMapping(value = "event/view/attendance/{idEvent}")
     public String addAttendanceFormPage(Model model, @PathVariable Long idEvent){
         AttendanceModel newAttendance = new AttendanceModel();
@@ -296,8 +290,4 @@ public class EventController {
 
         return "attendance/form-add";
     }
-<<<<<<< HEAD
->>>>>>> 1bfc153e895ea5b7164e76155a7d574eeb6be6f6
-=======
->>>>>>> f14e324b9cd47d9ef96b7b4d2a5c00a14daec2d5
 }
