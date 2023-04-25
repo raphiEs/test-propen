@@ -1,12 +1,19 @@
 package propensi.pmosystem.controller;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -14,7 +21,17 @@ import propensi.pmosystem.model.*;
 import propensi.pmosystem.security.UserDetailsServiceImpl;
 import propensi.pmosystem.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Time;
 import java.time.LocalDateTime;
@@ -29,6 +46,8 @@ public class ProjectController {
     @Autowired
     private UserService userService;
     @Autowired
+    private EventService eventService;
+    @Autowired
     private TimelineService timelineService;
     @Autowired
     private CompanyService companyService;
@@ -37,7 +56,8 @@ public class ProjectController {
     private ProjectUserService projectUserService;
     @Autowired
     private CompanyUserServiceImpl companyUserService;
-
+    @Autowired
+    private ResourceLoader resourceLoader;
     @GetMapping(value = "/add")
     private String addProjectFormPage(Model model) {
         ProjectModel project = new ProjectModel();
@@ -339,5 +359,56 @@ public class ProjectController {
         timelineService.updateTimeline(tl);
         redirectAttrs.addFlashAttribute("success", String.format("Milestone dengan nama "+ "`%s`" +"telah ditandai selesai!", tl.getMilestone_name()));
         return new ModelAndView("redirect:/project/timeline/milestone/" + tl.getProject().getId().toString());
+    }
+
+    @GetMapping(value = "/events/{projectId}/summary.pdf", produces = "application/pdf")
+    @ResponseBody
+    public byte[] generateEventSummary(@PathVariable("projectId") long projectId) throws Exception {
+
+        // Get events from the database using the projectId
+        List<EventModel> events = eventService.getListEventByProjectId(projectId);
+        // Create the PDF document
+        Document document = new Document();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        document.open();
+        PdfContentByte canvas = writer.getDirectContentUnder();
+//        Image image = Image.getInstance("../resources/static/images/bg-image.png");
+        Resource imageResource = resourceLoader.getResource("classpath:/static/images/bg-image.png");
+        String imageUrl = imageResource.getURL().toString();
+        Image image = Image.getInstance(new URL(imageUrl));
+        image.scaleAbsolute(document.getPageSize());
+        image.setAbsolutePosition(0, 0);
+        canvas.addImage(image);
+        BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        canvas.beginText();
+        canvas.setFontAndSize(bf, 10);
+        canvas.setTextMatrix(document.right()-85, document.bottom()-10);
+        canvas.showText("Generated at " + LocalDate.now());
+        canvas.endText();
+
+        Paragraph title = new Paragraph("Project: " + projectService.findById(projectId).getName(), new Font(Font.FontFamily.TIMES_ROMAN, 24, Font.BOLD));
+        Paragraph client = new Paragraph( projectService.findById(projectId).getCompany().getName(), new Font(Font.FontFamily.TIMES_ROMAN, 16));
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingBefore(150);
+        client.setAlignment(Element.ALIGN_CENTER);
+        document.add(title);
+        document.add(client);
+        document.add(new Paragraph("\n"));
+        int count = 1;
+        // Add event information to the PDF
+        for (EventModel event : events) {
+            document.add(new Paragraph("Event #" + count++,new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD)));
+            document.add(new Paragraph("Name: " + event.getName()));
+            document.add(new Paragraph("Start Date: " + event.getStartDate().toString().substring(0, 10)));
+            // document.add(new Paragraph("End Date: " + event.getEndDate().toString().substring(0, 10)));
+            document.add(new Paragraph("Summary: " + event.getSummary()));
+            document.add(new Paragraph("Detailed Summary: " + event.getDetailedSummary()));
+            document.add(new Paragraph("\n"));
+        }
+
+        document.close();
+        // Return the PDF as a byte array
+        return baos.toByteArray();
     }
 }
