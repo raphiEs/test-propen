@@ -57,7 +57,7 @@
                             <a class="btn btn-sm btn-outline-primary" th:href="@{/project/timeline/}+${project.id}" >Timeline Proyek</a>
                             <a class="btn btn-sm btn-outline-primary" th:href="@{|/project/events/${project.id}/summary.pdf|}" target="_blank" >Export Summary Proyek</a>
                             <div th:if="${roleLogin == 2}" class="float-right">
-                                <a class="btn btn-sm btn-outline-primary" th:href="@{/project/consultant/}+${project.id}" >Konsultan</a>
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{/project/consultant/}+${project.id}" >Assign Konsultan</a>
                                 <a class="btn btn-sm btn-outline-primary" th:href="@{/project/update/}+${project.id}" >Edit</a>
                             </div>
                         </h5>
@@ -69,10 +69,8 @@
                                 </tr>
                                 <tr>
                                     <td>Consultants</td>
-                                    <td>
-                                        <ul>
-                                            <li th:each="consultant, iterationStatus : ${listConsultant}" th:text="${consultant.user.name}"></li>
-                                        </ul>
+                                    <td>: <span th:each="consultant,iterationStatus : ${listConsultant}"
+                                                th:text="${consultant.user.name} + ${!iterationStatus.last ? ', ' : ''}"></span>
                                     </td>
                                 </tr>
                                 <tr>
