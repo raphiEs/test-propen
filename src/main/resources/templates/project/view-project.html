@@ -71,7 +71,7 @@
                                     <td>Consultants</td>
                                     <td>
                                         <ul>
-                                            <li th:each="consultant, iterationStatus : ${listConsultant}"></li>
+                                            <li th:each="consultant, iterationStatus : ${listConsultant}" th:text="${consultant.user.name}"></li>
                                         </ul>
                                     </td>
                                 </tr>
