@@ -165,7 +165,7 @@ public class ProjectController {
         model.addAttribute("project", project);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("roleLogin", loginUser_.getRole().getId());
-        model.addAttribute("listConsultant", projectUserService.findAllByProject(project.getId()));
+        model.addAttribute("listConsultant", projectUserService.findAllByProjectAndRole(project.getId(), Long.valueOf(3)));
         List<ProjectUserModel> listprojectusermodel = projectUserService.findAllById(id);
         if (listprojectusermodel.size() == 1 && loginUser_.getRole().getName().equals("Manajer")) {
             model.addAttribute("warning", true);
