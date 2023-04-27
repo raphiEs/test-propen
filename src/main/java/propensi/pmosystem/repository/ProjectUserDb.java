@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProjectUserDb extends JpaRepository<ProjectUserModel, Long> {
     @Query("SELECT a FROM ProjectUserModel a WHERE a.project.id = :project and a.user.role.id = :role")
-    List<ProjectUserModel> findAllByProjectIdAAndUserRole(@Param("project") Long id, @Param("userRole") Long role);
+    List<ProjectUserModel> findAllByProjectIdAndUserRole(@Param("project") Long id, @Param("userRole") Long role);
     List<ProjectUserModel> findAllByProjectId(Long id);
     List<ProjectUserModel> findAllByUserId(Long id);
 }

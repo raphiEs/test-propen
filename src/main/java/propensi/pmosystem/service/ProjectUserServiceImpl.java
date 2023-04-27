@@ -45,7 +45,7 @@ public class ProjectUserServiceImpl implements ProjectUserService{
 
     @Override
     public List<ProjectUserModel> findAllByProjectAndRole(Long idProject, Long role) {
-        return projectUserDb.findAllByProjectIdAAndUserRole(idProject, role);
+        return projectUserDb.findAllByProjectIdAndUserRole(idProject, role);
     }
 
     @Override
