@@ -131,7 +131,7 @@ public class ProjectController {
         User user = (User) auth.getPrincipal();
         String username = user.getUsername();
         UserModel loginUser = userService.getUserByUsername(username);
-        CompanyUserModel companyUser = companyUserService.findByUser(loginUser);
+        List<CompanyUserModel> companyUser = companyUserService.getCompanyUserByUserId(loginUser.getId());
         List<ProjectUserModel> projectUsers = new ArrayList<>();
 //        if (loginUser.getRole().getId() == 1 || loginUser.getRole().getId() == 2)
 //            projectUsers = projectUserService.findAllByUser(loginUser.getId());

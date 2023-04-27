@@ -23,6 +23,8 @@ public class WebSecurityConfig{
                 .authorizeHttpRequests()
                 .requestMatchers("/css/**").permitAll()
                 .requestMatchers("/js/**").permitAll()
+                .requestMatchers("/images/**").permitAll()
+                .requestMatchers("/vendor/**").permitAll()
                 .requestMatchers("/attendance/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
