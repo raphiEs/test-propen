@@ -28,8 +28,9 @@ public class FeedbackServiceImpl implements FeedbackService{
     }
 
     @Override
-    public List<FeedbackModel> getListFeedback() {
-        return feedbackDb.findAll();
+    public List<FeedbackModel> getListFeedbackByProject(Long idProject) {
+
+        return feedbackDb.findAllByProjectId(idProject);
     }
 
     @Override

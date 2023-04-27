@@ -51,15 +51,9 @@ public class AttendanceController {
                                       @RequestParam(value = "accessedFrom", required = false) String accessedFrom,
                                       @PathVariable Long idEvent,
                                       RedirectAttributes redirectAttributes){
-        //Auth
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-        String username = loginUser.getUsername();
-        UserModel loginUser_ = userService.getUserByUsername(username);
 
         //Set attendance attrs
         attendance.setCreated_at(LocalDateTime.now());
-        attendance.setCreated_by(loginUser_.getId());
         EventModel event = eventService.getEventById(idEvent);
         attendance.setEvent(event);
 
