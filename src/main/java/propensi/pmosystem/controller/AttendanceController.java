@@ -82,6 +82,13 @@ public class AttendanceController {
                                           @PathVariable Long id,
                                           @PathVariable Long idEvent,
                                           RedirectAttributes redirectAttributes){
+
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
         //Deleting attendance from DB
         AttendanceModel participant = attendanceService.findById(id);
         EventModel event = eventService.getEventById(idEvent);
