@@ -14,5 +14,6 @@ import java.util.Optional;
 public interface FeedbackDb extends JpaRepository<FeedbackModel, Long> {
     List<FeedbackModel> findAll();
     Optional<FeedbackModel> findById(Long id);
+    List<FeedbackModel> findAllByProjectId(Long id);
 
 }

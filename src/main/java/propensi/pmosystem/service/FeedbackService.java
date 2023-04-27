@@ -10,7 +10,7 @@ public interface FeedbackService {
 
     void deleteFeedback(FeedbackModel feedback);
 
-    List<FeedbackModel> getListFeedback();
+    List<FeedbackModel> getListFeedbackByProject(Long idProject);
 
     FeedbackModel getFeedbackById(Long id);
 }
