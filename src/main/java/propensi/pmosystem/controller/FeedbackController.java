@@ -16,6 +16,7 @@ import propensi.pmosystem.service.ProjectService;
 import propensi.pmosystem.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,10 +36,18 @@ public class FeedbackController {
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
-
+        ProjectModel projectModel = projectService.findById(idProject);
+        List<UserModel> listUserModel = new ArrayList<>();
         List<FeedbackModel> listFeedback = feedbackService.getListFeedbackByProject(idProject);
+        for (FeedbackModel feedbackModel: listFeedback){
+            UserModel userModel = userService.getUserById(feedbackModel.getCreated_by());
+            listUserModel.add(userModel);
+        }
+        model.addAttribute("listUserModel", listUserModel);
         model.addAttribute("listFeedback", listFeedback);
-        return "project-feedback";
+        model.addAttribute("loginUser", loginUser_);
+        model.addAttribute("project", projectModel);
+        return "project/project-feedback";
 
     }
     @GetMapping(value = "/{idProject}/feedback/add")
