@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.pmosystem.model.*;
 import propensi.pmosystem.repository.BusinessDb;
@@ -47,6 +48,9 @@ public class CompanyController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProjectUserService projectUserService;
 
     @GetMapping("/company/add")
     private String addCompanyFormPage(Model model) {
@@ -274,5 +278,80 @@ public class CompanyController {
         else {
             return "redirect:/company/update/" + idCompany;
         }
+    }
+    @GetMapping("/company/{idCompany}/assign_user")
+    private String assignUserKlien(Model model, @PathVariable Long idCompany){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+        model.addAttribute("loginUser", loginUser_);
+        CompanyModel company = companyService.getCompanyById(idCompany);
+        model.addAttribute("company", company);
+
+        List<CompanyUserModel> companyUserList = companyUserService.getCompanyUserByCompanyId(idCompany);
+        List<UserModel> listUser = new ArrayList<UserModel>();
+        for(CompanyUserModel a : companyUserList ){
+            if(a.getUser().getRole().getName().equals("Klien")){
+                model.addAttribute("klien",true);
+                listUser.add(a.getUser());
+            }
+        }
+        List<UserModel> listUserAll = userService.getUserList();
+        List<UserModel> listKlien = new ArrayList<UserModel>();
+        for(UserModel a : listUserAll) {
+            if (a.getRole().getName().equals("Klien")) {
+                listKlien.add(a);
+            }
+        }
+        List<UserModel> listKlienfinal = new ArrayList<>(listKlien);
+        listKlienfinal.removeAll(listUser);
+        model.addAttribute("listKlien",listKlienfinal); // ini untuk tambah
+        model.addAttribute("listUser", listUser); // ini list yang sudah ada
+        model.addAttribute("jumlahKlien", listUser.size()+1);
+        model.addAttribute("company", company);
+
+        return "form-assign-user-klien";
+    }
+    @GetMapping(value = "company/{idCompany}/assign_user/remove/{id}")
+    public ModelAndView deleteKonsultan(@PathVariable Long id,
+                                        @PathVariable Long idCompany,
+                                        Model model,
+                                        RedirectAttributes redirectAttrs
+                                        ) {
+        UserModel user = userService.getUserById(id);
+        List<ProjectUserModel> projectUserList = projectUserService.findAllByUser(user.getId());
+        for (ProjectUserModel projectUser : projectUserList){
+            projectUserService.removeKonsultan(projectUser.getId(), user);
+        }
+        companyUserService.removeKlien(id,user);
+        redirectAttrs.addFlashAttribute("success",
+                String.format("Konsultan dengan username "+ "`%s`" +" berhasil dihapus", user.getUsername()));
+        return new ModelAndView("redirect:/company/" + idCompany +"/assign-user");
+    }
+
+    @PostMapping(value = "/company/{idCompany}/assign_user")
+    private ModelAndView addKonsultanSubmit(@PathVariable Long idCompany, @RequestParam(value = "klienselect", required = true) String username, @ModelAttribute UserModel user, Model model, RedirectAttributes redirectAttrs){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        UserModel loginUser_ = userService.getUserByUsername(loginUser.getUsername());
+        CompanyUserModel companyUser = new CompanyUserModel();
+        CompanyModel company = companyService.getCompanyById(idCompany);
+        UserModel usermodel = userService.getUserByUsername(username);
+        companyUser.setCompany(company);
+        companyUser.setUser(usermodel);
+        companyUser.setCreated_at(LocalDateTime.now());
+        companyUser.setCreated_by(loginUser_.getId());
+        List<ProjectModel> companyProjects = companyUser.getCompany().getProjectCompany();
+        for (ProjectModel companyProject : companyProjects){
+            ProjectUserModel projectUserNew = new ProjectUserModel();
+            projectUserNew.setProject(companyProject);
+            projectUserNew.setUser(usermodel);
+            projectUserNew.setCreated_at(LocalDateTime.now());
+            projectUserNew.setCreated_by(loginUser_.getId());
+        }
+        companyUserService.addCompanyUser(companyUser);
+        redirectAttrs.addFlashAttribute("success", String.format("Klien dengan username "+ "`%s`" +" berhasil ditambahkan", username));
+        return new ModelAndView("redirect:/company/{idCompany}/assign_user");
     }
 }
