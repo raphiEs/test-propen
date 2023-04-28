@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Detail Klien</title>
+    <title>Detail Perusahaan</title>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
 </head>
 
@@ -34,12 +34,12 @@
 <!--                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
 <!--                    </div>-->
                     <div class="page-header">
-                        <h2 class="pageheader-title">Detail Klien</h2>
+                        <h2 class="pageheader-title">Detail Perusahaan</h2>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/company/view/all}" class="breadcrumb-link">Klien</a></li>
-                                    <li class="breadcrumb-item"><a th:href="@{/company/view/} + ${id}" class="breadcrumb-link"><b>Detail Klien</b></a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/company/view/all}" class="breadcrumb-link">Perusahaan</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/company/view/} + ${id}" class="breadcrumb-link"><b>Detail Perusahaan</b></a></li>
                                 </ol>
                             </nav>
                         </div>
@@ -54,9 +54,10 @@
                     <div class="card">
                         <h5 class="card-header d-flex justify-content-between align-items-center" >
                             <span th:text="${company.name}"></span>
-                            <!--              <div th:if="${roleLogin == 2}" class="float-right">-->
-                            <a class="btn btn-sm btn-outline-primary" th:href="@{/company/update/} + ${company.id}" >Edit</a>
-                            <!--              </div>-->
+                            <div class="float-right">
+                                <a class="btn btn-sm btn-outline-primary" th:href="'/company/'+${company.id}+'/assign-user'" >Assign User</a>
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{/company/update/} + ${company.id}" >Edit</a>
+                            </div>
                         </h5>
                         <div class="card-body">
                             <div class="row">
@@ -92,7 +93,7 @@
                     </div>
                     <div class="card">
                         <h5 class="card-header d-flex justify-content-between align-items-center">
-                            Daftar Proyek Klien
+                            Daftar Proyek Perusahaan
                             <a class="btn btn-sm btn-outline-primary" th:href="@{/company/project/add/} + ${company.id}">+ Tambah</a>
                         </h5>
                         <div class="card-body">

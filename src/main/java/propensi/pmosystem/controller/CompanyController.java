@@ -279,7 +279,7 @@ public class CompanyController {
             return "redirect:/company/update/" + idCompany;
         }
     }
-    @GetMapping("/company/{idCompany}/assign_user")
+    @GetMapping("/company/{idCompany}/assign-user")
     private String assignUserKlien(Model model, @PathVariable Long idCompany){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -313,8 +313,8 @@ public class CompanyController {
 
         return "form-assign-user-klien";
     }
-    @GetMapping(value = "company/{idCompany}/assign_user/remove/{id}")
-    public ModelAndView deleteKonsultan(@PathVariable Long id,
+    @GetMapping(value = "company/{idCompany}/assign-user/remove/{id}")
+    public ModelAndView deleteKlien(@PathVariable Long id,
                                         @PathVariable Long idCompany,
                                         Model model,
                                         RedirectAttributes redirectAttrs
@@ -324,14 +324,14 @@ public class CompanyController {
         for (ProjectUserModel projectUser : projectUserList){
             projectUserService.removeKonsultan(projectUser.getId(), user);
         }
-        companyUserService.removeKlien(id,user);
+        companyUserService.removeKlien(idCompany,user);
         redirectAttrs.addFlashAttribute("success",
-                String.format("Konsultan dengan username "+ "`%s`" +" berhasil dihapus", user.getUsername()));
+                String.format("Klien dengan username "+ "`%s`" +" berhasil dihapus", user.getUsername()));
         return new ModelAndView("redirect:/company/" + idCompany +"/assign-user");
     }
 
-    @PostMapping(value = "/company/{idCompany}/assign_user")
-    private ModelAndView addKonsultanSubmit(@PathVariable Long idCompany, @RequestParam(value = "klienselect", required = true) String username, @ModelAttribute UserModel user, Model model, RedirectAttributes redirectAttrs){
+    @PostMapping(value = "/company/{idCompany}/assign-user")
+    private ModelAndView addKlienSubmit(@PathVariable Long idCompany, @RequestParam(value = "klienselect", required = true) String username, @ModelAttribute UserModel user, Model model, RedirectAttributes redirectAttrs){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         UserModel loginUser_ = userService.getUserByUsername(loginUser.getUsername());
@@ -342,16 +342,17 @@ public class CompanyController {
         companyUser.setUser(usermodel);
         companyUser.setCreated_at(LocalDateTime.now());
         companyUser.setCreated_by(loginUser_.getId());
-        List<ProjectModel> companyProjects = companyUser.getCompany().getProjectCompany();
+        List<ProjectModel> companyProjects = company.getProjectCompany();
         for (ProjectModel companyProject : companyProjects){
             ProjectUserModel projectUserNew = new ProjectUserModel();
             projectUserNew.setProject(companyProject);
             projectUserNew.setUser(usermodel);
             projectUserNew.setCreated_at(LocalDateTime.now());
             projectUserNew.setCreated_by(loginUser_.getId());
+            projectUserService.addProjectUser(projectUserNew);
         }
         companyUserService.addCompanyUser(companyUser);
         redirectAttrs.addFlashAttribute("success", String.format("Klien dengan username "+ "`%s`" +" berhasil ditambahkan", username));
-        return new ModelAndView("redirect:/company/{idCompany}/assign_user");
+        return new ModelAndView("redirect:/company/{idCompany}/assign-user");
     }
 }
