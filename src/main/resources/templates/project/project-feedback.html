@@ -49,40 +49,49 @@
                 <!-- ============================================================== -->
                 <!-- basic table  -->
                 <!-- ============================================================== -->
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="card">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card align-items-stretch">
                         <h5 class="card-header d-flex align-items-center">
                             <span th:text="'Feedback: ' + ${project.name}"></span>
                         </h5>
-                        <div class="card-body shadow-none" style="overflow-y: scroll; max-height: 56vh;">
+                        <div class="card-body" style="overflow-y: scroll; max-height: 55vh;">
+                            <div th:if="${#lists.isEmpty(listFeedback)}">
+                                Proyek ini belum memiliki feedback!
+                            </div>
                             <div class="table-responsive">
-                                <div class="content-container">
+                                <tr th:each="feedback,iteration : ${listFeedback}">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-1">
-                                        <tr th:each="feedback,iteration : ${listFeedback}">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title" th:text="*{listUserModel[__${iteration.count-1}__].username}+' || ' + ${#calendars.format(new java.util.Date(feedback.created_at), 'EEE, dd MMMM yyyy HH:mm')}" ></h5>
-                                                    <p class="card-text" th:text="${feedback.feedback}"></p>
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <div class="float-left">
+                                                    <p class="card-title" th:text="*{listUserModel[__${iteration.count-1}__].name}+' || ' + ${#calendars.format(new java.util.Date(feedback.created_at), 'EEE, dd MMMM yyyy HH:mm')}" ></p>
+                                                </div>
+                                                <div class="float-right">
+                                                    <a th:href="'/'+${project.id}+'/feedback/remove/'+${feedback.id}" ><i class="fas fa-trash"></i></a>
                                                 </div>
                                             </div>
-                                        </tr>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="form-group">
-                                <label class="col-form-label"></label>
-                                <form th:action="'/'+ ${project.id} + '/feedback/add'" th:object="${feedback}" method="POST">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" name="feedback">
-                                        <div class="input-group-append">
-                                            <button class="btn">
-                                                <i class="fas fa-paper-plane" aria-hidden="true" style="color: dodgerblue"></i>
-                                            </button>
+                                            <div class="card-body">
+                                                <h5 class="card-text" th:text="${feedback.feedback}"></h5>
+                                            </div>
                                         </div>
                                     </div>
-                                </form>
+                                </tr>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form th:action="'/'+ ${project.id} + '/feedback/add'" th:object="${feedback}" method="POST">
+                                        <div class="input-group mt-1 mb-1">
+                                            <input type="text" class="form-control" name="feedback" th:placeholder = "'Tuliskan feedback untuk ' + ${project.name} + '...'">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-sm btn-outline-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

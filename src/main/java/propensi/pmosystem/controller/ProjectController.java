@@ -61,14 +61,20 @@ public class ProjectController {
     @GetMapping(value = "/add")
     private String addProjectFormPage(Model model) {
         ProjectModel project = new ProjectModel();
-        List<CompanyModel> clients = companyService.getListCompany();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
+        List<CompanyModel> clients = companyService.getListCompany();
+        List<CompanyModel> clientsValid = new ArrayList<>();
+        for (CompanyModel companyModel: clients){
+            if (companyModel.getCreated_by().equals(loginUser_.getId())){
+                clientsValid.add(companyModel);
+            }
+        }
         if (loginUser_.getRole().getId() == 2) {
             model.addAttribute("newProject", project);
-            model.addAttribute("clients", clients);
+            model.addAttribute("clients", clientsValid);
             model.addAttribute("loginUser", loginUser_);
             model.addAttribute("accessedFrom", "listProject");
             return "project/form-add-project";
