@@ -21,4 +21,5 @@ public interface CompanyUserService {
     List<CompanyUserModel> getCompanyUserByUserId(Long id);
 
     List<CompanyUserModel> getCompanyUserByCompanyId(Long id);
+    void removeKlien(Long id, UserModel user);
 }
