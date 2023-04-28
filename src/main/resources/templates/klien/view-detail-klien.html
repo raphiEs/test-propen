@@ -109,9 +109,6 @@
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                     </thead>
-                                    <!--									<div th:if="listUser.length != null">-->
-                                    <!--										-->
-                                    <!--									</div>-->
                                     <tbody th:each="proyek, iterationStatus : ${listProject}">
                                     <tr>
                                         <td th:text="${iterationStatus.count}"></td>
@@ -121,6 +118,7 @@
                                         <td th:text="${proyek.status}"></td>
                                         <td class="text-center">
                                             <a th:class="${'btn btn-primary'}" th:href="@{/project/view/} + ${proyek.id}">Detail</a>
+                                            <a th:class="${'btn btn-primary'}" th:href="'/' + ${proyek.id} + '/feedback'">Feedback</a>
                                         </td>
                                     </tr>
                                     </tbody>
