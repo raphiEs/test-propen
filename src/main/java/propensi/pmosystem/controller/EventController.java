@@ -55,23 +55,25 @@ public class EventController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        //Create new empty event
-        EventModel event = new EventModel();
-        //List<UserModel> listConsultant = userService.getUserByRole(Long.parseLong("4"));
+        if (!loginUser_.getRole().getName().equals("Klien") || !loginUser_.getRole().getName().equals("Admin")) {
+            //Create new empty event
+            EventModel event = new EventModel();
+            //List<UserModel> listConsultant = userService.getUserByRole(Long.parseLong("4"));
 
-        //Get belonging project
-        ProjectModel project = projectService.findById(id);
-        String namaProyek = project.getName();
+            //Get belonging project
+            ProjectModel project = projectService.findById(id);
+            String namaProyek = project.getName();
 
-        //Set event attr
-        event.setProject(project);
+            //Set event attr
+            event.setProject(project);
 
-        model.addAttribute("event", event);
-        model.addAttribute("namaProyek", namaProyek);
-        //model.addAttribute("listConsultant", listConsultant);
-        model.addAttribute("loginUser", loginUser_);
+            model.addAttribute("event", event);
+            model.addAttribute("namaProyek", namaProyek);
+            //model.addAttribute("listConsultant", listConsultant);
+            model.addAttribute("loginUser", loginUser_);
 
-        return "event/form-add-event";
+            return "event/form-add-event";
+        }else return "access-denied";
     }
 
     @PostMapping("event/add")
@@ -165,17 +167,19 @@ public class EventController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        //Get event to update
-        EventModel event = eventService.getEventById(id);
+        if (!loginUser_.getRole().getName().equals("Klien")) {
+            //Get event to update
+            EventModel event = eventService.getEventById(id);
 
-        //Get project of event
-        ProjectModel project = projectService.findById(event.getProject().getId());
+            //Get project of event
+            ProjectModel project = projectService.findById(event.getProject().getId());
 
-        //model.addAttribute("clients", clients);
-        model.addAttribute("loginUser", loginUser_);
-        model.addAttribute("project", project);
-        model.addAttribute("event", event);
-        return "event/form-update-event";
+            //model.addAttribute("clients", clients);
+            model.addAttribute("loginUser", loginUser_);
+            model.addAttribute("project", project);
+            model.addAttribute("event", event);
+            return "event/form-update-event";
+        } else return "access-denied";
     }
 
     @PostMapping("/event/update")
@@ -214,17 +218,19 @@ public class EventController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        //Get event to update
-        EventModel event = eventService.getEventById(id);
+        if (!loginUser_.getRole().getName().equals("Klien")) {
+            //Get event to update
+            EventModel event = eventService.getEventById(id);
 
-        //Get project of event
-        ProjectModel project = projectService.findById(event.getProject().getId());
+            //Get project of event
+            ProjectModel project = projectService.findById(event.getProject().getId());
 
-        //model.addAttribute("clients", clients);
-        model.addAttribute("loginUser", loginUser_);
-        model.addAttribute("project", project);
-        model.addAttribute("event", event);
-        return "event/form-update-mom-event";
+            //model.addAttribute("clients", clients);
+            model.addAttribute("loginUser", loginUser_);
+            model.addAttribute("project", project);
+            model.addAttribute("event", event);
+            return "event/form-update-mom-event";
+        } else return "access-denied";
     }
 
     @PostMapping("/event/mom/update")
@@ -265,21 +271,23 @@ public class EventController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        //Get event to delete
-        EventModel event = eventService.getEventById(id);
-        eventService.deleteEvent(event);
+        if (!loginUser_.getRole().getName().equals("Klien")) {
+            //Get event to delete
+            EventModel event = eventService.getEventById(id);
+            eventService.deleteEvent(event);
 
-        //Get new list
-        ProjectModel project = event.getProject();
-        List<EventModel> listEvent = project.getProjectEvent();
+            //Get new list
+            ProjectModel project = event.getProject();
+            List<EventModel> listEvent = project.getProjectEvent();
 
-        redirectAttributes.addFlashAttribute("success",
-                String.format("Event '" + event.getName() + "' berhasil dihapus"));
+            redirectAttributes.addFlashAttribute("success",
+                    String.format("Event '" + event.getName() + "' berhasil dihapus"));
 
-        model.addAttribute("loginUser", loginUser_);
-        model.addAttribute("listEvent", listEvent);
+            model.addAttribute("loginUser", loginUser_);
+            model.addAttribute("listEvent", listEvent);
 
-        return "redirect:/project/view/" + project.getId().toString();
+            return "redirect:/project/view/" + project.getId().toString();
+        } else return "access-denied";
     }
 
     @GetMapping(value = "event/view/attendance/{idEvent}")
