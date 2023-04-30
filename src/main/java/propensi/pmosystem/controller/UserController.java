@@ -44,9 +44,12 @@ public class UserController {
         User user = (User) auth.getPrincipal();
         String username = user.getUsername();
         UserModel loginUser = userService.getUserByUsername(username);
-        model.addAttribute("user", userx);
-        model.addAttribute("loginUser", loginUser);
-        return "account";
+
+        if (!loginUser.getRole().getName().equals("Klien") || !loginUser.getRole().getName().equals("Konsultan")) {
+            model.addAttribute("user", userx);
+            model.addAttribute("loginUser", loginUser);
+            return "account";
+        } else return "access-denied";
     }
 
     @GetMapping(value = "/update-account")
@@ -56,10 +59,12 @@ public class UserController {
         User user = (User) auth.getPrincipal();
         String username = user.getUsername();
         UserModel loginUser = userService.getUserByUsername(username);
-        model.addAttribute("user", userx);
-        model.addAttribute("loginUser", loginUser);
-        model.addAttribute("message", "");
-        return "form-update-account";
+        if (!loginUser.getRole().getName().equals("Klien") || !loginUser.getRole().getName().equals("Konsultan")) {
+            model.addAttribute("user", userx);
+            model.addAttribute("loginUser", loginUser);
+            model.addAttribute("message", "");
+            return "form-update-account";
+        } else return "access-denied";
     }
 
     @PostMapping(value = "/update-account")
@@ -86,10 +91,13 @@ public class UserController {
         User user = (User) auth.getPrincipal();
         String username = user.getUsername();
         UserModel loginUser = userService.getUserByUsername(username);
-        model.addAttribute("loginUser", loginUser);
-        model.addAttribute("user", userx);
-        model.addAttribute("message", "");
-        return "reset-password";
+
+        if (!loginUser.getRole().getName().equals("Klien") || !loginUser.getRole().getName().equals("Konsultan")) {
+            model.addAttribute("loginUser", loginUser);
+            model.addAttribute("user", userx);
+            model.addAttribute("message", "");
+            return "reset-password";
+        } else return "accessed-denied";
     }
 
     @PostMapping(value = "/update-password")
@@ -129,12 +137,15 @@ public class UserController {
         User loginUser = (User) auth.getPrincipal();
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
-        UserModel user = new UserModel();
-        List<RoleModel> listRole = roleService.findAll();
-        model.addAttribute("user", user);
-        model.addAttribute("listRole",listRole);
-        model.addAttribute("loginUser",loginUser_);
-        return "form-add-user";
+
+        if (!loginUser_.getRole().getName().equals("Klien") || !loginUser_.getRole().getName().equals("Konsultan")) {
+            UserModel user = new UserModel();
+            List<RoleModel> listRole = roleService.findAll();
+            model.addAttribute("user", user);
+            model.addAttribute("listRole", listRole);
+            model.addAttribute("loginUser", loginUser_);
+            return "form-add-user";
+        } else return "access-denied";
     }
 
     @PostMapping(value = "/add")
@@ -156,19 +167,23 @@ public class UserController {
         List<UserModel> listUser = userService.getUserList();
         model.addAttribute("listUser", listUser);
         UserModel userx = userService.getUserByUsername(user.getUsername(req));
-        model.addAttribute("loginUser", userx);
-        return "viewall-user";
+        if (!userx.getRole().getName().equals("Klien") || !userx.getRole().getName().equals("Konsultan")) {
+            model.addAttribute("loginUser", userx);
+            return "viewall-user";
+        } else return "access-denied";
     }
 
     @GetMapping(value = "/remove/{username}")
     public String deleteUserForm(@PathVariable String username, Model model, RedirectAttributes redirectAttrs) {
         UserModel user = userService.getUserByUsername(username);
-        List<UserModel> listUser = userService.getUserList();
-        userService.removeUser(user);
-        model.addAttribute("listUser", listUser);
-        redirectAttrs.addFlashAttribute("success",
-                String.format("User "+ "`%s`" +" berhasil dihapus", username));
-        return "redirect:/user/viewall";
+        if (!user.getRole().getName().equals("Klien") || !user.getRole().getName().equals("Konsultan")) {
+            List<UserModel> listUser = userService.getUserList();
+            userService.removeUser(user);
+            model.addAttribute("listUser", listUser);
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("User " + "`%s`" + " berhasil dihapus", username));
+            return "redirect:/user/viewall";
+        } else return "access-denied";
     }
 
 }

@@ -102,13 +102,14 @@ public class FeedbackController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        ProjectModel project = projectService.findById(idProject);
-        FeedbackModel feedback = feedbackService.getFeedbackById(id);
-        project.getProjectFeedback().remove(feedback);
-        feedbackService.deleteFeedback(feedback);
+        if (loginUser_.getRole().getName().equals("Klien")) {
+            ProjectModel project = projectService.findById(idProject);
+            FeedbackModel feedback = feedbackService.getFeedbackById(id);
+            project.getProjectFeedback().remove(feedback);
+            feedbackService.deleteFeedback(feedback);
 
-        redirectAttributes.addFlashAttribute("success", String.format("Feedback berhasil dihapus."));
-
+            redirectAttributes.addFlashAttribute("success", String.format("Feedback berhasil dihapus."));
+        }
         return "redirect:/" + idProject + "/feedback";
     }
 

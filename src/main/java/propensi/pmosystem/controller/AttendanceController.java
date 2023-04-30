@@ -82,16 +82,18 @@ public class AttendanceController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
 
-        //Deleting attendance from DB
-        AttendanceModel participant = attendanceService.findById(id);
-        EventModel event = eventService.getEventById(idEvent);
-        event.getEventAttendance().remove(participant);
-        attendanceService.delete(participant);
+        if(!loginUser_.getRole().getName().equals("Klien")) {
+            //Deleting attendance from DB
+            AttendanceModel participant = attendanceService.findById(id);
+            EventModel event = eventService.getEventById(idEvent);
+            event.getEventAttendance().remove(participant);
+            attendanceService.delete(participant);
 
-        //Success pop-up message
-        redirectAttributes.addFlashAttribute("success",
-                String.format("Partisipan '" + participant.getName() + "' berhasil dihapus dari event "+ event.getName()));
-        model.addAttribute("participant", participant);
+            //Success pop-up message
+            redirectAttributes.addFlashAttribute("success",
+                    String.format("Partisipan '" + participant.getName() + "' berhasil dihapus dari event " + event.getName()));
+            model.addAttribute("participant", participant);
+        }
         return new ModelAndView("redirect:/event/view/{idEvent}");
     }
 }

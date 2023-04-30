@@ -194,7 +194,7 @@ public class ProjectController {
             model.addAttribute("oldProject", oldProject);
             model.addAttribute("loginUser", loginUser_);
             return "project/form-update-project";
-        } else return "redirect:/access-denied";
+        } else return "redirect:/project/view/"+id;
     }
 
     @PostMapping("update/{id}")
@@ -216,39 +216,50 @@ public class ProjectController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
         model.addAttribute("loginUser", loginUser_);
-        ProjectModel project = projectService.findById(id);
-        model.addAttribute("project", project);
 
-        List<ProjectUserModel> projectUserModelList = projectUserService.findAllById(id);
-        List<UserModel> listUser = new ArrayList<UserModel>();
-        for(ProjectUserModel a : projectUserModelList ){
-            if(a.getUser().getRole().getName().equals("Konsultan")){
-                model.addAttribute("konsultan",true);
-                listUser.add(a.getUser());
+        if (loginUser_.getRole().getName().equals("Manajer") || loginUser_.getRole().getName().equals("Admin")) {
+            ProjectModel project = projectService.findById(id);
+            model.addAttribute("project", project);
+
+            List<ProjectUserModel> projectUserModelList = projectUserService.findAllById(id);
+            List<UserModel> listUser = new ArrayList<UserModel>();
+            for (ProjectUserModel a : projectUserModelList) {
+                if (a.getUser().getRole().getName().equals("Konsultan")) {
+                    model.addAttribute("konsultan", true);
+                    listUser.add(a.getUser());
+                }
             }
-        }
-        List<UserModel> listUserAll = userService.getUserList();
-        List<UserModel> listKonsultan = new ArrayList<UserModel>();
-        for(UserModel a : listUserAll) {
-            if (a.getRole().getName().equals("Konsultan")) {
-                listKonsultan.add(a);
+            List<UserModel> listUserAll = userService.getUserList();
+            List<UserModel> listKonsultan = new ArrayList<UserModel>();
+            for (UserModel a : listUserAll) {
+                if (a.getRole().getName().equals("Konsultan")) {
+                    listKonsultan.add(a);
+                }
             }
-        }
-        List<UserModel> listKonsultanfinal = new ArrayList<>(listKonsultan);
-        listKonsultanfinal.removeAll(listUser);
-        model.addAttribute("listKonsultan",listKonsultanfinal); // ini untuk tambah
-        model.addAttribute("listUser", listUser); // ini list yang sudah ada
-        model.addAttribute("jumlahKonsultan", listUser.size()+1);
-        return "/project/form-view-add-consultant";
+            List<UserModel> listKonsultanfinal = new ArrayList<>(listKonsultan);
+            listKonsultanfinal.removeAll(listUser);
+            model.addAttribute("listKonsultan", listKonsultanfinal); // ini untuk tambah
+            model.addAttribute("listUser", listUser); // ini list yang sudah ada
+            model.addAttribute("jumlahKonsultan", listUser.size() + 1);
+            return "/project/form-view-add-consultant";
+        }else return "redirect:/project/viewall";
     }
 
     @GetMapping(value = "/consultant/remove/{id}/" + "{username}")
     public ModelAndView deleteKonsultan(@PathVariable Long id,@PathVariable String username, Model model, RedirectAttributes redirectAttrs) {
-        UserModel user = userService.getUserByUsername(username);
-        projectUserService.removeKonsultan(id,user);
-        redirectAttrs.addFlashAttribute("success",
-                String.format("Konsultan dengan username "+ "`%s`" +" berhasil dihapus", username));
-        return new ModelAndView("redirect:/project/consultant/{id}");
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = (User) auth.getPrincipal();
+        String usernameLogin = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(usernameLogin);
+
+        if(loginUser_.getRole().getName().equals("Manajer") || loginUser_.getRole().getName().equals("Admin")) {
+            UserModel user = userService.getUserByUsername(username);
+            projectUserService.removeKonsultan(id, user);
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Konsultan dengan username " + "`%s`" + " berhasil dihapus", username));
+            return new ModelAndView("redirect:/project/consultant/{id}");
+        }else return new ModelAndView("redirect:/project/viewall");
     }
 
     @PostMapping(value = "/consultant/add/{id}")
