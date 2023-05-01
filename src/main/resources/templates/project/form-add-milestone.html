@@ -33,6 +33,10 @@
             <span th:text="${error}"></span>
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           </div>
+          <div class="alert alert-danger alert-dismissible" role="alert" th:if="${failed}">
+            <span th:text="${failed}"></span>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          </div>
           <div class="page-header">
             <h2 class="pageheader-title" th:text="'Timeline Proyek'"></h2>
             <div class="page-breadcrumb">
