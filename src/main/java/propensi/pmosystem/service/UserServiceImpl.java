@@ -50,13 +50,6 @@ public class UserServiceImpl implements UserService {
         List<UserModel> users = userDb.findAllByRole(role);
         return users;
     }
-    @Override
-    public UserModel getUserById(Long id) {
-        Optional<UserModel> user = userDb.findById(id);
-        if (user.isPresent()){
-            return user.get();
-        } else return null;
-    }
 
     @Override
     public UserModel getUserById(Long id) {
