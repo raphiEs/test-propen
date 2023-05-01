@@ -1,45 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html lang="en" xmlns:th="http://thymeleaf.org">
-<head>
-  <head>
-    <title>PWCDEV</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <!--<div th:insert="navbar :: navbar">  </div>-->
-  </head>
-
-<body>
-<div class="container">
-  <div class="card m-4 p-4">
-    <div class="card-body">
-      <div class="justify-content-center">
-        <h2>Detail Event</h2>
-        <br>
-        <p th:text="'Nama Event         : ' + ${event.name}"></p>
-        <p th:text="'Nama Proyek        : ' + ${project.name}"></p>
-        <p th:text="'PIC                : - '"></p>
-        <p th:text="'Tanggal Event      : ' + ${event.startDate}"></p>
-        <p th:text="'Summary            : ' + ${event.summary}"></p>
-        <p th:text="'Detailed Summary   : ' + ${event.detailedSummary}"></p>
-        <a class="btn btn-primary"
-           th:href="@{/event/update/} + ${event.id}">Edit</a>
-      </div>
-      <br>
-      <div class="justify-content-center">
-        <h2>Minutes of Meeting (MoM)</h2>
-        <br>
-        <p th:text="'Nama MoM         : ' + ${event.momName}"></p>
-        <p th:text="'Link MoM         : ' + ${event.momUrl}"></p>
-        <a class="btn btn-primary"
-           th:href="@{/event/mom/update/} + ${event.id}">Edit</a>
-      </div>
-      <br>
-      <a class="btn btn-primary" href="/">Kembali</a>
-    </div>
-  </div>
-
-</div>
-=======
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <html lang="en">
 
@@ -238,6 +197,5 @@
 <footer>
   <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </footer>
->>>>>>> 1bfc153e895ea5b7164e76155a7d574eeb6be6f6
 </body>
 </html>

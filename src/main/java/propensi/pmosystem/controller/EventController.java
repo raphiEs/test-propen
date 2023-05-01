@@ -138,6 +138,9 @@ public class EventController {
         EventModel event = eventService.getEventById(id);
         //System.out.println("Event id: "+ event.getId());
 
+        Long creatorId = event.getCreated_by();
+        //User creator = userService.get;
+
         //Get project of event
         ProjectModel project = projectService.findById(event.getProject().getId());
 
@@ -145,6 +148,7 @@ public class EventController {
         List<AttendanceModel> listAttendance = attendanceService.findEventAttendance(event);
         System.out.println(listAttendance.size());
         //model.addAttribute("message", message);
+        //model.addAttribute("creator", creator);
         model.addAttribute("loginUser", loginUser_);
         model.addAttribute("project", project);
         model.addAttribute("event", event);
