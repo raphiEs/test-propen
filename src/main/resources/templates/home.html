@@ -1,31 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Document</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <h2 th:text="'username ' + ${user.username} + ' role'+ ${user.role.name}"></h2>-->
-<!--    &lt;!&ndash; <h2 th:text="' role'+ ${role}"></h2> &ndash;&gt;-->
-<!--    <a th:href="@{/logout}">logout</a>-->
-<!--    <a th:href="@{/user/}">lihat profil</a>-->
-<!--    <a th:href="@{/user/update-account}">update profil</a>-->
-<!--    <a th:href="@{/user/update-password}">update password</a>-->
-<!--    <a th:href="@{/user/add}">tambah user</a>-->
-<!--    <a th:href="@{/user/viewall}">lihat user</a>-->
-<!--    <a th:href="@{/company/view/all}">lihat daftar perusahaan</a>-->
-<!--    <a th:href="@{/user/update-account}">update profil</a>-->
-<!--    <a th:href="@{/company/add}">tambah perusahaan</a>-->
-
-<!--    <h1>Hello World!</h1>-->
-<!--    </h2><br>-->
-<!--    </div>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <html lang="en">
@@ -33,8 +5,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>PMO || Dashboard</title>
+    <title>Dashboard</title>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+    <style>
+        .text-primary {
+            color: rgb(240, 136, 8)!important;
+        }
+        .progress-bar{
+            background-color: rgb(219, 109, 18)!important;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,20 +29,203 @@
         </div>
     </div>
 
-    <div class="dashboard-wrapper">
-        <div class="container-fluid dashboard-content">
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <h3 class="text-center">Kontennya disini ya teman-teman</h3>
+    <div th:if="${not #lists.isEmpty(listterlambat) and loginUser.id == 3}">
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Terdapat <span th:text="${#lists.size(listterlambat)}"></span> proyek yang terlambat!</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped">
+                            <thead class="thead">
+                            <tr>
+                                <th>#</th>
+                                <th>Proyek</th>
+                                <th>Nama Event</th>
+                                <th>Due date</th>
+                                <th>Aksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item,iterStat : ${listterlambat}">
+                                <td th:text="${iterStat.count}"></td>
+                                <td th:text="${item.proyek}"></td>
+                                <td th:text="${item.event}"></td>
+                                <td th:text="${item.date}"></td>
+                                <td><a th:class="${'btn btn-primary'}"style="font-size: 10px;" th:href="@{/project/timeline/} + ${item.proyekid}">Project timeline</a> </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Saya mengerti</button>
+    <!--                    <a href="" type="button" class="btn btn-danger" id="btnDelteYes">Delete User</a>-->
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <h1>Dashboard</h1>
+            <div class="row">
+                
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-80 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Perusahaan</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${totalklien}"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-smile fa-3x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-80 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Proyek</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"th:text="${totalproyek}"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class=" fas fa-suitcase	fa-3x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-80 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Proyek Berjalan</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"th:text="${proyekberjalan}"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-hourglass-half	 fa-3x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-80 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Proyek Selesai</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"th:text="${proyekselesai}"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-check-circle	 fa-3x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                  <!-- Project Card Example -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h2 class="m-0 font-weight-bold text-primary">Projects</h2>
+                    </div>
+                    <div class="card-body">
+
+                        <div th:each="item,iterStat : ${proyek}" th:if="${iterStat.index % 2 == 0}">
+                            <h5 class="font-weight-bold" th:text="${item}"></h5>
+                            <span class="float-right" th:text="${proyek[iterStat.index + 1] + '%'}"></span>
+                            <div class="progress mb-4">
+                                <div class="progress-bar" role="progressbar" 
+                                    th:style="'width: ' + ${proyek[iterStat.index + 1]} + '%'"
+                                    th:attr="aria-valuenow=${proyek[iterStat.index + 1]}"
+                                    aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h2 class="m-0 font-weight-bold text-primary">Event terlambat</h2>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead class="thead">
+                                <tr>
+                                  <th>#</th>
+                                  <th>Proyek</th>
+                                  <th>Nama Event</th>
+                                  <th>Due date</th>
+                                  <th>Aksi</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr th:each="item,iterStat : ${listterlambat}">
+                                    <td th:text="${iterStat.count}"></td>
+                                    <td th:text="${item.proyek}"></td>
+                                    <td th:text="${item.event}"></td>
+                                    <td th:text="${item.date}"></td>
+                                    <td><a th:class="${'btn btn-primary'}"style="font-size: 10px;" th:href="@{/project/timeline/} + ${item.proyekid}">Project timeline</a> </td>
+                                  </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                      </div>                    
+                    </div>
+                  
+                
+                
+              
+              
+        </div>
+        <!-- <div class = "row">
+            <div class="col-lg-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h2 class="m-0 font-weight-bold text-primary">Jumlah Proyek Konsultan</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="myBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </div> -->
+    
+
     </div>
 </div>
 
 <footer>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </footer>
+<script th:inline="javascript">
+    $('#myModal').modal('show');
+</script>
 </body>
 </html>
 

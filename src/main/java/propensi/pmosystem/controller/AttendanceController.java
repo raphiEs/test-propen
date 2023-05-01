@@ -1,7 +1,6 @@
 package propensi.pmosystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -51,15 +50,9 @@ public class AttendanceController {
                                       @RequestParam(value = "accessedFrom", required = false) String accessedFrom,
                                       @PathVariable Long idEvent,
                                       RedirectAttributes redirectAttributes){
-        //Auth
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-        String username = loginUser.getUsername();
-        UserModel loginUser_ = userService.getUserByUsername(username);
 
         //Set attendance attrs
         attendance.setCreated_at(LocalDateTime.now());
-        attendance.setCreated_by(loginUser_.getId());
         EventModel event = eventService.getEventById(idEvent);
         attendance.setEvent(event);
 
@@ -82,16 +75,25 @@ public class AttendanceController {
                                           @PathVariable Long id,
                                           @PathVariable Long idEvent,
                                           RedirectAttributes redirectAttributes){
-        //Deleting attendance from DB
-        AttendanceModel participant = attendanceService.findById(id);
-        EventModel event = eventService.getEventById(idEvent);
-        event.getEventAttendance().remove(participant);
-        attendanceService.delete(participant);
 
-        //Success pop-up message
-        redirectAttributes.addFlashAttribute("success",
-                String.format("Partisipan '" + participant.getName() + "' berhasil dihapus dari event "+ event.getName()));
-        model.addAttribute("participant", participant);
+        //Auth
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        String username = loginUser.getUsername();
+        UserModel loginUser_ = userService.getUserByUsername(username);
+
+        if(!loginUser_.getRole().getName().equals("Klien")) {
+            //Deleting attendance from DB
+            AttendanceModel participant = attendanceService.findById(id);
+            EventModel event = eventService.getEventById(idEvent);
+            event.getEventAttendance().remove(participant);
+            attendanceService.delete(participant);
+
+            //Success pop-up message
+            redirectAttributes.addFlashAttribute("success",
+                    String.format("Partisipan '" + participant.getName() + "' berhasil dihapus dari event " + event.getName()));
+            model.addAttribute("participant", participant);
+        }
         return new ModelAndView("redirect:/event/view/{idEvent}");
     }
 }

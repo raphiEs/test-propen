@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PMO || Dashboard</title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div class="dashboard-header">
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+    </div>
+
+    <div class="nav-left-sidebar sidebar-dark">
+        <div class="menu-list">
+            <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+        </div>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="alert alert-danger alert-dismissible" role="alert" th:if="${warning}">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
+                    <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+                        <span th:text="${success}"></span>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </div>
+                    <div class="page-header">
+                        <h2 class="pageheader-title" th:text="'Feedback Proyek'"></h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">Proyek</a></li>
+                                    <li class="breadcrumb-item"><a th:href="'/'+${project.id}+'/feedback'" class="breadcrumb-link">Feedback Proyek</a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic table  -->
+                <!-- ============================================================== -->
+                <div class="col-md-12 col-lg-12">
+                    <div class="card align-items-stretch">
+                        <h5 class="card-header d-flex align-items-center">
+                            <span th:text="'Feedback: ' + ${project.name}"></span>
+                        </h5>
+                        <div class="card-body" style="overflow-y: scroll; max-height: 55vh;">
+                            <div th:if="${#lists.isEmpty(listFeedback)}">
+                                Proyek ini belum memiliki feedback!
+                            </div>
+                            <div class="table-responsive">
+                                <tr th:each="feedback,iteration : ${listFeedback}">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-1">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <div class="float-left">
+                                                    <p class="card-title" th:text="*{listUserModel[__${iteration.count-1}__].name}+' || ' + ${#calendars.format(new java.util.Date(feedback.created_at), 'EEE, dd MMMM yyyy HH:mm')}" ></p>
+                                                </div>
+                                                <div class="float-right">
+                                                    <a th:href="'/'+${project.id}+'/feedback/remove/'+${feedback.id}" ><i class="fas fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-text" th:text="${feedback.feedback}"></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tr>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form th:action="'/'+ ${project.id} + '/feedback/add'" th:object="${feedback}" method="POST">
+                                        <div class="input-group mt-1 mb-1">
+                                            <input type="text" class="form-control" name="feedback" th:placeholder = "'Tuliskan feedback untuk ' + ${project.name} + '...'">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-sm btn-outline-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic table  -->
+                <!-- ============================================================== -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<footer>
+    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+</footer>
+</body>
+</html>

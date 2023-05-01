@@ -15,81 +15,59 @@
     <nav th:replace="~{fragments/fragment :: attendance-navbar}"></nav>
   </div>
 
-<!--  <div class="nav-left-sidebar sidebar-dark">-->
-<!--    <div class="menu-list">-->
-<!--      <nav th:replace="~{fragments/fragment :: sidebar}"></nav>-->
-<!--    </div>-->
-<!--  </div>-->
+  <!-- ============================================================== -->
+  <!-- if accessed from detail event  -->
+  <!-- ============================================================== -->
 
-<!--  <div class="dashboard-wrapper">-->
-    <div class="container-fluid dashboard-content">
-      <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <div class="alert alert-warning alert-dismissible" role="alert" th:if="${error}">
-            <span th:text="${error}"></span>
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          </div>
-          <div class="page-header">
-            <h1 class="pageheader-title">Form Absensi Event <span th:text="${event.name}"></span></h1>
-            <hr>
-          </div>
-        </div>
+  <div th:if="${accessedFrom == 'detailEvent'}" class="form-group">
+    <div class="dashboard-header">
+<!--      <nav th:replace="~{fragments/fragment :: navbar}"></nav>-->
+    </div>
+
+    <div class="nav-left-sidebar sidebar-dark">
+      <div class="menu-list">
+        <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
       </div>
-      <div class="row">
-        <!-- ============================================================== -->
-        <!-- basic table  -->
-        <!-- ============================================================== -->
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <form th:action="@{/attendance/}+${idEvent}" th:object="${newAttendance}" method="POST">
-          <div th:unless="${accessedFrom == 'detailEvent'}" class="card">
-            <div class="form-group">
-              <input type="text" name="accessedFrom" value="guest" hidden/>
+    </div>
+
+
+    <div class="dashboard-wrapper">
+      <div class="container-fluid dashboard-content">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="alert alert-warning alert-dismissible" role="alert" th:if="${error}">
+              <span th:text="${error}"></span>
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             </div>
-              <h5 class="card-header d-flex justify-content-between align-items-center" >
-                <span th:text="${project.name}"></span>
-              </h5>
-                <div class="card-body">
-                  <table style="width:100%; color: #1b1e21">
-                    <tr>
-                      <td style="width: 25%">Nama Klien</td>
-                      <td>: <span th:text="${project.company.name}"></span></td>
-                    </tr>
-                    <tr>
-                      <td>Consultants</td>
-                      <td>: To Be Developed</td>
-                    </tr>
-                    <tr>
-                      <td>Start Date</td>
-                      <td>: <span th:text="${project.start_date}"></span></td>
-                    </tr>
-                    <tr>
-                      <td>Expected Date</td>
-                      <td>: <span th:text="${project.end_date}"></span></td>
-                    </tr>
-                    <tr>
-                      <td>Status</td>
-                      <td>: <span th:text="${project.status}"></span></td>
-                    </tr>
-                    <tr>
-                      <td>Progress</td>
-                      <td>: To Be Developed</td>
-                    </tr>
-                  </table>
-                </div>
+            <div class="page-header">
+              <h2 class="page-header-title">Tambah Partisipan</h2>
+              <div class="page-breadcrumb">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/project/viewall}" class="breadcrumb-link">Proyek</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/project/view/} + ${project.id}" class="breadcrumb-link">Detail Proyek</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/event/view/} + ${event.id}" class="breadcrumb-link"><b>Detail Event</b></a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/attendance/} + ${event.id}" class="breadcrumb-link"><b>Tambah Partisipan</b></a></li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- basic form  -->
-        <!-- ============================================================== -->
+        <div class="page-section" id="overview">
+        </div>
+        <div class="row">
+          <!-- ============================================================== -->
+          <!-- basic form  -->
+          <!-- ============================================================== -->
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
               <h5 class="card-header d-flex justify-content-between align-items-center" >
                 <span>Mohon isi form absensi ini</span>
               </h5>
               <div class="card-body">
-                <div th:if="${accessedFrom == 'detailEvent'}" class="form-group">
-                    <input type="text" name="accessedFrom" value="detailEvent" hidden/>
-                  </div>
+                <form th:action="@{/attendance/}+${idEvent}" th:object="${newAttendance}" method="POST">
+                  <input type="text" name="accessedFrom" value="detailEvent" hidden/>
                   <div class="form-group">
                     <label class="col-form-label">Nama Partisipan <span style="color:red;">*</span></label>
                     <input type="text" name="name" class="form-control" required/>
@@ -111,19 +89,207 @@
                     <input type="text" name="role" class="form-control"/>
                   </div>
                   <div class="float-right">
-                    <span th:if="${accessedFrom == 'detailEvent'}" class="form-group">
-                      <a class="btn btn-space btn-secondary" th:href="@{/event/view/}+${event.id}">Cancel</a>
-                    </span>
+                    <a class="btn btn-space btn-secondary" th:href="@{/event/view/}+${event.id}">Cancel</a>
                     <button class="btn btn-space btn-primary" type="submit">Submit</button>
                   </div>
                 </form>
               </div>
-              </div>
             </div>
+          </div>
         </div>
         <!-- ============================================================== -->
         <!-- end basic form  -->
         <!-- ============================================================== -->
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- end if accessed from detail event  -->
+  <!-- ============================================================== -->
+
+  <!-- ============================================================== -->
+  <!-- if accessed from guest  -->
+  <!-- ============================================================== -->
+  <div th:if="${accessedFrom == 'guest'}" class="form-group">
+    <div class="container-fluid dashboard-content">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="alert alert-warning alert-dismissible" role="alert" th:if="${error}">
+            <span th:text="${error}"></span>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          </div>
+          <div class="page-header">
+            <h1 class="pageheader-title">Form Absensi Event <span th:text="${event.name}"></span></h1>
+            <hr>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="card">
+            <form th:action="@{/attendance/}+${idEvent}" th:object="${newAttendance}" method="POST">
+              <h5 class="card-header d-flex justify-content-between align-items-center" >
+                <span th:text="${project.name}"></span>
+              </h5>
+              <div class="card-body">
+                <table style="width:100%; color: #1b1e21">
+                  <tr>
+                    <td style="width: 25%">Nama Klien</td>
+                    <td>: <span th:text="${project.company.name}"></span></td>
+                  </tr>
+                  <tr>
+                    <td>Consultants</td>
+                    <td>: To Be Developed</td>
+                  </tr>
+                  <tr>
+                    <td>Start Date</td>
+                    <td>: <span th:text="${project.start_date}"></span></td>
+                  </tr>
+                  <tr>
+                    <td>Expected Date</td>
+                    <td>: <span th:text="${project.end_date}"></span></td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td>: <span th:text="${project.status}"></span></td>
+                  </tr>
+                  <tr>
+                    <td>Progress</td>
+                    <td>: To Be Developed</td>
+                  </tr>
+                </table>
+              </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="card">
+                <h5 class="card-header d-flex justify-content-between align-items-center" >
+                  <span>Mohon isi form absensi ini</span>
+                </h5>
+
+                <div class="card-body">
+                  <input type="text" name="accessedFrom" value="guest" hidden/>
+                  <div class="form-group">
+                    <label class="col-form-label">Nama Partisipan <span style="color:red;">*</span></label>
+                    <input type="text" name="name" class="form-control" required/>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Email <span style="color:red;">*</span></label>
+                    <input type="email" name="email" class="form-control"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">No Telepon <span style="color:red;">*</span></label>
+                    <input type="text" name="cp" class="form-control"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Fungsi/Bagian <span style="color:red;">*</span></label>
+                    <input type="text" name="department" class="form-control"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Jabatan <span style="color:red;">*</span></label>
+                    <input type="text" name="role" class="form-control"/>
+                  </div>
+                  <div class="float-right">
+                    <button class="btn btn-space btn-primary" type="submit">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<!--        &lt;!&ndash; ============================================================== &ndash;&gt;-->
+<!--        &lt;!&ndash; basic table  &ndash;&gt;-->
+<!--        &lt;!&ndash; ============================================================== &ndash;&gt;-->
+<!--        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">-->
+<!--          <form th:action="@{/attendance/}+${idEvent}" th:object="${newAttendance}" method="POST">-->
+<!--            <div class="form-group">-->
+<!--              <input type="text" name="accessedFrom" value="guest" hidden/>-->
+<!--            </div>-->
+<!--              <h5 class="card-header d-flex justify-content-between align-items-center" >-->
+<!--                <span th:text="${project.name}"></span>-->
+<!--              </h5>-->
+<!--                <div class="card-body">-->
+<!--                  <table style="width:100%; color: #1b1e21">-->
+<!--                    <tr>-->
+<!--                      <td style="width: 25%">Nama Klien</td>-->
+<!--                      <td>: <span th:text="${project.company.name}"></span></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td>Consultants</td>-->
+<!--                      <td>: To Be Developed</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td>Start Date</td>-->
+<!--                      <td>: <span th:text="${project.start_date}"></span></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td>Expected Date</td>-->
+<!--                      <td>: <span th:text="${project.end_date}"></span></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td>Status</td>-->
+<!--                      <td>: <span th:text="${project.status}"></span></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td>Progress</td>-->
+<!--                      <td>: To Be Developed</td>-->
+<!--                    </tr>-->
+<!--                  </table>-->
+<!--                </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; ============================================================== &ndash;&gt;-->
+<!--        &lt;!&ndash; basic form  &ndash;&gt;-->
+<!--        &lt;!&ndash; ============================================================== &ndash;&gt;-->
+<!--          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">-->
+<!--            <div class="card">-->
+<!--              <h5 class="card-header d-flex justify-content-between align-items-center" >-->
+<!--                <span>Mohon isi form absensi ini</span>-->
+<!--              </h5>-->
+<!--              <div class="card-body">-->
+<!--                <div th:if="${accessedFrom == 'detailEvent'}" class="form-group">-->
+<!--                    <input type="text" name="accessedFrom" value="detailEvent" hidden/>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label class="col-form-label">Nama Partisipan <span style="color:red;">*</span></label>-->
+<!--                    <input type="text" name="name" class="form-control" required/>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label class="col-form-label">Email <span style="color:red;">*</span></label>-->
+<!--                    <input type="email" name="email" class="form-control"/>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label class="col-form-label">No Telepon <span style="color:red;">*</span></label>-->
+<!--                    <input type="text" name="cp" class="form-control"/>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label class="col-form-label">Fungsi/Jabatan <span style="color:red;">*</span></label>-->
+<!--                    <input type="text" name="department" class="form-control"/>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label class="col-form-label">Jabatan <span style="color:red;">*</span></label>-->
+<!--                    <input type="text" name="role" class="form-control"/>-->
+<!--                  </div>-->
+<!--                  <div class="float-right">-->
+<!--                    <span th:if="${accessedFrom == 'detailEvent'}" class="form-group">-->
+<!--                      <a class="btn btn-space btn-secondary" th:href="@{/event/view/}+${event.id}">Cancel</a>-->
+<!--                    </span>-->
+<!--                    <button class="btn btn-space btn-primary" type="submit">Submit</button>-->
+<!--                  </div>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; ============================================================== &ndash;&gt;-->
+<!--        &lt;!&ndash; end basic form  &ndash;&gt;-->
+<!--        &lt;!&ndash; ============================================================== &ndash;&gt;-->
     <footer>
       <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
     </footer>

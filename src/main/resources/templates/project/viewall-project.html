@@ -65,7 +65,7 @@
                                                     Klien: <span th:text="${projectUser.project.company.name}"></span>
                                                 </p>
                                                 <a th:href="@{view/}+${projectUser.project.id}" class="btn btn-sm btn-primary">Detail</a>
-                                                <a href="#" class="btn btn-sm btn-primary">Feedback</a>
+                                                <a th:href="'/'+${projectUser.project.id}+'/feedback'" class="btn btn-sm btn-primary">Feedback</a>
                                             </div>
                                     </div>
                                 </tr>

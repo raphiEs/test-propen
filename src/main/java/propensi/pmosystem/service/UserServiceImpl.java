@@ -59,6 +59,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserModel getUserById(Long id) {
+        Optional<UserModel> user = userDb.findById(id);
+        if (user.isPresent()){
+            return user.get();
+        } else return null;
+    }
+
+    @Override
     public void removeUser(UserModel user) {
         userDb.delete(user);
     }

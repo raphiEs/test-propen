@@ -59,5 +59,7 @@ public class ProjectModel implements Serializable {
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<EventModel> projectEvent;
+    @OneToMany(mappedBy = "feedback", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FeedbackModel> projectFeedback;
 }
 

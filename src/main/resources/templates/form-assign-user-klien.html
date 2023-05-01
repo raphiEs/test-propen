@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>PMO || User Perusahaan</title>
+  <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+  <div class="dashboard-header">
+    <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+  </div>
+
+  <div class="nav-left-sidebar sidebar-dark">
+    <div class="menu-list">
+      <nav th:replace="~{fragments/fragment :: sidebar}"></nav>
+    </div>
+  </div>
+
+  <div class="dashboard-wrapper">
+    <div class="container-fluid dashboard-content">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="page-header">
+            <h2 class="pageheader-title" th:text="'Konsultan Proyek'"></h2>
+            <div class="page-breadcrumb">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a th:href="@{/company/viewall}" class="breadcrumb-link">Company</a></li>
+                  <li class="breadcrumb-item"><a th:href="@{/company/view/} + ${company.id}" class="breadcrumb-link">Detail Perusahaan</a></li>
+                  <li class="breadcrumb-item"><a th:href="@{/company/} + ${company.id} + @{/assign-user}" class="breadcrumb-link">User Perusahaan</a></li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="alert alert-success alert-dismissible" role="alert" th:if="${success}">
+            <span th:text="${success}"></span>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          </div>
+
+          <div class="card">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+              Daftar User Perusahaan
+            </h5>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered first">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody th:each="a, x : ${listUser}">
+
+                  <tr>
+                    <td th:text="${x.count}"></td>
+                    <td th:text="${a.name}"></td>
+                    <td class="text-center">
+                      <a th:class="${'btn btn-danger'}" th:href="@{/company/}+${company.id}+@{/assign-user/remove/} + ${a.id}">Hapus</a>
+                    </td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+
+                  </tfoot>
+                  <form th:action="@{/company/}+${company.id}+@{/assign-user}" th:object="${newKlien}" method="POST">
+                    <tr>
+                      <td th:text="${jumlahKlien}"></td>
+                      <td>
+                        <div class="form-group">
+                          <select name="klienselect" class="form-control" id="input-select" required>
+                            <option selected value="">--Pilih User Perusahaan--</option>
+                            <option
+                                    th:each="klien: ${listKlien}"
+                                    th:value="${klien.username}"
+                                    th:text="${klien.name}"
+                            >
+                            </option>
+                          </select>
+                        </div>
+                      </td>
+                      <td class="text-center">
+                        <button class="btn btn-space btn-primary" type="submit">Tambah</button>
+                      </td>
+                    </tr>
+                  </form>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- end basic form  -->
+      <!-- ============================================================== -->
+
+      <!-- ============================================================== -->
+      <!-- end input groups -->
+      <!-- ============================================================== -->
+    </div>
+    <footer>
+      <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

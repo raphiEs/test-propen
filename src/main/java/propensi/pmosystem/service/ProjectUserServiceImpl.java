@@ -8,6 +8,7 @@ import propensi.pmosystem.model.ProjectUserModel;
 import propensi.pmosystem.model.UserModel;
 import propensi.pmosystem.repository.ProjectUserDb;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,6 +42,22 @@ public class ProjectUserServiceImpl implements ProjectUserService{
                 projectUserDb.delete(x);
             }
         }
+    }
+
+    @Override
+    public List<ProjectUserModel> findAllByProjectAndRole(Long idProject, Long role) {
+        List<ProjectUserModel> user = projectUserDb.findAllByProjectId(idProject);
+        List<ProjectUserModel> result = new ArrayList<>();
+        for (ProjectUserModel projectUser : user){
+            if (projectUser.getUser().getRole().getId().equals(role))
+                result.add(projectUser);
+        }
+        return result;
+    }
+
+    @Override
+    public List<ProjectUserModel> findAllByProject(Long idProject) {
+        return projectUserDb.findAllByProjectId(idProject);
     }
 
 }
