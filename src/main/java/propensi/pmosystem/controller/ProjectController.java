@@ -177,7 +177,17 @@ public class ProjectController {
         if (listprojectusermodel.size() == 1 && loginUser_.getRole().getName().equals("Manajer")) {
             model.addAttribute("warning", true);
         }
+        //projek
 
+        List<TimelineModel> timeline = timelineService.findAllByProjectId(id);
+        Integer weight = 0;
+        for (TimelineModel b : timeline) {
+            if (b.getStatus().equals("1")) {
+                weight = weight + b.getWeight();
+            }
+        }
+        String weight_String = weight.toString();
+        model.addAttribute("progress", weight_String);
         return "project/view-project";
     }
 
@@ -324,6 +334,12 @@ public class ProjectController {
         Integer currweight = weight + timelineService.cekCurrWeight(project.getId());
         if(currweight > 100){
             redirectAttrs.addFlashAttribute("failed", String.format("Gagal Menambahkan. Pastikan total weight tidak melebihi 100. Total weight tersisa:"+ "`%d`" +"!", 100 - currweight) );
+            model.addAttribute("failed", String.format("Gagal Menambahkan. Pastikan total weight tidak melebihi 100. Total weight tersisa:"+ "`%d`" +"!", 100 - currweight) );
+            return new ModelAndView("redirect:/project/timeline/milestone/" + project.getId().toString());
+        }
+        if(end_date.isBefore(start_date)){
+           redirectAttrs.addFlashAttribute("failed", String.format("Gagal Menambahkan. Pastikan tanggal mulai lebih awal daripada tanggal akhir!" ));
+            model.addAttribute("failed", String.format("Gagal Menambahkan. Pastikan tanggal mulai lebih awal daripada tanggal akhir!" ));
             return new ModelAndView("redirect:/project/timeline/milestone/" + project.getId().toString());
         }
         timelineModel.setProject(project);
@@ -355,6 +371,12 @@ public class ProjectController {
         String username = loginUser.getUsername();
         UserModel loginUser_ = userService.getUserByUsername(username);
         model.addAttribute("loginUser", loginUser_);
+        if(updateMilestone.getEndDate().isBefore(updateMilestone.getStartDate())){
+            redirectAttrs.addFlashAttribute("failed", String.format("Gagal Menambahkan. Pastikan tanggal mulai lebih awal daripada tanggal akhir!" ));
+            model.addAttribute("failed", String.format("Gagal Menambahkan. Pastikan tanggal mulai lebih awal daripada tanggal akhir!" ));
+
+            return new ModelAndView("redirect:/project/timeline/milestone/" + project.getId().toString());
+        }
         updateMilestone.setProject(project);
         updateMilestone.setCreated_at(created_at);
         updateMilestone.setCreated_by(loginUser_.getId());

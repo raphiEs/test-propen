@@ -54,10 +54,10 @@
                     <div class="card">
                         <h5 class="card-header d-flex justify-content-between align-items-center" >
                             <span th:text="${project.name}"></span>
-                            <a class="btn btn-sm btn-outline-primary" th:href="@{/project/timeline/}+${project.id}" >Timeline Proyek</a>
                             <a class="btn btn-sm btn-outline-primary" th:href="@{|/project/events/${project.id}/summary.pdf|}" target="_blank" >Export Summary Proyek</a>
                             <div th:if="${roleLogin == 2}" class="float-right">
                                 <a class="btn btn-sm btn-outline-primary" th:href="@{/project/consultant/}+${project.id}" >Assign Konsultan</a>
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{/project/timeline/}+${project.id}" >Timeline Proyek</a>
                                 <a class="btn btn-sm btn-outline-primary" th:href="@{/project/update/}+${project.id}" >Edit</a>
                             </div>
                         </h5>
@@ -87,7 +87,17 @@
                                 </tr>
                                 <tr>
                                     <td>Progress</td>
-                                    <td>: To Be Developed</td>
+<!--                                    <td>: To Be Developed</td>-->
+                                    <td>:
+                                        <span><div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 th:style="'width: ' + ${progress} + '%'"
+                                                 th:attr="aria-valuenow=${progress}"
+                                                 aria-valuemin="0" aria-valuemax="100" th:text="${progress} + '%'">
+                                            </div>
+                                            </div>
+                                            </span>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
