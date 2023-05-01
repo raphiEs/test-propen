@@ -29,6 +29,46 @@
         </div>
     </div>
 
+    <div th:if="${not #lists.isEmpty(listterlambat) and loginUser.id == 3}">
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Terdapat <span th:text="${#lists.size(listterlambat)}"></span> proyek yang terlambat!</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped">
+                            <thead class="thead">
+                            <tr>
+                                <th>#</th>
+                                <th>Proyek</th>
+                                <th>Nama Event</th>
+                                <th>Due date</th>
+                                <th>Aksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item,iterStat : ${listterlambat}">
+                                <td th:text="${iterStat.count}"></td>
+                                <td th:text="${item.proyek}"></td>
+                                <td th:text="${item.event}"></td>
+                                <td th:text="${item.date}"></td>
+                                <td><a th:class="${'btn btn-primary'}"style="font-size: 10px;" th:href="@{/project/timeline/} + ${item.proyekid}">Project timeline</a> </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Saya mengerti</button>
+    <!--                    <a href="" type="button" class="btn btn-danger" id="btnDelteYes">Delete User</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="dashboard-wrapper">
         <div class="container-fluid dashboard-content">
             <h1>Dashboard</h1>
@@ -183,9 +223,9 @@
 <footer>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </footer>
-<Script>
-    
-</Script>
+<script th:inline="javascript">
+    $('#myModal').modal('show');
+</script>
 </body>
 </html>
 
